@@ -1,0 +1,427 @@
+{
+  "common": {
+    "appName": "Dự Án để vào clb",
+    "tagline": "Learn English from TED talks",
+    "loading": "Loading…",
+    "back": "Back",
+    "tryAgain": "Try again"
+  },
+  "nav": {
+    "howItWorks": "How it works",
+    "features": "Features",
+    "try": "Sample talks",
+    "faq": "FAQ",
+    "start": "Get started",
+    "wordBook": "Word book"
+  },
+  "hero": {
+    "badge": "Free, no sign-up",
+    "title": "Learn English from TED talks",
+    "subtitle": "Watch with a transcript that highlights each line as it is spoken and a Vietnamese translation under every line. Save new words, review them on a spaced schedule and take quizzes.",
+    "placeholder": "Paste a TED link…",
+    "submit": "Get transcript",
+    "submitting": "Fetching…",
+    "hint": "No signup. No card.",
+    "invalidUrl": "That link was not recognised. Paste a TED link like ted.com/talks/…",
+    "youtubeBlocked": "YouTube now blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
+    "sampleLabel": "No link handy? Try:"
+  },
+  "preview": {
+    "title": "Transcript",
+    "nowPlaying": "Now playing",
+    "lines": {
+      "one": {
+        "time": "0:42",
+        "en": "So I want to start with a question.",
+        "vi": "Tôi muốn bắt đầu bằng một câu hỏi."
+      },
+      "two": {
+        "time": "0:47",
+        "en": "What would you do with one extra hour a day?",
+        "vi": "Bạn sẽ làm gì với thêm một giờ mỗi ngày?"
+      },
+      "three": {
+        "time": "0:51",
+        "en": "Tap any line to jump the video there.",
+        "vi": "Bấm vào một dòng để video nhảy tới đó."
+      }
+    },
+    "note": "Interface illustration, not quoted from a real talk."
+  },
+  "steps": {
+    "title": "Three steps to learn from a talk",
+    "subtitle": "Nothing to install, no account, works on your phone.",
+    "one": {
+      "title": "Pick a talk",
+      "body": "Paste a link to a talk on ted.com, or choose one of the sample talks below."
+    },
+    "two": {
+      "title": "Listen and read",
+      "body": "The line being spoken lights up with the video, the Vietnamese translation right under it. Tap a line and the video jumps there."
+    },
+    "three": {
+      "title": "Save words and review",
+      "body": "New words become cards with the original line. Save them to your word book, review on a spaced schedule and take quizzes."
+    }
+  },
+  "try": {
+    "title": "Start with a sample talk",
+    "subtitle": "Each one has a Vietnamese translation by the TED community. Shortest first.",
+    "minutes": "{minutes} min",
+    "open": "Study {title} by {speaker}"
+  },
+  "features": {
+    "title": "Everything to learn from one talk",
+    "listen": {
+      "title": "Read and listen",
+      "sync": {
+        "title": "The spoken line lights up",
+        "body": "The transcript follows the video. Tap a line to seek right to it; scroll ahead on your own and it will not drag you back."
+      },
+      "bilingual": {
+        "title": "Bilingual, line by line",
+        "body": "The TED community’s Vietnamese translation sits right under each English line. One button turns it on or off."
+      },
+      "search": {
+        "title": "Search what was said",
+        "body": "Type a word to see every time it comes up, in the translation too."
+      },
+      "export": {
+        "title": "Export to a file",
+        "body": "TXT, SRT, VTT or Markdown, with the translation if you like."
+      }
+    },
+    "learn": {
+      "title": "Learn the vocabulary",
+      "cards": {
+        "title": "Cards with the original line",
+        "body": "Words and phrases worth learning come straight from the talk, each card with the exact line and timestamp."
+      },
+      "book": {
+        "title": "Your own word book",
+        "body": "Keep only the words you want to remember. Write meanings and examples your own way."
+      },
+      "srs": {
+        "title": "Spaced review",
+        "body": "Each word comes back just as you are about to forget it, based on how well you knew it last time."
+      },
+      "quiz": {
+        "title": "Four kinds of quiz",
+        "body": "Fill in the original line, meaning to word, word to meaning, and typing the word. Retry only what you missed."
+      }
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "q1": "Does it cost anything?",
+    "a1": "No. Every feature is free, with no paid plan. There are only abuse limits, such as not opening too many different talks within a few minutes.",
+    "q2": "Where is my study data kept?",
+    "a2": "Your word book, review progress and quiz results stay in your browser. There are no accounts yet, so nothing syncs between devices, and clearing browser data erases it.",
+    "q3": "Where do word meanings come from?",
+    "a3": "Every card has the word and its real line from the talk. You write the Vietnamese meaning yourself, right on the card, with your own example.",
+    "q4": "Are videos saved anywhere?",
+    "a4": "No. Videos stream directly from TED’s servers and are never downloaded or stored. The site keeps only transcripts and talk details.",
+    "q5": "Why not YouTube?",
+    "a5": "YouTube blocks fetching captions from a server without its own anti-bot token. We chose not to work around that, so only TED is supported for now.",
+    "q6": "Does it work on a phone?",
+    "a6": "Yes. The video stays pinned at the top, the transcript scrolls underneath, and every button is big enough to tap."
+  },
+  "cta": {
+    "title": "Pick a talk and start",
+    "subtitle": "Paste a TED link here, or choose a sample talk above."
+  },
+  "footer": {
+    "rights": "Transcripts and translations by the TED community under CC BY-NC-ND 4.0. Not affiliated with TED.",
+    "madeWith": "A personal project, free to use."
+  },
+  "watch": {
+    "backHome": "Home",
+    "transcript": "Transcript",
+    "cueCount": "{count} lines",
+    "autoGenerated": "Auto-generated",
+    "autoGeneratedHint": "Machine-written captions. Expect spelling slips and missing punctuation.",
+    "searchPlaceholder": "Search the transcript…",
+    "searchResults": "{current}/{total}",
+    "searchEmpty": "No matches",
+    "prevMatch": "Previous match",
+    "nextMatch": "Next match",
+    "noSync": "TED's player does not report its position, so this transcript is for reading, searching and exporting.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "export": "Export",
+    "exportTxt": "Plain text (.txt)",
+    "exportSrt": "Subtitles (.srt)",
+    "exportVtt": "WebVTT (.vtt)",
+    "exportMd": "Markdown (.md)",
+    "openOriginal": "Open on TED",
+    "translationToggle": "{label} translation",
+    "noTranslation": "This talk has no Vietnamese translation on TED yet.",
+    "translationPending": "Machine translation in progress — Vietnamese lines will appear as it finishes.",
+    "translationSource": "Translation by the TED community, licensed CC BY-NC-ND:",
+    "translator": "translator",
+    "reviewer": "reviewer",
+    "translationCoverage": "{percent}% of lines translated",
+    "exportBilingual": "Include translation",
+    "translationMachine": "Machine translation (Claude) — may contain mistakes.",
+    "translationBrowser": "Machine translation by Chrome, made on your device — may contain mistakes.",
+    "browserTranslate": "Translate with Chrome",
+    "browserTranslateHint": "Chrome downloads a Vietnamese language pack once, then translates on your device for free.",
+    "browserPreparing": "Chrome is preparing the language pack…",
+    "browserDownloading": "Chrome is downloading the language pack… {percent}%",
+    "browserTranslating": "Chrome is translating on your device… {done}/{total} lines",
+    "browserFailed": "This talk has no Vietnamese translation, and Chrome could not translate it.",
+    "syncHint": "The line being spoken is highlighted as the video plays. Tap a line to play from there.",
+    "backToPlaying": "Back to the current line",
+    "ogNote": "Bilingual transcript · Vocabulary practice",
+    "metaDescription": "English transcript and Vietnamese translation of the TED talk “{title}”{byline}. Follows the video, searchable, with vocabulary practice.",
+    "metaBy": " by {author}",
+    "transcriptCredit": "Transcript and translation by the TED community, licensed CC BY-NC-ND 4.0.",
+    "creditLink": "Original talk on TED"
+  },
+  "errors": {
+    "title": "Could not get the transcript",
+    "INVALID_URL": "That link is not valid. Check it and paste a TED URL.",
+    "UNSUPPORTED_SOURCE": "That source is not supported yet. TED only for now.",
+    "YOUTUBE_BLOCKED": "YouTube blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
+    "VIDEO_UNAVAILABLE": "This talk does not exist or has been removed.",
+    "VIDEO_PRIVATE": "This talk is not public, so its transcript cannot be read.",
+    "AGE_RESTRICTED": "This content is restricted, so its transcript cannot be read.",
+    "LIVE_STREAM": "This is a live broadcast. Wait until it ends and try again.",
+    "NO_CAPTIONS": "This talk has no transcript on TED yet.",
+    "CAPTIONS_EMPTY": "The source returned an empty transcript for this talk.",
+    "UPSTREAM_BLOCKED": "TED is blocking requests from the server. Try again in a few minutes.",
+    "UPSTREAM_FAILED": "Could not reach TED. Try again shortly.",
+    "RATE_LIMITED": "Too many talks at once. Try again in a few minutes.",
+    "INTERNAL": "Something unexpected broke. Please try again.",
+    "RATE_LIMITED_TALKS": "You opened many different talks in a short time. Try again in about {minutes} minutes. Talks you already opened still work as usual."
+  },
+  "vocab": {
+    "title": "Vocabulary",
+    "subtitle": "Pulled from the transcript. Every card traces back to the line it came from.",
+    "backToTranscript": "Back to transcript",
+    "openVocab": "Vocabulary",
+    "group": {
+      "common": "Common B1–B2",
+      "academic": "Academic C1+",
+      "phrases": "Phrases & collocations",
+      "ungraded": "Single words (ungraded)"
+    },
+    "listView": "List view",
+    "cardView": "Card view",
+    "flip": "Flip the card",
+    "tapToFlip": "Tap to flip",
+    "previous": "Previous card",
+    "next": "Next card",
+    "shuffle": "Shuffle",
+    "noMeaning": "No Vietnamese meaning yet",
+    "empty": "No vocabulary could be extracted from this transcript.",
+    "attribution": "Source: {title} on TED, licensed CC BY-NC-ND.",
+    "rate": {
+      "again": "Again",
+      "hard": "Hard",
+      "good": "Good",
+      "easy": "Easy"
+    },
+    "interval": {
+      "minute": "{value, plural, one {# minute} other {# minutes}}",
+      "hour": "{value, plural, one {# hour} other {# hours}}",
+      "day": "{value, plural, one {# day} other {# days}}",
+      "month": "{value, plural, one {# month} other {# months}}",
+      "year": "{value, plural, one {# year} other {# years}}"
+    },
+    "state": {
+      "new": "New",
+      "learning": "Learning",
+      "review": "Review",
+      "relearning": "Relearning"
+    },
+    "rateHint": "Flip the card, then rate how well you remembered it.",
+    "dueIn": "Review again in {interval}",
+    "dueNow": "Due for review",
+    "shortcutsSrs": "Shortcuts: Space flips · ← → navigate · 1–4 rate · S save/unsave",
+    "openReview": "Today's review",
+    "inTranscript": "in this talk",
+    "example": "Illustrative example",
+    "sourceQuote": "Line from the talk",
+    "singleSense": "This word has only one common sense.",
+    "aiIssue": {
+      "no-key": {
+        "title": "No automatic meanings",
+        "body": "AI meanings are not switched on here. Every card still has the word and the real line from the talk. You can write meanings yourself: flip a card and choose \"Write a meaning\". Tap ☆ to save a word to your word book and review it.",
+        "devTitle": "ANTHROPIC_API_KEY is not set",
+        "devHint": "The extraction and the source phrases are real, taken straight from the transcript. Meanings, IPA and the B1–B2 / C1+ split need a model. Add ANTHROPIC_API_KEY to .env.local and restart the dev server. You can write meanings yourself: flip a card and choose \"Write a meaning\"."
+      },
+      "auth": {
+        "title": "Automatic meanings are unavailable for now",
+        "body": "The AI meaning service has a problem. Every card still has the word and the real line from the talk. You can write meanings yourself: flip a card and choose \"Write a meaning\".",
+        "devTitle": "ANTHROPIC_API_KEY is invalid",
+        "devHint": "The API rejected the key in .env.local (401): it may have been deleted, revoked or pasted incompletely. Reloading will not fix this. Create a new key on console.anthropic.com, put it in .env.local and restart the dev server. You can write meanings yourself: flip a card and choose \"Write a meaning\"."
+      },
+      "billing": {
+        "title": "Automatic meanings are unavailable for now",
+        "body": "The AI meaning service is paused. Every card still has the word and the real line from the talk. You can write meanings yourself: flip a card and choose \"Write a meaning\".",
+        "devTitle": "The Anthropic account is out of credit",
+        "devHint": "The key is valid, but the API refused because there is no credit left. Add credit under Plans & Billing on console.anthropic.com, then reload. For now the cards keep their source lines but have no meanings. You can write meanings yourself: flip a card and choose \"Write a meaning\"."
+      },
+      "failed": {
+        "title": "Could not get automatic meanings",
+        "body": "This lookup did not succeed. Reload the page to try again. Meanwhile every card still has its line from the talk, and you can write meanings yourself: flip a card and choose \"Write a meaning\".",
+        "devTitle": "Could not get meanings from the model",
+        "devHint": "This model call did not succeed, so the cards show source lines only for now. Reload to try again; if it keeps failing, check the dev server log. You can write meanings yourself: flip a card and choose \"Write a meaning\"."
+      },
+      "limited": {
+        "title": "Automatic meanings paused",
+        "body": "You looked up automatic meanings for many talks in a short time, so this one waits for now. Every card still has the word and the real line from the talk. You can write meanings yourself: flip a card and choose \"Write a meaning\".",
+        "devTitle": "Per-IP model limit reached",
+        "devHint": "mayUseModel() in lib/limits/guard.ts refused: this IP used up MODEL_LIMIT (talks allowed to call the model per hour). Counted in memory; restarting the dev server clears it."
+      }
+    },
+    "note": {
+      "title": "Your notes",
+      "empty": "No notes on this card yet.",
+      "summary": "{count, plural, one {You wrote # meaning.} other {You wrote # meanings.}}",
+      "write": "Write a meaning",
+      "edit": "Edit notes",
+      "senseN": "Meaning {n}",
+      "meaning": "Vietnamese meaning",
+      "partOfSpeech": "Part of speech (optional)",
+      "exampleEn": "English example sentence",
+      "exampleVi": "Translation of the example",
+      "inTranscript": "This is the meaning used in the talk",
+      "addSense": "Add a meaning",
+      "removeSense": "Remove this meaning",
+      "save": "Save",
+      "cancel": "Cancel",
+      "deleteNote": "Delete notes",
+      "saved": "Notes saved.",
+      "hintMore": "Tip: add the word’s other common meanings to remember it better.",
+      "adoptHint": "Or pick one of Claude’s meanings as the one used in the talk:",
+      "adopt": "Use as the meaning in this talk: {meaning}",
+      "originNote": "Your note",
+      "originModel": "Claude",
+      "errors": {
+        "required": "This cannot be empty.",
+        "tooLong": "Longer than {max} characters.",
+        "empty": "Add at least one meaning.",
+        "tooMany": "At most {max} meanings.",
+        "multipleInTranscript": "Pick only one meaning used in the talk.",
+        "adoptFull": "Your notes already hold {max} meanings — remove one first."
+      }
+    },
+    "bookProgress": "{saved}/{total} words saved · {due} due",
+    "openBook": "Word book",
+    "save": "Save to word book",
+    "saved": "In your word book",
+    "saveWord": "Save “{word}” to the word book",
+    "unsaveWord": "Remove “{word}” from the word book",
+    "saveGroup": "Save whole group ({count} words)",
+    "notSaved": "Not saved",
+    "saveHint": "Save this word to review it on a spaced-repetition schedule.",
+    "openQuiz": "Quiz this talk",
+    "aiIssueDevLabel": "Shown in dev only:"
+  },
+  "review": {
+    "title": "Today's review",
+    "subtitle": "Due cards from every talk you have studied, scheduled with spaced repetition.",
+    "counts": "{due} due · {fresh} new",
+    "newCap": "Up to {count} new cards a day",
+    "remaining": "{count} left",
+    "doneTitle": "Done for today",
+    "nextDue": "Next card is due in {interval}.",
+    "nothingScheduled": "Nothing else is due.",
+    "noCardsTitle": "No cards to review yet",
+    "noCardsBody": "Save words to your word book from a talk’s Vocabulary page — only saved words are reviewed.",
+    "fromTalk": "From: {title}",
+    "localOnly": "Progress is saved in this browser only. Clearing site data erases it; syncing across devices comes with accounts.",
+    "loading": "Loading your schedule…",
+    "backHome": "Home",
+    "openBook": "Word book"
+  },
+  "wordBook": {
+    "title": "Word book",
+    "subtitle": "Words you saved from talks, reviewed on a spaced-repetition schedule.",
+    "backHome": "Home",
+    "loading": "Opening your word book…",
+    "stats": "{count} words · {due} cards to review today",
+    "reviewNow": "Review now",
+    "nothingToReview": "Nothing left to review today.",
+    "search": "Search words or meanings…",
+    "searchLabel": "Search the word book",
+    "talkFilter": "Talk",
+    "allTalks": "All talks",
+    "filter": {
+      "all": "All",
+      "due": "To review",
+      "new": "Not started",
+      "noMeaning": "No meaning yet"
+    },
+    "noMatch": "No words match.",
+    "emptyTitle": "Your word book is empty",
+    "emptyBody": "Open the Vocabulary page of a talk and tap ☆ Save to word book on the words you want to remember.",
+    "sourceQuote": "Original line in the talk",
+    "openTalk": "Open talk: {title}",
+    "details": "Show details for “{word}”",
+    "remove": "Remove from book",
+    "removed": "Removed “{word}”. Its review progress is kept if you save it again.",
+    "undo": "Undo",
+    "localOnly": "Your word book is stored in this browser. Clearing site data erases it; syncing across devices comes with accounts.",
+    "notice": {
+      "title": "You now choose what goes in your word book",
+      "body": "Opening a Vocabulary page used to put every word of the talk on your review schedule. Now only words you save with ☆ are reviewed. {count, plural, one {# word} other {# words}} added that way but never reviewed were taken out; words you already reviewed stay in the book with their progress. To review one again, open its talk’s Vocabulary page and tap Save.",
+      "dismiss": "Got it"
+    },
+    "quiz": "Take a quiz"
+  },
+  "quiz": {
+    "title": "Vocabulary quiz",
+    "intro": "Extra practice that does not change your review schedule. Every question comes from the speaker’s own line and the meanings you already have.",
+    "countLabel": "Questions",
+    "kindsLabel": "Question types",
+    "kind": {
+      "cloze": {
+        "label": "Fill in the line",
+        "hint": "Pick the word the speaker said. Works for every word."
+      },
+      "meaningToWord": {
+        "label": "Meaning → word",
+        "hint": "See the meaning, pick the English word. Needs a meaning."
+      },
+      "wordToMeaning": {
+        "label": "Word → meaning",
+        "hint": "See the word, pick its meaning. Needs a meaning."
+      },
+      "typing": {
+        "label": "Type the word",
+        "hint": "See the meaning, type the English word. Needs a meaning."
+      }
+    },
+    "withoutMeaning": "{count, plural, one {# word has} other {# words have}} no meaning yet, so only fill-in-the-line is asked for them.",
+    "notEnough": "Not enough words for the chosen types. Multiple choice needs at least 4 words; meaning questions need words with a meaning.",
+    "previous": "Last time: {correct}/{total}",
+    "start": "Start ({count} questions)",
+    "close": "Close",
+    "quit": "Stop quiz",
+    "progress": "Question {current}/{total}",
+    "ask": {
+      "cloze": "Which word did the speaker say in the gap?",
+      "meaningToWord": "Which word has this meaning?",
+      "wordToMeaning": "What does this word mean?",
+      "typing": "Type the English word with this meaning:"
+    },
+    "blank": "blank",
+    "typingHint": "Starts with “{first}”, {length} characters",
+    "typingLabel": "Your answer",
+    "check": "Check",
+    "right": "✓ Correct",
+    "wrong": "✗ Not quite. Answer: {answer}",
+    "next": "Next question",
+    "seeResult": "See result",
+    "resultTitle": "Result",
+    "perfect": "All correct!",
+    "wrongList": "Words you missed",
+    "retryWrong": "Retry {count, plural, one {# missed question} other {# missed questions}}",
+    "saveWrong": "Save {count, plural, one {# missed word} other {# missed words}} to the word book",
+    "savedWrong": "Saved to the word book.",
+    "again": "New quiz"
+  }
+}

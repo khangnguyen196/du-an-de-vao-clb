@@ -1,0 +1,24 @@
+# Uploaded by `vercel deploy` from this machine — keep secrets and local-only files out.
+
+# Secrets. The public deployment runs WITHOUT an Anthropic key on purpose:
+# visitors must not spend the owner's credit, and there is no rate limit yet (M6).
+.env
+.env.*
+!.env.example
+
+# Build output and caches, rebuilt on Vercel
+node_modules
+.next
+out
+build
+.cache
+*.tsbuildinfo
+
+# Local tooling and notes, not part of the app
+.claude
+Claude outputs
+tests
+playwright-report
+test-results
+*.png
+!public/**/*.png

@@ -1,0 +1,427 @@
+{
+  "common": {
+    "appName": "Dự Án để vào clb",
+    "tagline": "Học tiếng Anh qua bài nói TED",
+    "loading": "Đang tải…",
+    "back": "Quay lại",
+    "tryAgain": "Thử lại"
+  },
+  "nav": {
+    "howItWorks": "Cách dùng",
+    "features": "Tính năng",
+    "try": "Bài mẫu",
+    "faq": "Câu hỏi",
+    "start": "Bắt đầu",
+    "wordBook": "Sổ từ"
+  },
+  "hero": {
+    "badge": "Miễn phí, không cần đăng ký",
+    "title": "Học tiếng Anh qua bài nói TED",
+    "subtitle": "Xem video với transcript tô sáng theo từng câu, bản dịch tiếng Việt dưới mỗi dòng. Gặp từ mới thì lưu lại, ôn theo lịch nhắc và làm quiz.",
+    "placeholder": "Dán link TED…",
+    "submit": "Lấy transcript",
+    "submitting": "Đang lấy…",
+    "hint": "Không cần đăng ký. Không cần thẻ.",
+    "invalidUrl": "Chưa nhận ra link này. Dán một link TED dạng ted.com/talks/…",
+    "youtubeBlocked": "YouTube đã chặn máy chủ tải phụ đề, nên hiện chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
+    "sampleLabel": "Chưa có link? Thử:"
+  },
+  "preview": {
+    "title": "Transcript",
+    "nowPlaying": "Đang phát",
+    "lines": {
+      "one": {
+        "time": "0:42",
+        "en": "So I want to start with a question.",
+        "vi": "Tôi muốn bắt đầu bằng một câu hỏi."
+      },
+      "two": {
+        "time": "0:47",
+        "en": "What would you do with one extra hour a day?",
+        "vi": "Bạn sẽ làm gì với thêm một giờ mỗi ngày?"
+      },
+      "three": {
+        "time": "0:51",
+        "en": "Tap any line to jump the video there.",
+        "vi": "Bấm vào một dòng để video nhảy tới đó."
+      }
+    },
+    "note": "Minh hoạ giao diện, không phải trích từ bài nói thật."
+  },
+  "steps": {
+    "title": "Ba bước để học từ một bài nói",
+    "subtitle": "Không cài đặt, không đăng nhập, dùng được trên điện thoại.",
+    "one": {
+      "title": "Chọn bài",
+      "body": "Dán link một bài nói trên ted.com, hoặc chọn một bài có sẵn bên dưới."
+    },
+    "two": {
+      "title": "Nghe và đọc",
+      "body": "Câu đang nói được tô sáng theo video, bản dịch tiếng Việt nằm ngay dưới. Bấm câu nào, video nhảy tới câu đó."
+    },
+    "three": {
+      "title": "Lưu từ và ôn",
+      "body": "Từ mới trong bài thành thẻ kèm câu gốc. Lưu vào sổ từ, ôn theo lịch nhắc lại và làm quiz."
+    }
+  },
+  "try": {
+    "title": "Bắt đầu với một bài có sẵn",
+    "subtitle": "Bài nào cũng có bản dịch tiếng Việt của cộng đồng TED. Xếp từ ngắn đến dài.",
+    "minutes": "{minutes} phút",
+    "open": "Học bài {title} của {speaker}"
+  },
+  "features": {
+    "title": "Mọi thứ để học từ một bài nói",
+    "listen": {
+      "title": "Đọc và nghe",
+      "sync": {
+        "title": "Tô sáng câu đang nói",
+        "body": "Transcript chạy theo video. Bấm vào một câu để tua tới đúng chỗ đó; tự cuộn đọc trước thì nó không kéo bạn lại."
+      },
+      "bilingual": {
+        "title": "Song ngữ từng dòng",
+        "body": "Bản dịch tiếng Việt của cộng đồng TED nằm ngay dưới câu tiếng Anh. Bật tắt bằng một nút."
+      },
+      "search": {
+        "title": "Tìm trong lời nói",
+        "body": "Gõ một từ để thấy mọi lần nó được nhắc tới, cả trong bản dịch."
+      },
+      "export": {
+        "title": "Xuất ra file",
+        "body": "TXT, SRT, VTT hoặc Markdown, kèm bản dịch nếu muốn."
+      }
+    },
+    "learn": {
+      "title": "Học từ vựng",
+      "cards": {
+        "title": "Thẻ từ có câu gốc",
+        "body": "Từ và cụm từ đáng học được rút thẳng từ bài nói, mỗi thẻ kèm đúng câu diễn giả đã nói và mốc thời gian."
+      },
+      "book": {
+        "title": "Sổ từ của riêng bạn",
+        "body": "Chỉ lưu những từ bạn muốn nhớ. Tự viết nghĩa và ví dụ theo cách của mình."
+      },
+      "srs": {
+        "title": "Ôn theo lịch nhắc lại",
+        "body": "Mỗi từ quay lại đúng lúc bạn sắp quên, dựa trên mức bạn nhớ ở lần trước."
+      },
+      "quiz": {
+        "title": "Quiz bốn dạng",
+        "body": "Điền vào câu gốc, nghĩa sang từ, từ sang nghĩa, và gõ lại từ. Làm lại riêng những câu sai."
+      }
+    }
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "q1": "Có mất phí không?",
+    "a1": "Không. Mọi tính năng đều miễn phí, không có gói nâng cấp. Chỉ có giới hạn chống lạm dụng, ví dụ không mở quá nhiều bài khác nhau trong vài phút.",
+    "q2": "Dữ liệu học của tôi lưu ở đâu?",
+    "a2": "Sổ từ, tiến độ ôn và kết quả quiz lưu ngay trên trình duyệt của bạn. Chưa có tài khoản nên không đồng bộ giữa các máy, và xoá dữ liệu trình duyệt là mất.",
+    "q3": "Nghĩa của từ lấy từ đâu?",
+    "a3": "Thẻ từ luôn có từ và câu gốc thật trong bài. Nghĩa tiếng Việt thì bạn tự viết ngay trên thẻ, kèm ví dụ của riêng bạn.",
+    "q4": "Video có được lưu lại không?",
+    "a4": "Không. Video phát trực tiếp từ máy chủ của TED, không tải về, không lưu lại. Web chỉ giữ transcript và thông tin bài nói.",
+    "q5": "Sao không hỗ trợ YouTube?",
+    "a5": "YouTube chặn việc lấy phụ đề từ máy chủ nếu không có mã chống bot của chính họ. Chúng tôi chọn không đi vòng qua rào đó, nên hiện chỉ hỗ trợ TED.",
+    "q6": "Dùng trên điện thoại được không?",
+    "a6": "Được. Video ghim trên đầu màn hình, transcript cuộn bên dưới, mọi nút đủ lớn để bấm bằng ngón tay."
+  },
+  "cta": {
+    "title": "Chọn một bài nói và bắt đầu",
+    "subtitle": "Dán link TED vào đây, hoặc chọn một bài mẫu ở trên."
+  },
+  "footer": {
+    "rights": "Transcript và bản dịch của cộng đồng TED theo giấy phép CC BY-NC-ND 4.0. Không liên kết với TED.",
+    "madeWith": "Dự án cá nhân, không thu phí."
+  },
+  "watch": {
+    "backHome": "Trang chủ",
+    "transcript": "Transcript",
+    "cueCount": "{count} câu",
+    "autoGenerated": "Phụ đề tự động",
+    "autoGeneratedHint": "Phụ đề do máy sinh, có thể sai chính tả và thiếu dấu câu.",
+    "searchPlaceholder": "Tìm trong transcript…",
+    "searchResults": "{current}/{total}",
+    "searchEmpty": "Không tìm thấy",
+    "prevMatch": "Kết quả trước",
+    "nextMatch": "Kết quả sau",
+    "noSync": "Player TED không báo vị trí đang phát, nên transcript ở đây để đọc, tìm và xuất file.",
+    "copy": "Chép",
+    "copied": "Đã chép",
+    "export": "Xuất file",
+    "exportTxt": "Văn bản (.txt)",
+    "exportSrt": "Phụ đề (.srt)",
+    "exportVtt": "WebVTT (.vtt)",
+    "exportMd": "Markdown (.md)",
+    "openOriginal": "Mở trên TED",
+    "translationToggle": "Bản dịch {label}",
+    "noTranslation": "Bài này chưa có bản dịch tiếng Việt trên TED.",
+    "translationPending": "Đang dịch bằng máy — bản tiếng Việt sẽ hiện dưới từng dòng khi xong.",
+    "translationSource": "Bản dịch của cộng đồng TED, giấy phép CC BY-NC-ND:",
+    "translator": "người dịch",
+    "reviewer": "người duyệt",
+    "translationCoverage": "{percent}% số dòng có bản dịch",
+    "exportBilingual": "Kèm bản dịch",
+    "translationMachine": "Bản dịch máy (Claude), có thể chưa chính xác.",
+    "translationBrowser": "Bản dịch máy của Chrome, dịch ngay trên máy bạn, có thể chưa chính xác.",
+    "browserTranslate": "Dịch bằng Chrome",
+    "browserTranslateHint": "Chrome cần tải gói dịch tiếng Việt một lần, sau đó dịch ngay trên máy bạn, miễn phí.",
+    "browserPreparing": "Chrome đang chuẩn bị gói dịch…",
+    "browserDownloading": "Chrome đang tải gói dịch… {percent}%",
+    "browserTranslating": "Chrome đang dịch trên máy bạn… {done}/{total} câu",
+    "browserFailed": "Bài này chưa có bản dịch tiếng Việt, và Chrome không dịch được.",
+    "syncHint": "Câu đang nói được tô sáng theo video. Bấm vào một câu để phát từ đó.",
+    "backToPlaying": "Về câu đang phát",
+    "ogNote": "Transcript song ngữ · Học từ vựng",
+    "metaDescription": "Transcript tiếng Anh và bản dịch tiếng Việt của bài nói “{title}”{byline} trên TED. Tô sáng theo video, tìm trong lời nói, học từ vựng.",
+    "metaBy": " của {author}",
+    "transcriptCredit": "Transcript và bản dịch của cộng đồng TED, giấy phép CC BY-NC-ND 4.0.",
+    "creditLink": "Bài gốc trên TED"
+  },
+  "errors": {
+    "title": "Không lấy được transcript",
+    "INVALID_URL": "Link không hợp lệ. Kiểm tra lại rồi dán một link TED.",
+    "UNSUPPORTED_SOURCE": "Nguồn này chưa được hỗ trợ. Hiện tại mới có TED.",
+    "YOUTUBE_BLOCKED": "YouTube đã chặn máy chủ tải phụ đề, nên chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
+    "VIDEO_UNAVAILABLE": "Bài nói này không tồn tại hoặc đã bị gỡ.",
+    "VIDEO_PRIVATE": "Bài nói này không công khai nên không đọc được transcript.",
+    "AGE_RESTRICTED": "Nội dung này bị giới hạn nên không đọc được transcript.",
+    "LIVE_STREAM": "Đây là buổi phát trực tiếp. Đợi kết thúc rồi thử lại.",
+    "NO_CAPTIONS": "Bài nói này chưa có transcript trên TED.",
+    "CAPTIONS_EMPTY": "Nguồn trả về transcript rỗng cho bài nói này.",
+    "UPSTREAM_BLOCKED": "TED đang chặn yêu cầu từ máy chủ. Thử lại sau vài phút.",
+    "UPSTREAM_FAILED": "Không kết nối được tới TED. Thử lại sau.",
+    "RATE_LIMITED": "Bạn đang xử lý quá nhiều bài cùng lúc. Thử lại sau vài phút.",
+    "INTERNAL": "Có lỗi ngoài dự tính. Thử lại giúp tôi.",
+    "RATE_LIMITED_TALKS": "Bạn vừa mở nhiều bài khác nhau trong thời gian ngắn. Thử lại sau khoảng {minutes} phút. Những bài đã mở trước đó vẫn xem được bình thường."
+  },
+  "vocab": {
+    "title": "Từ vựng",
+    "subtitle": "Rút từ bản transcript, mỗi thẻ dẫn ngược về câu gốc và mốc thời gian.",
+    "backToTranscript": "Về transcript",
+    "openVocab": "Từ vựng",
+    "group": {
+      "common": "Thông dụng B1–B2",
+      "academic": "Học thuật C1+",
+      "phrases": "Cụm từ & collocation",
+      "ungraded": "Từ đơn (chưa phân nhóm)"
+    },
+    "listView": "Xem dạng danh sách",
+    "cardView": "Xem dạng thẻ",
+    "flip": "Lật thẻ",
+    "tapToFlip": "Chạm để lật",
+    "previous": "Thẻ trước",
+    "next": "Thẻ sau",
+    "shuffle": "Xáo thẻ",
+    "noMeaning": "Chưa có nghĩa tiếng Việt",
+    "empty": "Không rút được từ nào từ bản transcript này.",
+    "attribution": "Nguồn: {title} trên TED, giấy phép CC BY-NC-ND.",
+    "rate": {
+      "again": "Quên",
+      "hard": "Khó",
+      "good": "Được",
+      "easy": "Dễ"
+    },
+    "interval": {
+      "minute": "{value} phút",
+      "hour": "{value} giờ",
+      "day": "{value} ngày",
+      "month": "{value} tháng",
+      "year": "{value} năm"
+    },
+    "state": {
+      "new": "Mới",
+      "learning": "Đang học",
+      "review": "Ôn tập",
+      "relearning": "Học lại"
+    },
+    "rateHint": "Lật thẻ, rồi tự đánh giá mình nhớ đến đâu.",
+    "dueIn": "Ôn lại sau {interval}",
+    "dueNow": "Đến hạn ôn",
+    "shortcutsSrs": "Phím tắt: Space lật thẻ · ← → chuyển thẻ · 1–4 đánh giá · S lưu/bỏ lưu",
+    "openReview": "Ôn tập hôm nay",
+    "inTranscript": "nghĩa trong bài",
+    "example": "Ví dụ minh hoạ",
+    "sourceQuote": "Câu gốc trong bài",
+    "singleSense": "Từ này chỉ có một nghĩa thông dụng.",
+    "aiIssue": {
+      "no-key": {
+        "title": "Chưa có nghĩa tự động",
+        "body": "Bản này chưa bật phần tra nghĩa bằng AI. Mỗi thẻ vẫn có từ và câu gốc thật trong bài nói. Bạn tự viết nghĩa được: lật thẻ rồi bấm \"Viết nghĩa\". Bấm ☆ để lưu từ vào sổ và ôn lại.",
+        "devTitle": "Chưa có ANTHROPIC_API_KEY",
+        "devHint": "Phần rút từ và câu gốc là thật, lấy trực tiếp từ transcript. Nhưng nghĩa tiếng Việt, phiên âm IPA và việc chia B1–B2 / C1+ cần model. Thêm ANTHROPIC_API_KEY vào .env.local rồi khởi động lại dev server. Bạn có thể tự viết nghĩa ngay trên thẻ: lật thẻ rồi bấm \"Viết nghĩa\"."
+      },
+      "auth": {
+        "title": "Tạm thời chưa có nghĩa tự động",
+        "body": "Phần tra nghĩa bằng AI đang gặp sự cố. Mỗi thẻ vẫn có từ và câu gốc thật trong bài nói. Bạn tự viết nghĩa được: lật thẻ rồi bấm \"Viết nghĩa\".",
+        "devTitle": "ANTHROPIC_API_KEY không hợp lệ",
+        "devHint": "API từ chối key trong .env.local (lỗi 401): key có thể đã bị xoá, bị thu hồi hoặc dán thiếu ký tự. Tải lại trang không sửa được lỗi này. Tạo key mới trên console.anthropic.com, thay vào .env.local rồi khởi động lại dev server. Bạn có thể tự viết nghĩa ngay trên thẻ: lật thẻ rồi bấm \"Viết nghĩa\"."
+      },
+      "billing": {
+        "title": "Tạm thời chưa có nghĩa tự động",
+        "body": "Phần tra nghĩa bằng AI đang tạm ngừng. Mỗi thẻ vẫn có từ và câu gốc thật trong bài nói. Bạn tự viết nghĩa được: lật thẻ rồi bấm \"Viết nghĩa\".",
+        "devTitle": "Tài khoản Anthropic đã hết credit",
+        "devHint": "Key hợp lệ nhưng API từ chối vì không còn credit. Nạp thêm ở mục Plans & Billing trên console.anthropic.com rồi tải lại trang. Tạm thời thẻ vẫn có câu gốc, chưa có nghĩa. Bạn có thể tự viết nghĩa ngay trên thẻ: lật thẻ rồi bấm \"Viết nghĩa\"."
+      },
+      "failed": {
+        "title": "Chưa lấy được nghĩa tự động",
+        "body": "Lần tra nghĩa này không thành công. Tải lại trang để thử lại. Trong lúc chờ, mỗi thẻ vẫn có câu gốc trong bài, và bạn tự viết nghĩa được: lật thẻ rồi bấm \"Viết nghĩa\".",
+        "devTitle": "Không lấy được nghĩa từ model",
+        "devHint": "Lần gọi model này không thành công, nên thẻ tạm thời chỉ có câu gốc. Tải lại trang để thử lại; nếu vẫn lỗi, xem log của dev server. Bạn có thể tự viết nghĩa ngay trên thẻ: lật thẻ rồi bấm \"Viết nghĩa\"."
+      },
+      "limited": {
+        "title": "Tạm dừng tra nghĩa tự động",
+        "body": "Bạn vừa tra nghĩa tự động cho nhiều bài trong thời gian ngắn, nên bài này tạm chưa tra. Mỗi thẻ vẫn có từ và câu gốc thật trong bài nói. Bạn tự viết nghĩa được: lật thẻ rồi bấm \"Viết nghĩa\".",
+        "devTitle": "Chạm giới hạn gọi model theo IP",
+        "devHint": "mayUseModel() trong lib/limits/guard.ts từ chối: IP này đã dùng hết MODEL_LIMIT (số bài được gọi model trong một giờ). Đếm trong bộ nhớ, khởi động lại dev server là xoá."
+      }
+    },
+    "note": {
+      "title": "Ghi chú của bạn",
+      "empty": "Chưa có ghi chú cho thẻ này.",
+      "summary": "Bạn đã viết {count} nghĩa.",
+      "write": "Viết nghĩa",
+      "edit": "Sửa ghi chú",
+      "senseN": "Nghĩa {n}",
+      "meaning": "Nghĩa tiếng Việt",
+      "partOfSpeech": "Từ loại (không bắt buộc)",
+      "exampleEn": "Câu ví dụ tiếng Anh",
+      "exampleVi": "Bản dịch câu ví dụ",
+      "inTranscript": "Đây là nghĩa dùng trong bài",
+      "addSense": "Thêm nghĩa",
+      "removeSense": "Xoá nghĩa này",
+      "save": "Lưu",
+      "cancel": "Huỷ",
+      "deleteNote": "Xoá ghi chú",
+      "saved": "Đã lưu ghi chú.",
+      "hintMore": "Gợi ý: thêm các nghĩa thông dụng khác của từ này để nhớ lâu hơn.",
+      "adoptHint": "Hoặc chọn một nghĩa Claude gợi ý làm nghĩa dùng trong bài:",
+      "adopt": "Dùng làm nghĩa trong bài: {meaning}",
+      "originNote": "Ghi chú của bạn",
+      "originModel": "Claude",
+      "errors": {
+        "required": "Không được để trống.",
+        "tooLong": "Dài quá {max} ký tự.",
+        "empty": "Cần ít nhất một nghĩa.",
+        "tooMany": "Tối đa {max} nghĩa.",
+        "multipleInTranscript": "Chỉ chọn một nghĩa dùng trong bài.",
+        "adoptFull": "Ghi chú đã đủ {max} nghĩa — xoá bớt trước khi thêm."
+      }
+    },
+    "bookProgress": "Đã lưu {saved}/{total} từ · {due} thẻ đến hạn",
+    "openBook": "Sổ từ",
+    "save": "Lưu vào sổ từ",
+    "saved": "Đã lưu trong sổ từ",
+    "saveWord": "Lưu “{word}” vào sổ từ",
+    "unsaveWord": "Bỏ “{word}” khỏi sổ từ",
+    "saveGroup": "Lưu cả nhóm ({count} từ)",
+    "notSaved": "Chưa lưu",
+    "saveHint": "Lưu từ này vào sổ để ôn theo lịch nhắc lại.",
+    "openQuiz": "Làm quiz bài này",
+    "aiIssueDevLabel": "Chỉ hiện khi chạy dev:"
+  },
+  "review": {
+    "title": "Ôn tập hôm nay",
+    "subtitle": "Thẻ đến hạn từ mọi bài nói bạn đã học, xếp theo lịch ôn ngắt quãng.",
+    "counts": "{due} thẻ đến hạn · {fresh} thẻ mới",
+    "newCap": "Tối đa {count} thẻ mới mỗi ngày",
+    "remaining": "Còn {count} thẻ",
+    "doneTitle": "Xong phần hôm nay",
+    "nextDue": "Thẻ tiếp theo đến hạn sau {interval}.",
+    "nothingScheduled": "Không còn thẻ nào đến hạn.",
+    "noCardsTitle": "Chưa có thẻ nào để ôn",
+    "noCardsBody": "Lưu từ vào sổ ở trang Từ vựng của một bài nói — chỉ từ đã lưu mới vào lịch ôn.",
+    "fromTalk": "Từ bài: {title}",
+    "localOnly": "Tiến độ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất; đồng bộ giữa nhiều thiết bị sẽ có khi có tài khoản.",
+    "loading": "Đang tải lịch ôn…",
+    "backHome": "Trang chủ",
+    "openBook": "Sổ từ"
+  },
+  "wordBook": {
+    "title": "Sổ từ",
+    "subtitle": "Những từ bạn đã lưu từ các bài nói, ôn theo lịch nhắc lại ngắt quãng.",
+    "backHome": "Trang chủ",
+    "loading": "Đang mở sổ từ…",
+    "stats": "{count} từ · {due} thẻ cần ôn hôm nay",
+    "reviewNow": "Ôn ngay",
+    "nothingToReview": "Hôm nay không còn thẻ nào cần ôn.",
+    "search": "Tìm từ hoặc nghĩa…",
+    "searchLabel": "Tìm trong sổ từ",
+    "talkFilter": "Bài nói",
+    "allTalks": "Tất cả bài nói",
+    "filter": {
+      "all": "Tất cả",
+      "due": "Cần ôn",
+      "new": "Chưa ôn",
+      "noMeaning": "Chưa có nghĩa"
+    },
+    "noMatch": "Không có từ nào khớp.",
+    "emptyTitle": "Sổ từ đang trống",
+    "emptyBody": "Mở trang Từ vựng của một bài nói, rồi bấm ☆ Lưu vào sổ từ ở những từ bạn muốn nhớ.",
+    "sourceQuote": "Câu gốc trong bài",
+    "openTalk": "Mở bài: {title}",
+    "details": "Xem chi tiết “{word}”",
+    "remove": "Bỏ khỏi sổ",
+    "removed": "Đã bỏ “{word}” khỏi sổ. Tiến độ ôn vẫn được giữ nếu bạn lưu lại.",
+    "undo": "Hoàn tác",
+    "localOnly": "Sổ từ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất; đồng bộ giữa nhiều thiết bị sẽ có khi có tài khoản.",
+    "notice": {
+      "title": "Sổ từ giờ do bạn chọn",
+      "body": "Trước đây, mở trang Từ vựng là mọi từ của bài tự vào lịch ôn. Giờ chỉ những từ bạn bấm ☆ Lưu mới được ôn. {count, plural, other {# từ}} tự vào trước đây mà bạn chưa ôn lần nào đã được bỏ ra; các từ đã ôn vẫn ở trong sổ, giữ nguyên tiến độ. Muốn ôn lại từ nào, mở trang Từ vựng của bài đó và bấm Lưu.",
+      "dismiss": "Đã hiểu"
+    },
+    "quiz": "Làm quiz"
+  },
+  "quiz": {
+    "title": "Quiz từ vựng",
+    "intro": "Luyện thêm, không ảnh hưởng lịch ôn. Mọi câu hỏi đều lấy từ câu gốc trong bài và nghĩa bạn đã có.",
+    "countLabel": "Số câu",
+    "kindsLabel": "Dạng câu hỏi",
+    "kind": {
+      "cloze": {
+        "label": "Điền vào câu gốc",
+        "hint": "Chọn từ diễn giả đã nói. Từ nào cũng làm được."
+      },
+      "meaningToWord": {
+        "label": "Nghĩa → từ",
+        "hint": "Thấy nghĩa, chọn từ tiếng Anh. Cần từ có nghĩa."
+      },
+      "wordToMeaning": {
+        "label": "Từ → nghĩa",
+        "hint": "Thấy từ, chọn nghĩa đúng. Cần từ có nghĩa."
+      },
+      "typing": {
+        "label": "Gõ từ",
+        "hint": "Thấy nghĩa, tự gõ từ tiếng Anh. Cần từ có nghĩa."
+      }
+    },
+    "withoutMeaning": "{count, plural, other {# từ}} chưa có nghĩa nên chỉ hỏi dạng điền vào câu gốc.",
+    "notEnough": "Chưa đủ từ để ra câu hỏi với các dạng đã chọn. Câu chọn đáp án cần ít nhất 4 từ; dạng nghĩa cần từ đã có nghĩa.",
+    "previous": "Lần trước: {correct}/{total}",
+    "start": "Bắt đầu ({count} câu)",
+    "close": "Đóng",
+    "quit": "Dừng quiz",
+    "progress": "Câu {current}/{total}",
+    "ask": {
+      "cloze": "Diễn giả đã nói từ nào ở chỗ trống?",
+      "meaningToWord": "Từ nào có nghĩa này?",
+      "wordToMeaning": "Nghĩa của từ này là gì?",
+      "typing": "Gõ từ tiếng Anh có nghĩa này:"
+    },
+    "blank": "chỗ trống",
+    "typingHint": "Bắt đầu bằng “{first}”, {length} ký tự",
+    "typingLabel": "Câu trả lời của bạn",
+    "check": "Kiểm tra",
+    "right": "✓ Đúng",
+    "wrong": "✗ Chưa đúng. Đáp án: {answer}",
+    "next": "Câu tiếp",
+    "seeResult": "Xem kết quả",
+    "resultTitle": "Kết quả",
+    "perfect": "Đúng hết!",
+    "wrongList": "Các từ trả lời sai",
+    "retryWrong": "Làm lại {count, plural, other {# câu sai}}",
+    "saveWrong": "Lưu {count, plural, other {# từ sai}} vào sổ từ",
+    "savedWrong": "Đã lưu vào sổ từ.",
+    "again": "Quiz mới"
+  }
+}

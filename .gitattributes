@@ -1,0 +1,4 @@
+# Keep LF in the repo whatever the editor or OS does.
+* text=auto eol=lf
+*.png binary
+*.ico binary

@@ -1,0 +1,30 @@
+# Dependencies and build output
+node_modules/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+.cache/
+
+# Secrets — every env file, except the empty template
+.env*
+!.env.example
+
+# Deployment link to the owner's Vercel project
+.vercel/
+
+# Test reports
+playwright-report/
+test-results/
+
+# Local-only files
+.DS_Store
+.claude/settings.local.json
+Claude outputs/
+# Screenshot of a third-party site, kept locally as a design reference
+godly.design_website_griffin_.png
+
+# Machine translations of TED transcripts (CC BY-NC-ND: no derivatives are
+# published). They ship with deployments made from this machine, not via git.
+data/translations/

@@ -1,0 +1,188 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Warm paper + ink, with an amber accent used as a highlighter
+   for the line currently being spoken.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-canvas: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-raised: #f4f1ea;
+  --color-ink: #16150f;
+  --color-muted: #6b6760;
+  --color-faint: #98938a;
+  --color-line: #e7e2d7;
+  --color-accent: #b45309;
+  --color-accent-ink: #7c3a06;
+  --color-accent-soft: #fdf0d5;
+  --color-accent-line: #e9c88f;
+  /* A wrong quiz answer. Always paired with a mark and text, never colour alone. */
+  --color-wrong: #b42318;
+  --color-wrong-soft: #fdecea;
+  --color-wrong-line: #f0b4ad;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+  --radius-card: 0.875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-canvas: #12110e;
+    --color-surface: #1a1915;
+    --color-raised: #22201b;
+    --color-ink: #f3f0e9;
+    --color-muted: #a19b90;
+    --color-faint: #7c766c;
+    --color-line: #302d27;
+    --color-accent: #f0b429;
+    --color-accent-ink: #f7d070;
+    --color-accent-soft: #2c2517;
+    --color-accent-line: #5c4a1f;
+    --color-wrong: #f97066;
+    --color-wrong-soft: #2d1715;
+    --color-wrong-line: #6b2a24;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* Rule 7.1: nothing may scroll the page sideways on a phone. */
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* iOS Safari zooms the page when a focused input is under 16px. */
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll reveal (rule 7.2).
+
+   Content ships visible and is hidden only after JS confirms an element sits
+   below the fold. Nothing on screen ever blinks out, and a page that never
+   hydrates still reads fine — which is what public transcript pages need.
+--------------------------------------------------------------------------- */
+@layer components {
+  [data-reveal='pending'] {
+    opacity: 0;
+    /* Only transform and opacity — never height/top/margin. */
+    transform: translate3d(0, 1rem, 0);
+  }
+
+  [data-reveal='done'] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal='pending'] {
+      opacity: 1;
+      transform: none;
+    }
+
+    [data-reveal='done'] {
+      transition: none;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Flashcard flip.
+
+   The two faces are absolutely positioned, so they contribute no height of
+   their own — the card needs an explicit min-height or it collapses to nothing.
+--------------------------------------------------------------------------- */
+@layer components {
+  .flip-scene {
+    perspective: 1400px;
+  }
+
+  .flip-card {
+    position: relative;
+    width: 100%;
+    min-height: 17rem;
+    transform-style: preserve-3d;
+    transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .flip-card.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .flip-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow-y: auto;
+  }
+
+  .flip-face-back {
+    transform: rotateY(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flip-card {
+      transition: none;
+    }
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Fills the viewport correctly once the mobile address bar collapses. */
+  .h-screen-dvh {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .min-h-screen-dvh {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}

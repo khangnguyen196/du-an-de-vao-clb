@@ -1,0 +1,10 @@
+# Roadmap
+
+- [x] M1 — Ingest TED + transcript pane + search + export · Player sync cho TED qua luồng HLS + hls.js: tô sáng câu đang nói, bấm câu để tua, auto-scroll tắt khi tự cuộn (xong; đã kiểm trong trình duyệt của app, **chưa kiểm trên Chrome thật có tiếng**)
+- [ ] M2 — Auth, lưu source, Notebook, search toàn văn (Postgres FTS)
+- [ ] M3 — AI summary + chat có trích dẫn timestamp
+- [~] M4 — Flashcard từ vựng 3 nhóm + trang lật thẻ (xong) · Sổ từ `/words`: người học tự chọn từ để ôn, bỏ khỏi sổ vẫn giữ tiến độ (xong) · Quiz 4 dạng (điền câu gốc, nghĩa→từ, từ→nghĩa, gõ từ), chạy không cần model, không đụng lịch FSRS, lịch sử lưu localStorage (xong). Còn: lưu deck + quiz_attempts vào DB
+- [~] Song ngữ — GĐ1 bản dịch TED dưới từng dòng (xong) · GĐ2 FSRS (ts-fsrs) + trang /review, lưu localStorage (xong — nhãn khoảng ôn trên nút dùng chung mốc thời gian lúc lật thẻ với lúc chấm, vì fuzz lấy mầm theo thời điểm) · GĐ3 nhiều nghĩa (≥2 nghĩa thông dụng + nghĩa trong bài, mỗi nghĩa 1 ví dụ minh hoạ; từ thật sự chỉ 1 nghĩa thì khai báo rõ, không bịa) + model dịch dự phòng (code + test xong; **chưa từng gọi model thật** — cần chạy thử với ANTHROPIC_API_KEY, xem chất lượng nghĩa/ví dụ và số item bị `validateSenses` loại trong log) · GĐ4 chuyển sang Supabase
+- [~] Nghĩa miễn phí — phần 2 người học tự viết nghĩa + ví dụ (bắt buộc mỗi nghĩa 1 ví dụ, không bắt buộc số nghĩa), tự đánh dấu nghĩa trong bài, lưu localStorage (xong) · phần 1 tra từ điển mở (chưa làm — cần chọn nguồn và kiểm tra giấy phép)
+- [ ] M5 — Upload file + Whisper, dịch đa ngôn ngữ
+- [~] M6 — Chống lạm dụng (xong: bộ đệm TED bền 24h, 4 request TED song song/instance, 35 bài khác nhau/10 phút/IP, model 3 bài/giờ/IP, `/api/transcript` tắt ở production — xem `limits.md`) · Landing viết lại theo tính năng hiện có + 8 bài mẫu (`lib/featured-talks.ts`) · SEO: transcript render sẵn trong HTML trước hydration, metadata/OG riêng từng bài (`next/og` + font Be Vietnam Pro), robots + sitemap, JSON-LD, ghi công CC BY-NC-ND; bản dịch máy không nằm trong HTML hiển thị và gắn `data-nosnippet` (xong) · Còn: `usage_events` (cần DB)
