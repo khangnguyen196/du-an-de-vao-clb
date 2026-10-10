@@ -15,16 +15,23 @@
     "wordBook": "Word book"
   },
   "hero": {
-    "badge": "Free, no sign-up",
+    "badge": "Free forever · No account needed",
     "title": "Learn English from TED talks",
-    "subtitle": "Watch with a transcript that highlights each line as it is spoken and a Vietnamese translation under every line. Save new words, review them on a spaced schedule and take quizzes.",
-    "placeholder": "Paste a TED link…",
-    "submit": "Get transcript",
-    "submitting": "Fetching…",
-    "hint": "No signup. No card.",
-    "invalidUrl": "That link was not recognised. Paste a TED link like ted.com/talks/…",
+    "headline": "Listen. Understand. Remember.",
+    "headlineAccent": "Real English from famous TED talks",
+    "subtitle": "Every line lights up as it is spoken, with a Vietnamese translation right below. Save a great word in one tap — we remind you to review it just before you would forget.",
+    "placeholder": "Paste a TED link or type a talk title…",
+    "submit": "Start learning",
+    "submitting": "Opening…",
+    "hint": "Free · No sign-up",
+    "invalidUrl": "We do not recognise that link or title. Paste a ted.com/talks/… link or pick a suggestion.",
     "youtubeBlocked": "YouTube now blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
-    "sampleLabel": "No link handy? Try:"
+    "sampleLabel": "No link handy? Try:",
+    "checking": "Checking…",
+    "noTranscript": "This link has no transcript yet, so it cannot be built. TED usually adds transcripts a few days after release. Pick another one!",
+    "suggestLabel": "Talk suggestions",
+    "suggestRecent": "Talks you opened",
+    "suggestFeatured": "Ready to play"
   },
   "preview": {
     "title": "Transcript",
@@ -49,29 +56,76 @@
     "note": "Interface illustration, not quoted from a real talk."
   },
   "steps": {
-    "title": "Three steps to learn from a talk",
-    "subtitle": "Nothing to install, no account, works on your phone.",
+    "title": "From talk to vocabulary <g>in 3 steps</g>",
+    "subtitle": "Nothing to install, no login. Smooth on phone and desktop.",
     "one": {
       "title": "Pick a talk",
-      "body": "Paste a link to a talk on ted.com, or choose one of the sample talks below."
+      "body": "Paste a ted.com link or choose a ready-made talk — the transcript is there in seconds."
     },
     "two": {
-      "title": "Listen and read",
-      "body": "The line being spoken lights up with the video, the Vietnamese translation right under it. Tap a line and the video jumps there."
+      "title": "Listen and read together",
+      "body": "The spoken line lights up with the video, the Vietnamese right below. Tap any line and the video jumps there."
     },
     "three": {
-      "title": "Save words and review",
-      "body": "New words become cards with the original line. Save them to your word book, review on a spaced schedule and take quizzes."
+      "title": "Save words, review on time",
+      "body": "New words become cards with the original line. We remind you just before you forget, with quizzes to make it stick."
     }
   },
   "try": {
-    "title": "Start with a sample talk",
-    "subtitle": "Each one has a Vietnamese translation by the TED community. Shortest first.",
+    "title": "Start with <g>a fan-favourite talk</g>",
+    "subtitle": "Inspiring talks that already have a Vietnamese translation by the TED community. Pick one, press play, start learning.",
     "minutes": "{minutes} min",
-    "open": "Study {title} by {speaker}"
+    "open": "Study {title} by {speaker}",
+    "bilingual": "Bilingual",
+    "imageAlt": "{speaker} on the TED stage",
+    "credit": "Photos and talks by TED, licensed CC BY-NC-ND 4.0."
+  },
+  "noMore": {
+    "title": "Your whole study loop on <g>one screen</g>.",
+    "lead": "Goodbye to…",
+    "one": "Scrubbing back and forth to find a line",
+    "two": "Toggling subtitles to guess the meaning",
+    "three": "Looking up every other word",
+    "four": "Copying new words onto paper and forgetting them",
+    "five": "Reviewing words whenever you happen to remember",
+    "six": "Learning words with no sentence to anchor them"
+  },
+  "art": {
+    "nowPlaying": "Now playing",
+    "lineOne": "So I want to start with a question.",
+    "lineTwo": "What would you do with one extra hour?",
+    "lineTwoVi": "Bạn sẽ làm gì với thêm một giờ?",
+    "lineThree": "Tap any line to jump there.",
+    "searchTerm": "habit",
+    "searchHitBefore": "…a small",
+    "searchHitAfter": "you keep every day.",
+    "cardWord": "persevere",
+    "cardIpa": "/ˌpɜː.sɪˈvɪə/",
+    "cardContext": "the original line",
+    "bookOne": "curious",
+    "bookTwo": "follow through",
+    "bookThree": "resilient",
+    "rate": {
+      "again": "Again",
+      "hard": "Hard",
+      "good": "Good",
+      "easy": "Easy"
+    },
+    "quizPrompt": "What does “persevere” mean?",
+    "quizRight": "kiên trì",
+    "quizWrong": "bỏ cuộc",
+    "chipPlaying": "Now playing · 0:47",
+    "chipSaved": "Saved “persevere”",
+    "chipDue": "Today’s review · 12 cards",
+    "chipBilingual": "English – Vietnamese, line by line",
+    "cardMeaning": "to keep going"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
   },
   "features": {
-    "title": "Everything to learn from one talk",
+    "title": "Every tool to <g>understand deeply, remember longer</g>",
     "listen": {
       "title": "Read and listen",
       "sync": {
@@ -127,8 +181,8 @@
     "a6": "Yes. The video stays pinned at the top, the transcript scrolls underneath, and every button is big enough to tap."
   },
   "cta": {
-    "title": "Pick a talk and start",
-    "subtitle": "Paste a TED link here, or choose a sample talk above."
+    "title": "Your next talk could <g>change how you learn English</g>",
+    "subtitle": "Paste a TED link or pick a ready-made talk. Free, no sign-up."
   },
   "footer": {
     "rights": "Transcripts and translations by the TED community under CC BY-NC-ND 4.0. Not affiliated with TED.",
@@ -138,8 +192,8 @@
     "backHome": "Home",
     "transcript": "Transcript",
     "cueCount": "{count} lines",
-    "autoGenerated": "Auto-generated",
-    "autoGeneratedHint": "Machine-written captions. Expect spelling slips and missing punctuation.",
+    "machineTranscript": "Machine transcript",
+    "machineTranscriptHint": "No TED transcript yet; machine-transcribed (Whisper), some words may be wrong.",
     "searchPlaceholder": "Search the transcript…",
     "searchResults": "{current}/{total}",
     "searchEmpty": "No matches",
@@ -176,10 +230,11 @@
     "metaDescription": "English transcript and Vietnamese translation of the TED talk “{title}”{byline}. Follows the video, searchable, with vocabulary practice.",
     "metaBy": " by {author}",
     "transcriptCredit": "Transcript and translation by the TED community, licensed CC BY-NC-ND 4.0.",
+    "transcriptCreditWhisper": "Talk by TED, licensed CC BY-NC-ND 4.0.",
     "creditLink": "Original talk on TED"
   },
   "errors": {
-    "title": "Could not get the transcript",
+    "title": "Could not build a transcript",
     "INVALID_URL": "That link is not valid. Check it and paste a TED URL.",
     "UNSUPPORTED_SOURCE": "That source is not supported yet. TED only for now.",
     "YOUTUBE_BLOCKED": "YouTube blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
@@ -187,13 +242,14 @@
     "VIDEO_PRIVATE": "This talk is not public, so its transcript cannot be read.",
     "AGE_RESTRICTED": "This content is restricted, so its transcript cannot be read.",
     "LIVE_STREAM": "This is a live broadcast. Wait until it ends and try again.",
-    "NO_CAPTIONS": "This talk has no transcript on TED yet.",
+    "NO_CAPTIONS": "This link has no transcript yet, so it cannot be built. TED usually adds transcripts a few days after release. Pick another one!",
     "CAPTIONS_EMPTY": "The source returned an empty transcript for this talk.",
     "UPSTREAM_BLOCKED": "TED is blocking requests from the server. Try again in a few minutes.",
     "UPSTREAM_FAILED": "Could not reach TED. Try again shortly.",
     "RATE_LIMITED": "Too many talks at once. Try again in a few minutes.",
     "INTERNAL": "Something unexpected broke. Please try again.",
-    "RATE_LIMITED_TALKS": "You opened many different talks in a short time. Try again in about {minutes} minutes. Talks you already opened still work as usual."
+    "RATE_LIMITED_TALKS": "You opened many different talks in a short time. Try again in about {minutes} minutes. Talks you already opened still work as usual.",
+    "tryFeatured": "Try a ready-made talk"
   },
   "vocab": {
     "title": "Vocabulary",
@@ -423,5 +479,18 @@
     "saveWrong": "Save {count, plural, one {# missed word} other {# missed words}} to the word book",
     "savedWrong": "Saved to the word book.",
     "again": "New quiz"
+  },
+  "ribbon": {
+    "label": "Highlights",
+    "items": [
+      "Line-by-line highlight",
+      "English – Vietnamese",
+      "Tap a line to seek",
+      "Cards with the original line",
+      "FSRS spaced review",
+      "Four kinds of quiz",
+      "Export TXT · SRT · VTT · MD",
+      "Smooth on your phone"
+    ]
   }
 }

@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from 'next'
+import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
+import { THEME_INIT_SCRIPT } from '@/lib/theme'
 import { siteUrl } from '@/lib/site'
 import './globals.css'
+
+// Self-hosted at build time by next/font; the Vietnamese subset carries the
+// stacked diacritics (ặ, ỗ) that a latin-only cut would render in a fallback.
+const inter = Inter({ subsets: ['latin', 'vietnamese'], display: 'swap', variable: '--font-inter' })
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('common')
@@ -34,8 +40,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: 'cover',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#fbfaf7' },
-    { media: '(prefers-color-scheme: dark)', color: '#12110e' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0b10' },
   ],
 }
 
@@ -43,7 +49,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = await getLocale()
 
   return (
-    <html lang={locale}>
+    // The theme script may set data-theme before React hydrates; that one
+    // attribute differing from the server HTML is expected.
+    <html lang={locale} className={inter.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="min-h-screen-dvh antialiased">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

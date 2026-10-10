@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { TalkCard } from '@/components/marketing/TalkCard'
 import { UrlForm } from '@/components/marketing/UrlForm'
 import type { ErrorCode } from '@/lib/errors'
+import { FEATURED_TALKS } from '@/lib/featured-talks'
 
 /**
  * A failed ingest must say *why* it failed — "no captions" and "YouTube blocked
@@ -20,7 +22,7 @@ export function TranscriptError({
   const t = useTranslations()
 
   return (
-    <main className="mx-auto flex min-h-screen-dvh w-full max-w-xl flex-col justify-center px-4 py-16 sm:px-6">
+    <main className="mx-auto flex min-h-screen-dvh w-full max-w-2xl flex-col justify-center px-4 py-16 sm:px-6">
       <p className="font-mono text-xs tracking-wide text-faint uppercase">{code}</p>
       <h1 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
         {t('errors.title')}
@@ -50,6 +52,18 @@ export function TranscriptError({
           </a>
         ) : null}
       </div>
+
+      {/* A way forward rather than a dead end: talks that are known to open. */}
+      <section className="mt-12">
+        <h2 className="text-sm font-semibold tracking-wide text-accent-ink uppercase">{t('errors.tryFeatured')}</h2>
+        <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+          {FEATURED_TALKS.slice(0, 4).map((talk, index) => (
+            <li key={talk.slug}>
+              <TalkCard talk={talk} index={index} />
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   )
 }

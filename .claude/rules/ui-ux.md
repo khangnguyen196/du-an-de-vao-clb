@@ -15,6 +15,12 @@ Hai quy tắc dưới đây không có ngoại lệ. Task nào vi phạm thì co
 - Font tối thiểu 16px cho input — nhỏ hơn thì iOS Safari tự zoom khi focus.
 - E2E: Playwright phải có ít nhất một project chạy viewport mobile, không chỉ desktop.
 
+## Giao diện (2026-10-11, theo phong cách make10000hours)
+
+- Nền trắng / gần đen, chữ xám đậm, font **Inter** (next/font, có subset `vietnamese`), accent **tím** (`accent`) cho dòng đang phát và focus. Gradient thương hiệu đỏ → cam → tím → hồng tím (`text-brand-gradient`, `bg-brand-gradient`) **chỉ cho tiêu đề và trang trí**, không cho chữ nhỏ cần đọc.
+- **Sáng / tối:** mặc định theo máy; `ThemeToggle` ghi `<html data-theme>` + localStorage `abc:theme`, script trong `<head>` (`lib/theme.ts`) áp trước khi vẽ để không nháy. Màu tối khai báo trong `globals.css` dưới cả `:root[data-theme='dark']` lẫn `@media (prefers-color-scheme: dark) :root:not([data-theme='light'])` — sửa màu thì sửa **cả hai** khối.
+- Thumbnail bài mẫu dùng **ảnh 16:9 của chính TED** (`lib/featured-talks.ts`), qua `next/image`, có dòng ghi công CC BY-NC-ND. Không cắt ghép thành ảnh mới, không dùng ở chỗ có bán gì.
+
 ## 2. Animation khi scroll
 
 - **Mỗi section trên trang marketing/landing phải có reveal animation khi lọt vào viewport.**

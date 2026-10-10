@@ -15,16 +15,23 @@
     "wordBook": "Sổ từ"
   },
   "hero": {
-    "badge": "Miễn phí, không cần đăng ký",
+    "badge": "Miễn phí trọn đời · Không cần tài khoản",
     "title": "Học tiếng Anh qua bài nói TED",
-    "subtitle": "Xem video với transcript tô sáng theo từng câu, bản dịch tiếng Việt dưới mỗi dòng. Gặp từ mới thì lưu lại, ôn theo lịch nhắc và làm quiz.",
-    "placeholder": "Dán link TED…",
-    "submit": "Lấy transcript",
-    "submitting": "Đang lấy…",
-    "hint": "Không cần đăng ký. Không cần thẻ.",
-    "invalidUrl": "Chưa nhận ra link này. Dán một link TED dạng ted.com/talks/…",
+    "headline": "Nghe. Hiểu. Nhớ lâu.",
+    "headlineAccent": "Tiếng Anh thật, từ những bài nói TED nổi tiếng",
+    "subtitle": "Từng câu diễn giả nói sáng lên theo video, bản dịch tiếng Việt nằm ngay bên dưới. Gặp từ hay, lưu một chạm — hệ thống tự nhắc bạn ôn đúng lúc sắp quên.",
+    "placeholder": "Dán link TED hoặc gõ tên bài…",
+    "submit": "Học ngay",
+    "submitting": "Đang mở…",
+    "hint": "Miễn phí · Không cần đăng ký",
+    "invalidUrl": "Chưa nhận ra link hoặc tên bài này. Dán link dạng ted.com/talks/… hoặc chọn một bài trong gợi ý.",
     "youtubeBlocked": "YouTube đã chặn máy chủ tải phụ đề, nên hiện chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
-    "sampleLabel": "Chưa có link? Thử:"
+    "sampleLabel": "Chưa có link? Thử:",
+    "checking": "Đang kiểm tra…",
+    "noTranscript": "Link này chưa có transcript nên chưa tạo được. TED thường đăng transcript sau vài ngày. Chọn một bài khác nhaaaa",
+    "suggestLabel": "Gợi ý bài nói",
+    "suggestRecent": "Bài bạn đã mở",
+    "suggestFeatured": "Bài có sẵn · mở được ngay"
   },
   "preview": {
     "title": "Transcript",
@@ -49,29 +56,76 @@
     "note": "Minh hoạ giao diện, không phải trích từ bài nói thật."
   },
   "steps": {
-    "title": "Ba bước để học từ một bài nói",
-    "subtitle": "Không cài đặt, không đăng nhập, dùng được trên điện thoại.",
+    "title": "Từ bài nói đến vốn từ <g>chỉ trong 3 bước</g>",
+    "subtitle": "Không cài đặt, không đăng nhập. Mở trên điện thoại hay máy tính đều mượt.",
     "one": {
-      "title": "Chọn bài",
-      "body": "Dán link một bài nói trên ted.com, hoặc chọn một bài có sẵn bên dưới."
+      "title": "Chọn bài nói",
+      "body": "Dán link từ ted.com hoặc chọn một bài có sẵn — vài giây là có transcript."
     },
     "two": {
-      "title": "Nghe và đọc",
-      "body": "Câu đang nói được tô sáng theo video, bản dịch tiếng Việt nằm ngay dưới. Bấm câu nào, video nhảy tới câu đó."
+      "title": "Nghe và đọc song song",
+      "body": "Câu đang nói sáng lên theo video, bản dịch tiếng Việt ngay bên dưới. Bấm câu nào, video nhảy tới câu đó."
     },
     "three": {
-      "title": "Lưu từ và ôn",
-      "body": "Từ mới trong bài thành thẻ kèm câu gốc. Lưu vào sổ từ, ôn theo lịch nhắc lại và làm quiz."
+      "title": "Lưu từ, ôn đúng lúc",
+      "body": "Từ mới thành thẻ kèm câu gốc. Hệ thống nhắc bạn ôn đúng lúc sắp quên, thêm quiz để nhớ thật chắc."
     }
   },
   "try": {
-    "title": "Bắt đầu với một bài có sẵn",
-    "subtitle": "Bài nào cũng có bản dịch tiếng Việt của cộng đồng TED. Xếp từ ngắn đến dài.",
+    "title": "Học ngay với <g>bài nói được yêu thích</g>",
+    "subtitle": "Những bài nói truyền cảm hứng, đã có sẵn bản dịch tiếng Việt của cộng đồng TED. Chọn một bài, bấm phát, bắt đầu học.",
     "minutes": "{minutes} phút",
-    "open": "Học bài {title} của {speaker}"
+    "open": "Học bài {title} của {speaker}",
+    "bilingual": "Song ngữ",
+    "imageAlt": "{speaker} trên sân khấu TED",
+    "credit": "Ảnh và bài nói thuộc TED, giấy phép CC BY-NC-ND 4.0."
+  },
+  "noMore": {
+    "title": "Cả hành trình học, gói gọn trong <g>một màn hình</g>.",
+    "lead": "Tạm biệt…",
+    "one": "Tua đi tua lại để tìm một câu",
+    "two": "Bật tắt phụ đề để đoán nghĩa",
+    "three": "Tra từ điển từng chữ một",
+    "four": "Chép từ mới ra giấy rồi để quên",
+    "five": "Ôn từ khi nào nhớ ra thì ôn",
+    "six": "Học từ mà không có câu gốc"
+  },
+  "art": {
+    "nowPlaying": "Đang phát",
+    "lineOne": "So I want to start with a question.",
+    "lineTwo": "What would you do with one extra hour?",
+    "lineTwoVi": "Bạn sẽ làm gì với thêm một giờ?",
+    "lineThree": "Tap any line to jump there.",
+    "searchTerm": "habit",
+    "searchHitBefore": "…a small",
+    "searchHitAfter": "you keep every day.",
+    "cardWord": "persevere",
+    "cardIpa": "/ˌpɜː.sɪˈvɪə/",
+    "cardContext": "câu gốc trong bài",
+    "bookOne": "curious",
+    "bookTwo": "follow through",
+    "bookThree": "resilient",
+    "rate": {
+      "again": "Quên",
+      "hard": "Khó",
+      "good": "Được",
+      "easy": "Dễ"
+    },
+    "quizPrompt": "“persevere” nghĩa là?",
+    "quizRight": "kiên trì",
+    "quizWrong": "bỏ cuộc",
+    "chipPlaying": "Đang phát · 0:47",
+    "chipSaved": "Đã lưu “persevere”",
+    "chipDue": "Ôn hôm nay · 12 thẻ",
+    "chipBilingual": "Anh – Việt từng dòng",
+    "cardMeaning": "kiên trì, bền bỉ"
+  },
+  "theme": {
+    "toDark": "Chuyển sang nền tối",
+    "toLight": "Chuyển sang nền sáng"
   },
   "features": {
-    "title": "Mọi thứ để học từ một bài nói",
+    "title": "Mọi công cụ để <g>hiểu sâu, nhớ lâu</g>",
     "listen": {
       "title": "Đọc và nghe",
       "sync": {
@@ -127,8 +181,8 @@
     "a6": "Được. Video ghim trên đầu màn hình, transcript cuộn bên dưới, mọi nút đủ lớn để bấm bằng ngón tay."
   },
   "cta": {
-    "title": "Chọn một bài nói và bắt đầu",
-    "subtitle": "Dán link TED vào đây, hoặc chọn một bài mẫu ở trên."
+    "title": "Bài nói tiếp theo có thể <g>đổi cách bạn học tiếng Anh</g>",
+    "subtitle": "Dán link TED hoặc chọn một bài có sẵn. Miễn phí, không cần đăng ký."
   },
   "footer": {
     "rights": "Transcript và bản dịch của cộng đồng TED theo giấy phép CC BY-NC-ND 4.0. Không liên kết với TED.",
@@ -138,8 +192,8 @@
     "backHome": "Trang chủ",
     "transcript": "Transcript",
     "cueCount": "{count} câu",
-    "autoGenerated": "Phụ đề tự động",
-    "autoGeneratedHint": "Phụ đề do máy sinh, có thể sai chính tả và thiếu dấu câu.",
+    "machineTranscript": "Transcript máy",
+    "machineTranscriptHint": "TED chưa có transcript, lời do máy chép lại (Whisper), có thể sai vài từ.",
     "searchPlaceholder": "Tìm trong transcript…",
     "searchResults": "{current}/{total}",
     "searchEmpty": "Không tìm thấy",
@@ -176,10 +230,11 @@
     "metaDescription": "Transcript tiếng Anh và bản dịch tiếng Việt của bài nói “{title}”{byline} trên TED. Tô sáng theo video, tìm trong lời nói, học từ vựng.",
     "metaBy": " của {author}",
     "transcriptCredit": "Transcript và bản dịch của cộng đồng TED, giấy phép CC BY-NC-ND 4.0.",
+    "transcriptCreditWhisper": "Bài nói của TED, giấy phép CC BY-NC-ND 4.0.",
     "creditLink": "Bài gốc trên TED"
   },
   "errors": {
-    "title": "Không lấy được transcript",
+    "title": "Chưa tạo được transcript",
     "INVALID_URL": "Link không hợp lệ. Kiểm tra lại rồi dán một link TED.",
     "UNSUPPORTED_SOURCE": "Nguồn này chưa được hỗ trợ. Hiện tại mới có TED.",
     "YOUTUBE_BLOCKED": "YouTube đã chặn máy chủ tải phụ đề, nên chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
@@ -187,13 +242,14 @@
     "VIDEO_PRIVATE": "Bài nói này không công khai nên không đọc được transcript.",
     "AGE_RESTRICTED": "Nội dung này bị giới hạn nên không đọc được transcript.",
     "LIVE_STREAM": "Đây là buổi phát trực tiếp. Đợi kết thúc rồi thử lại.",
-    "NO_CAPTIONS": "Bài nói này chưa có transcript trên TED.",
+    "NO_CAPTIONS": "Link này chưa có transcript nên chưa tạo được. TED thường đăng transcript sau vài ngày. Chọn một bài khác nhaaaa",
     "CAPTIONS_EMPTY": "Nguồn trả về transcript rỗng cho bài nói này.",
     "UPSTREAM_BLOCKED": "TED đang chặn yêu cầu từ máy chủ. Thử lại sau vài phút.",
     "UPSTREAM_FAILED": "Không kết nối được tới TED. Thử lại sau.",
     "RATE_LIMITED": "Bạn đang xử lý quá nhiều bài cùng lúc. Thử lại sau vài phút.",
     "INTERNAL": "Có lỗi ngoài dự tính. Thử lại giúp tôi.",
-    "RATE_LIMITED_TALKS": "Bạn vừa mở nhiều bài khác nhau trong thời gian ngắn. Thử lại sau khoảng {minutes} phút. Những bài đã mở trước đó vẫn xem được bình thường."
+    "RATE_LIMITED_TALKS": "Bạn vừa mở nhiều bài khác nhau trong thời gian ngắn. Thử lại sau khoảng {minutes} phút. Những bài đã mở trước đó vẫn xem được bình thường.",
+    "tryFeatured": "Thử một bài có sẵn"
   },
   "vocab": {
     "title": "Từ vựng",
@@ -423,5 +479,18 @@
     "saveWrong": "Lưu {count, plural, other {# từ sai}} vào sổ từ",
     "savedWrong": "Đã lưu vào sổ từ.",
     "again": "Quiz mới"
+  },
+  "ribbon": {
+    "label": "Tính năng nổi bật",
+    "items": [
+      "Tô sáng theo từng câu",
+      "Song ngữ Anh – Việt",
+      "Bấm câu để tua video",
+      "Thẻ từ kèm câu gốc",
+      "Ôn tập ngắt quãng FSRS",
+      "Quiz 4 dạng",
+      "Xuất TXT · SRT · VTT · MD",
+      "Mượt trên điện thoại"
+    ]
   }
 }

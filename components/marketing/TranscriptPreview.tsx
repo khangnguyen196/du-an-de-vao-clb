@@ -2,69 +2,140 @@ import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 
 const LINES = ['one', 'two', 'three'] as const
-/** The line drawn as "now playing" — what the watch screen really does. */
-const ACTIVE = 'two'
+/** Delay per line so the highlight walks down the list; see `.line-glow`. */
+const LINE_DELAYS = ['0s', '-6s', '-3s'] as const
+/** The line lit when motion is reduced — what the watch screen shows at rest. */
+const RESTING = 'two'
 
 /**
- * Static illustration of the watch screen. Its lines are invented and say so
- * on screen; nothing here is fetched or quoted from a real talk.
+ * Animated illustration of the watch screen, framed like a device on a desk:
+ * the "now playing" highlight walks down the lines, the progress bar runs, a
+ * few chips float around the frame (wide screens only, where there is room).
+ *
+ * Its lines are invented and say so on screen; nothing here is fetched or
+ * quoted from a real talk — which is also why the "video" is an abstract
+ * gradient rather than a real speaker's photo.
  */
 export function TranscriptPreview() {
   const t = useTranslations('preview')
+  const ta = useTranslations('art')
 
   return (
-    <figure>
+    <figure className="relative">
+      <FloatingChip className="top-10 -left-10" delay="0s" dot="bg-violet-500">
+        {ta('chipPlaying')}
+      </FloatingChip>
+      <FloatingChip className="top-1/3 -right-12" delay="-2s" dot="bg-orange-500">
+        {ta('chipSaved')}
+      </FloatingChip>
+      <FloatingChip className="bottom-24 -left-14" delay="-4s" dot="bg-fuchsia-500">
+        {ta('chipDue')}
+      </FloatingChip>
+      <FloatingChip className="-right-8 bottom-10" delay="-1s" dot="bg-red-500">
+        {ta('chipBilingual')}
+      </FloatingChip>
+
       <div
         aria-hidden
-        className="grid gap-4 rounded-card border border-line bg-surface p-3 shadow-sm sm:p-4 lg:grid-cols-[1.15fr_1fr] lg:gap-5"
+        className="rounded-[1.75rem] border border-line bg-surface/70 p-2 shadow-[0_30px_80px_-30px_rgb(17_24_39/0.45)] backdrop-blur sm:p-3"
       >
-        {/* Player stand-in */}
-        <div className="flex aspect-video items-center justify-center rounded-xl bg-ink/90">
-          <span className="grid size-14 place-items-center rounded-full bg-canvas/95">
-            <svg viewBox="0 0 24 24" className="ml-0.5 size-6 fill-ink" role="presentation">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </span>
+        {/* Window chrome */}
+        <div className="flex items-center gap-1.5 px-2 pt-1 pb-2.5 sm:px-3">
+          <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="size-2.5 rounded-full bg-[#febc2e]" />
+          <span className="size-2.5 rounded-full bg-[#28c840]" />
+          <span className="ml-3 h-5 flex-1 rounded-full bg-raised sm:max-w-xs" />
         </div>
 
-        {/* Transcript stand-in */}
-        <div className="flex flex-col">
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <span className="text-sm font-medium">{t('title')}</span>
-            <span className="rounded-md bg-accent-soft px-2 py-1 text-xs font-medium text-accent-ink">
+        <div className="grid gap-3 rounded-[1.25rem] border border-line bg-canvas p-3 sm:p-4 lg:grid-cols-[1.2fr_1fr] lg:gap-5">
+          {/* Player stand-in */}
+          <div className="panel-mesh flex aspect-video flex-col justify-between rounded-xl p-3">
+            <span className="flex items-center gap-2 self-start rounded-full bg-black/45 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              <span className="flex h-3 items-end gap-0.5">
+                {['0s', '-0.4s', '-0.8s', '-0.2s'].map((delay) => (
+                  <span key={delay} className="eq-bar block h-3 w-0.5 rounded-full bg-white" style={{ animationDelay: delay }} />
+                ))}
+              </span>
               {t('nowPlaying')}
+            </span>
+            <span className="relative grid size-14 place-items-center self-center">
+              <span className="pulse-ring absolute inset-0 rounded-full bg-white" />
+              <span className="relative grid size-14 place-items-center rounded-full bg-white/95 text-black shadow-lg">
+                <svg viewBox="0 0 24 24" className="ml-0.5 size-6 fill-current" role="presentation">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="font-mono text-[11px] text-white/90">0:47</span>
+              <span className="h-1 flex-1 overflow-hidden rounded-full bg-white/35">
+                <span className="progress-run block h-full w-full rounded-full bg-white" />
+              </span>
+              <span className="font-mono text-[11px] text-white/90">3:10</span>
             </span>
           </div>
 
-          <ul className="mt-1 flex flex-col">
-            {LINES.map((line) => {
-              const active = line === ACTIVE
-              return (
-                <li
-                  key={line}
-                  className={cn(
-                    'flex gap-3 rounded-lg border-l-2 px-2 py-2.5 text-sm leading-relaxed',
-                    active ? 'border-accent bg-raised' : 'border-transparent',
-                  )}
-                >
-                  <span className={cn('shrink-0 font-mono text-xs', active ? 'text-accent-ink' : 'text-faint')}>
-                    {t(`lines.${line}.time`)}
-                  </span>
-                  <span className="min-w-0">
-                    <span className={cn('block text-pretty', active ? 'text-ink' : 'text-muted')}>
-                      {t(`lines.${line}.en`)}
-                    </span>
+          {/* Transcript stand-in */}
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between border-b border-line pb-3">
+              <span className="text-sm font-semibold">{t('title')}</span>
+              <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent-ink">
+                {t('nowPlaying')}
+              </span>
+            </div>
+
+            <ul className="mt-1 flex flex-col">
+              {LINES.map((line, index) => (
+                <li key={line} className="relative flex gap-3 rounded-lg px-2 py-2.5 text-sm leading-relaxed">
+                  {/* The moving highlight: background and left bar, faded in turn. */}
+                  <span
+                    className={cn(
+                      'line-glow absolute inset-0 rounded-lg border-l-2 border-accent bg-accent-soft/70',
+                      line === RESTING && 'is-lit',
+                    )}
+                    style={{ animationDelay: LINE_DELAYS[index] }}
+                  />
+                  <span className="relative shrink-0 font-mono text-xs text-accent-ink">{t(`lines.${line}.time`)}</span>
+                  <span className="relative min-w-0">
+                    <span className="block text-pretty text-ink">{t(`lines.${line}.en`)}</span>
                     <span className="mt-1 block border-l-2 border-line pl-2 text-xs text-muted text-pretty">
                       {t(`lines.${line}.vi`)}
                     </span>
                   </span>
                 </li>
-              )
-            })}
-          </ul>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-      <figcaption className="mt-2 text-center text-xs text-faint">{t('note')}</figcaption>
+      <figcaption className="mt-3 text-center text-xs text-faint">{t('note')}</figcaption>
     </figure>
+  )
+}
+
+/** A floating badge beside the frame — decoration, so hidden from screen readers. */
+function FloatingChip({
+  children,
+  className,
+  delay,
+  dot,
+}: {
+  children: React.ReactNode
+  className: string
+  delay: string
+  dot: string
+}) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        'float-y absolute z-10 hidden items-center gap-2 rounded-full border border-line bg-surface/90 px-3.5 py-2 text-sm font-medium whitespace-nowrap text-ink shadow-[0_12px_30px_-12px_rgb(17_24_39/0.35)] backdrop-blur xl:flex',
+        className,
+      )}
+      style={{ animationDelay: delay }}
+    >
+      <span className={cn('size-2 rounded-full', dot)} />
+      {children}
+    </span>
   )
 }
