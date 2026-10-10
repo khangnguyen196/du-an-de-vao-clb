@@ -4,7 +4,10 @@ import {
   channelKind,
   findTedTalkForYouTube,
   MAX_SLUG_CANDIDATES,
+  MAX_SPEAKER_TALKS,
+  rankSpeakerTalks,
   slugCandidates,
+  speakerSlugs,
   tedSearchQuery,
   toSlugPart,
 } from '@/lib/ingest/youtube-ted'
@@ -140,5 +143,78 @@ describe('findTedTalkForYouTube', () => {
   it('reports a video YouTube does not show publicly', async () => {
     const result = await findTedTalkForYouTube('UNTZMlgf2To', { videoInfo: async () => null })
     expect(result).toEqual({ status: 'unavailable' })
+  })
+
+  // Reported 2026-10-11: on TED the slug carries a date suffix, so every guess 404s.
+  it('falls back to the speaker page and finds a slug with a date suffix', async () => {
+    const tried: string[] = []
+    const result = await findTedTalkForYouTube('K_RSZC0s8a4', {
+      videoInfo: async () => ({ title: 'The Science Behind Dramatically Better Conversations | Charles Duhigg | TED', channel: 'TED' }),
+      tedYouTubeCode: async (slug) => {
+        tried.push(slug)
+        if (slug === 'charles_duhigg_the_science_behind_dramatically_better_conversations_sep_2025') return 'K_RSZC0s8a4'
+        throw new AppError(ERROR_CODES.VIDEO_UNAVAILABLE, 'no such talk')
+      },
+      speakerTalks: async (speaker) =>
+        speaker === 'charles_duhigg'
+          ? ['talk_146850', 'charles_duhigg_the_power_of_habit', 'charles_duhigg_the_science_behind_dramatically_better_conversations_sep_2025']
+          : [],
+    })
+
+    expect(result).toEqual({ status: 'found', slug: 'charles_duhigg_the_science_behind_dramatically_better_conversations_sep_2025' })
+    // The guess first, then straight to the suffixed slug — not every talk on the page.
+    expect(tried).toEqual([
+      'charles_duhigg_the_science_behind_dramatically_better_conversations',
+      'charles_duhigg_the_science_behind_dramatically_better_conversations_sep_2025',
+    ])
+  })
+
+  it('finds a talk whose YouTube title was rewritten, through the speaker page', async () => {
+    const result = await findTedTalkForYouTube('270q4aF0qU8', {
+      videoInfo: async () => ({ title: 'The Energy Mess AI Is Creating \u2014 and How to Fix It | Ari Matusiak | TED', channel: 'TED' }),
+      tedYouTubeCode: async (slug) => {
+        if (slug === 'ari_matusiak_how_to_make_ai_companies_pay_your_energy_bill') return '270q4aF0qU8'
+        throw new AppError(ERROR_CODES.VIDEO_UNAVAILABLE, 'no such talk')
+      },
+      speakerTalks: async () => ['ari_matusiak_how_to_make_ai_companies_pay_your_energy_bill'],
+    })
+    expect(result).toEqual({ status: 'found', slug: 'ari_matusiak_how_to_make_ai_companies_pay_your_energy_bill' })
+  })
+
+  it('stays "not found" when the speaker has no page on TED', async () => {
+    const result = await findTedTalkForYouTube('270q4aF0qU8', {
+      videoInfo: async () => ({ title: 'The Energy Mess AI Is Creating | Ari Matusiak | TED', channel: 'TED' }),
+      tedYouTubeCode: async () => {
+        throw new AppError(ERROR_CODES.VIDEO_UNAVAILABLE, 'no such talk')
+      },
+      speakerTalks: async () => [],
+    })
+    expect(result).toMatchObject({ status: 'not-found', kind: 'ted' })
+  })
+})
+
+describe('speaker page helpers', () => {
+  it('names each speaker of a joint talk', () => {
+    expect(speakerSlugs('Esther Perel and Sal Khan')).toEqual(['esther_perel', 'sal_khan'])
+    expect(speakerSlugs('Brené Brown')).toEqual(['brene_brown'])
+    expect(speakerSlugs('Madonna')).toEqual([])
+  })
+
+  it('checks suffixed guesses first, then the speaker\u2019s talks, skipping tried slugs and opaque ids', () => {
+    const ranked = rankSpeakerTalks(
+      ['design_matters_brene_brown', 'talk_188007', 'brene_brown_listening_to_shame', 'brene_brown_the_power_of_vulnerability', 'brene_brown_the_power_of_vulnerability_2025'],
+      ['brene_brown_the_power_of_vulnerability'],
+      ['brene_brown'],
+    )
+    expect(ranked).toEqual([
+      'brene_brown_the_power_of_vulnerability_2025',
+      'design_matters_brene_brown',
+      'brene_brown_listening_to_shame',
+    ])
+  })
+
+  it('caps how many talks from one page get checked', () => {
+    const many = Array.from({ length: 20 }, (_, i) => `someone_talk_${String(i)}`)
+    expect(rankSpeakerTalks(many, [], ['someone'])).toHaveLength(MAX_SPEAKER_TALKS)
   })
 })

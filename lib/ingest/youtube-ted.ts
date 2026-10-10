@@ -1,7 +1,7 @@
 import { unstable_cache } from 'next/cache'
 import { z } from 'zod'
 import { AppError, ERROR_CODES } from '@/lib/errors'
-import { fetchTedYouTubeCode } from '@/lib/ingest/ted'
+import { fetchTedSpeakerTalkSlugs, fetchTedYouTubeCode } from '@/lib/ingest/ted'
 import { YOUTUBE_VIDEO_ID } from '@/lib/ingest/youtube-url'
 
 /**
@@ -27,6 +27,15 @@ const OEMBED_CACHE_SECONDS = 24 * 60 * 60
  * rewritten than one a fifth spelling would find.
  */
 export const MAX_SLUG_CANDIDATES = 4
+
+/**
+ * When every guess misses, the speaker's page on ted.com lists their talks —
+ * that is how a talk whose slug carries a date suffix, or whose YouTube title
+ * was rewritten, is still found. Bounded like the guesses: each check is a TED
+ * request.
+ */
+export const MAX_SPEAKER_PAGES = 2
+export const MAX_SPEAKER_TALKS = 5
 
 export type YouTubeChannelKind = 'ted' | 'tedx' | 'other'
 
@@ -80,29 +89,60 @@ const BRAND = /^ted/i
  * slug `sal_khan_and_esther_perel_…`), so both orders are tried.
  */
 export function slugCandidates(youtubeTitle: string): string[] {
+  const parsed = parseYouTubeTitle(youtubeTitle)
+  if (!parsed) return []
+
+  const candidates: string[] = []
+  for (const name of speakerOrders(parsed.speaker)) {
+    const slug = [toSlugPart(name), toSlugPart(parsed.title)].filter(Boolean).join('_')
+    if (slug.includes('_') && !candidates.includes(slug)) candidates.push(slug)
+  }
+  return candidates.slice(0, MAX_SLUG_CANDIDATES)
+}
+
+/** Speaker and talk title from a YouTube title in any of the shapes above, or null. */
+export function parseYouTubeTitle(youtubeTitle: string): { speaker: string; title: string } | null {
   const parts = youtubeTitle.split('|').map((part) => part.trim()).filter(Boolean)
   while (parts.length > 1 && BRAND.test(parts[parts.length - 1]!)) parts.pop()
 
-  const pairs: { speaker: string; title: string }[] = []
-  if (parts.length >= 2) {
-    pairs.push({ title: parts[0]!, speaker: parts[1]! })
-  } else if (parts.length === 1) {
-    const colon = parts[0]!.indexOf(':')
-    if (colon > 0) pairs.push({ speaker: parts[0]!.slice(0, colon), title: parts[0]!.slice(colon + 1) })
-  }
+  if (parts.length >= 2) return { title: parts[0]!, speaker: parts[1]! }
+  const colon = parts[0]?.indexOf(':') ?? -1
+  if (colon > 0) return { speaker: parts[0]!.slice(0, colon).trim(), title: parts[0]!.slice(colon + 1).trim() }
+  return null
+}
 
-  const candidates: string[] = []
-  for (const { speaker, title } of pairs) {
-    const speakers = [speaker]
-    const joint = speaker.split(/\s+(?:and|&)\s+/i)
-    if (joint.length === 2) speakers.push(`${joint[1]!} and ${joint[0]!}`)
+const JOINT = /\s+(?:and|&)\s+/i
 
-    for (const name of speakers) {
-      const slug = [toSlugPart(name), toSlugPart(title)].filter(Boolean).join('_')
-      if (slug.includes('_') && !candidates.includes(slug)) candidates.push(slug)
-    }
-  }
-  return candidates.slice(0, MAX_SLUG_CANDIDATES)
+/** "A and B" as written and reversed; anything else as it is. */
+function speakerOrders(speaker: string): string[] {
+  const joint = speaker.split(JOINT)
+  return joint.length === 2 ? [speaker, `${joint[1]!} and ${joint[0]!}`] : [speaker]
+}
+
+/** Each person named, for their speaker pages: "Esther Perel and Sal Khan" → both. */
+export function speakerSlugs(speaker: string): string[] {
+  return speaker
+    .split(JOINT)
+    .map(toSlugPart)
+    .filter((slug) => slug.includes('_'))
+    .slice(0, MAX_SPEAKER_PAGES)
+}
+
+/**
+ * Talks from a speaker page in the order worth checking: ones whose slug starts
+ * like a guessed slug first (TED appends "_sep_2025" when a slug is reused),
+ * then ones carrying the speaker's name, then the rest. Already-tried slugs and
+ * TED's opaque `talk_123` ids are left out.
+ */
+export function rankSpeakerTalks(talks: readonly string[], guesses: readonly string[], speakers: readonly string[]): string[] {
+  const score = (slug: string) =>
+    guesses.some((guess) => slug.startsWith(guess)) ? 0 : speakers.some((name) => slug.includes(name)) ? 1 : 2
+  return talks
+    .filter((slug) => !guesses.includes(slug) && !/^talk_\d+$/.test(slug))
+    .map((slug, index) => ({ slug, index, rank: score(slug) }))
+    .sort((a, b) => a.rank - b.rank || a.index - b.index)
+    .map(({ slug }) => slug)
+    .slice(0, MAX_SPEAKER_TALKS)
 }
 
 /** Thrown inside the cache so a "not public" answer is never cached — the video may go public tomorrow. */
@@ -148,6 +188,7 @@ export async function fetchYouTubeVideoInfo(videoId: string): Promise<YouTubeVid
 export interface MatchDeps {
   videoInfo?: (videoId: string) => Promise<YouTubeVideoInfo | null>
   tedYouTubeCode?: (slug: string) => Promise<string | null>
+  speakerTalks?: (speakerSlug: string) => Promise<string[]>
 }
 
 /**
@@ -161,6 +202,7 @@ export interface MatchDeps {
 export async function findTedTalkForYouTube(videoId: string, deps: MatchDeps = {}): Promise<YouTubeTedMatch> {
   const videoInfo = deps.videoInfo ?? fetchYouTubeVideoInfo
   const tedYouTubeCode = deps.tedYouTubeCode ?? fetchTedYouTubeCode
+  const speakerTalks = deps.speakerTalks ?? fetchTedSpeakerTalkSlugs
 
   const info = await videoInfo(videoId)
   if (!info) return { status: 'unavailable' }
@@ -170,15 +212,25 @@ export async function findTedTalkForYouTube(videoId: string, deps: MatchDeps = {
   // Not a TED upload: no ted.com page will list it, so do not spend TED requests finding out.
   if (kind === 'other') return notFound
 
-  for (const slug of slugCandidates(info.title)) {
-    let code: string | null
+  const isThisVideo = async (slug: string): Promise<boolean> => {
     try {
-      code = await tedYouTubeCode(slug)
+      return (await tedYouTubeCode(slug)) === videoId
     } catch (error) {
-      if (error instanceof AppError && error.code === ERROR_CODES.VIDEO_UNAVAILABLE) continue
+      if (error instanceof AppError && error.code === ERROR_CODES.VIDEO_UNAVAILABLE) return false
       throw error
     }
-    if (code === videoId) return { status: 'found', slug }
+  }
+
+  const guesses = slugCandidates(info.title)
+  for (const slug of guesses) {
+    if (await isThisVideo(slug)) return { status: 'found', slug }
+  }
+
+  const speakers = speakerSlugs(parseYouTubeTitle(info.title)?.speaker ?? '')
+  for (const speaker of speakers) {
+    for (const slug of rankSpeakerTalks(await speakerTalks(speaker), guesses, speakers)) {
+      if (await isThisVideo(slug)) return { status: 'found', slug }
+    }
   }
 
   return notFound

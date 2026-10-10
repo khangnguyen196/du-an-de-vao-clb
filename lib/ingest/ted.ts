@@ -484,6 +484,46 @@ export async function fetchTedYouTubeCode(slug: string): Promise<string | null> 
   return external?.service === 'YouTube' && external.code ? external.code : null
 }
 
+const TALK_LINK = /\/talks\/([a-z0-9_]+)/g
+
+async function fetchTedSpeakerTalksLive(speakerSlug: string): Promise<string[]> {
+  const html = await withTedSlot(async () => {
+    const signal = AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+    let response: Response
+    try {
+      response = await fetch(`${TED_ORIGIN}/speakers/${speakerSlug}`, { headers: BROWSER_HEADERS, signal, cache: 'no-store' })
+    } catch (cause) {
+      throw new AppError(ERROR_CODES.UPSTREAM_FAILED, 'Could not reach TED', { cause })
+    }
+    // Not every speaker has a page under their plain name; that is an answer, not a failure.
+    if (response.status === 404) return null
+    if (response.status === 429 || response.status === 403) {
+      throw new AppError(ERROR_CODES.UPSTREAM_BLOCKED, `TED refused the request (${response.status})`)
+    }
+    if (!response.ok) throw new AppError(ERROR_CODES.UPSTREAM_FAILED, `TED returned ${response.status}`)
+    try {
+      return await response.text()
+    } catch (cause) {
+      throw new AppError(ERROR_CODES.UPSTREAM_FAILED, 'TED stopped sending the page', { cause })
+    }
+  })
+  if (html === null) return []
+  return [...new Set([...html.matchAll(TALK_LINK)].map((match) => match[1]!))]
+}
+
+/**
+ * Talk slugs linked from a speaker's page on ted.com (`/speakers/<name>`,
+ * allowed by TED's robots.txt), or an empty list when TED has no page under
+ * that name. The page links related talks too — callers verify each one.
+ */
+export function fetchTedSpeakerTalkSlugs(speakerSlug: string): Promise<string[]> {
+  if (!SLUG.test(speakerSlug)) return Promise.resolve([])
+  if (!process.env.NEXT_RUNTIME) return fetchTedSpeakerTalksLive(speakerSlug)
+  return unstable_cache(() => fetchTedSpeakerTalksLive(speakerSlug), ['ted-speaker-talks', speakerSlug], {
+    revalidate: PAGE_CACHE_SECONDS,
+  })()
+}
+
 export interface TedTalkInfo {
   slug: string
   title: string
