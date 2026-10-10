@@ -122,8 +122,9 @@ export function WatchView({
       slug: transcript.source.externalId,
       title: transcript.source.title,
       speaker: transcript.source.author ?? null,
+      image: transcript.source.thumbnailUrl ?? null,
     })
-  }, [transcript.source.externalId, transcript.source.title, transcript.source.author])
+  }, [transcript.source.externalId, transcript.source.title, transcript.source.author, transcript.source.thumbnailUrl])
 
   /*
    * Last in line: TED's human translation, then the agent's file and Claude via

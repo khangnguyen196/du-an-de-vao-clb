@@ -3,10 +3,12 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { useId, useMemo, useState, useTransition } from 'react'
+import { useId, useMemo, useRef, useState, useTransition } from 'react'
 import { checkTalk } from '@/app/actions/check-talk'
+import { talkThumbnails } from '@/app/actions/talk-thumbnails'
+import { FEATURED_TALKS } from '@/lib/featured-talks'
 import { resolveSource } from '@/lib/ingest/resolve'
-import { readRecentTalks, type RecentTalk } from '@/lib/recent-talks'
+import { addRecentImages, readRecentTalks, type RecentTalk } from '@/lib/recent-talks'
 import { buildSuggestions, type TalkSuggestion } from '@/lib/talk-suggestions'
 import { cn } from '@/lib/utils'
 
@@ -15,6 +17,9 @@ const SAMPLE = {
   url: 'https://www.ted.com/talks/brene_brown_the_power_of_vulnerability',
   label: 'Brené Brown, TED 2010',
 }
+
+/** Samples already carry their 16:9 photo; only other talks need a lookup. */
+const FEATURED_SLUGS = new Set(FEATURED_TALKS.map((talk) => talk.slug))
 
 /**
  * The link box. Focusing it offers talks known to open — ones this browser
@@ -42,6 +47,26 @@ export function UrlForm({ size = 'lg', align = 'start' }: { size?: 'lg' | 'md'; 
   const suggestions = useMemo(() => buildSuggestions(value, recent), [value, recent])
   const showList = open && suggestions.length > 0
   const busy = checking || navigating
+
+  /**
+   * Talks remembered before photos were kept have none. Ask the server once
+   * per page for those, store what comes back, and show it — the list renders
+   * straight away with placeholders and the photos replace them.
+   */
+  const askedForImages = useRef(false)
+  const fillMissingImages = (stored: readonly RecentTalk[]) => {
+    if (askedForImages.current) return
+    const missing = stored.filter((talk) => !talk.image && !FEATURED_SLUGS.has(talk.slug)).map((talk) => talk.slug)
+    if (missing.length === 0) return
+    askedForImages.current = true
+    void talkThumbnails({ slugs: missing })
+      .then((images) => {
+        if (Object.keys(images).length > 0) setRecent(addRecentImages(images))
+      })
+      .catch(() => {
+        /* placeholders stay; nothing else depends on the photos */
+      })
+  }
 
   const openTalk = (suggestion: TalkSuggestion) => {
     setOpen(false)
@@ -142,8 +167,10 @@ export function UrlForm({ size = 'lg', align = 'start' }: { size?: 'lg' | 'md'; 
             aria-invalid={error !== null}
             aria-describedby={error ? errorId : undefined}
             onFocus={() => {
-              setRecent(readRecentTalks())
+              const stored = readRecentTalks()
+              setRecent(stored)
               setOpen(true)
+              fillMissingImages(stored)
             }}
             onBlur={() => setOpen(false)}
             onChange={(event) => {

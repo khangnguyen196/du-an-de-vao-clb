@@ -52,7 +52,14 @@ export function buildSuggestions(
   for (const talk of recent) {
     if (seen.has(talk.slug)) continue
     seen.add(talk.slug)
-    all.push({ slug: talk.slug, title: talk.title, speaker: talk.speaker, image: images.get(talk.slug) ?? null, kind: 'recent' })
+    all.push({
+      slug: talk.slug,
+      title: talk.title,
+      speaker: talk.speaker,
+      // A sample's 16:9 photo first; otherwise the photo saved with the talk.
+      image: images.get(talk.slug) ?? talk.image ?? null,
+      kind: 'recent',
+    })
   }
   for (const talk of featured) {
     if (seen.has(talk.slug)) continue

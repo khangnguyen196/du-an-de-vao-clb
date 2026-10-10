@@ -17,10 +17,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'i.ytimg.com' },
       { protocol: 'https', hostname: 'img.youtube.com' },
-      // TED's talk photos for the sample-talk thumbnails (lib/featured-talks.ts).
-      // The originals are 2880×1620 and up to 1.8 MB; next/image serves them
-      // resized to the card.
-      { protocol: 'https', hostname: 'pi.tedcdn.com', pathname: '/r/talkstar-photos.s3.amazonaws.com/uploads/**' },
+      // TED's talk photos for the sample-talk thumbnails (lib/featured-talks.ts)
+      // and the link box suggestions. The originals are 2880×1620 and up to
+      // 1.8 MB; next/image serves them resized. Older talks live under
+      // /r/talkstar-photos…, new ones under /r/talkstar-assets…; keep in step
+      // with lib/ted-images.ts.
+      { protocol: 'https', hostname: 'pi.tedcdn.com', pathname: '/r/**' },
       { protocol: 'https', hostname: 'pe.tedcdn.com', pathname: '/images/ted/**' },
     ],
   },

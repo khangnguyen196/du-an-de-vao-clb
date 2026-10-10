@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { isTedImageUrl } from '@/lib/ted-images'
 
 /**
  * Talks this browser has opened successfully, newest first — offered again as
@@ -14,6 +15,11 @@ const RecentTalkSchema = z.strictObject({
   slug: z.string().regex(/^[a-z0-9_]+$/i).max(200),
   title: z.string().min(1).max(300),
   speaker: z.string().max(200).nullable(),
+  /**
+   * TED's photo of the talk. Optional because entries saved before photos were
+   * kept have none; the link box fills those in once (`talkThumbnails`).
+   */
+  image: z.string().refine(isTedImageUrl).nullable().optional(),
   openedAt: z.iso.datetime(),
 })
 
@@ -32,12 +38,26 @@ export function readRecentTalks(): RecentTalk[] {
   }
 }
 
-export function rememberTalk(talk: Omit<RecentTalk, 'openedAt'>, now = new Date()): void {
+function write(talks: readonly RecentTalk[]): void {
   try {
-    const rest = readRecentTalks().filter((entry) => entry.slug !== talk.slug)
-    const next = [{ ...talk, openedAt: now.toISOString() }, ...rest].slice(0, MAX)
-    window.localStorage.setItem(KEY, JSON.stringify(next))
+    window.localStorage.setItem(KEY, JSON.stringify(talks.slice(0, MAX)))
   } catch {
     /* storage blocked — suggestions just won't include it */
   }
+}
+
+export function rememberTalk(talk: Omit<RecentTalk, 'openedAt'>, now = new Date()): void {
+  const image = talk.image && isTedImageUrl(talk.image) ? talk.image : null
+  const rest = readRecentTalks().filter((entry) => entry.slug !== talk.slug)
+  write([{ ...talk, image, openedAt: now.toISOString() }, ...rest])
+}
+
+/** Adds photos to stored entries that lack one, keeping order and dates. */
+export function addRecentImages(images: Readonly<Record<string, string>>): RecentTalk[] {
+  const updated = readRecentTalks().map((talk) => {
+    const image = images[talk.slug]
+    return !talk.image && image && isTedImageUrl(image) ? { ...talk, image } : talk
+  })
+  write(updated)
+  return updated
 }

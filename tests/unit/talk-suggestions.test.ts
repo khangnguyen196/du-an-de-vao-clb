@@ -43,6 +43,12 @@ describe('buildSuggestions', () => {
     expect(list.map((s) => s.slug)).toEqual(['tim_urban_inside_the_mind_of_a_master_procrastinator'])
   })
 
+  it('shows the photo saved with a talk that is not a sample', () => {
+    const image = 'https://pi.tedcdn.com/r/talkstar-assets.s3.amazonaws.com/production/talks/x/Blake-1350x675.jpg'
+    const [first] = buildSuggestions('', [{ ...recent[0]!, image }], FEATURED_TALKS)
+    expect(first?.image).toBe(image)
+  })
+
   it('caps the list', () => {
     expect(buildSuggestions('', recent, FEATURED_TALKS, 3)).toHaveLength(3)
   })

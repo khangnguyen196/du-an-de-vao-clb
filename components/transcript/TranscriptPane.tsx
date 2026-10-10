@@ -166,7 +166,7 @@ export function TranscriptPane({
             {cues.map((cue) => {
               const translation = showTranslation ? cue.translation : undefined
               return (
-                <li key={cue.idx} className="flex w-full gap-3 border-l-2 border-transparent px-3 py-3 sm:gap-4">
+                <li key={cue.idx} className="flex w-full gap-3 border-l-4 border-transparent px-3 py-3 sm:gap-4">
                   <span className="w-11 shrink-0 pt-0.5 font-mono text-xs text-faint tabular-nums sm:w-12 sm:text-sm">
                     {formatTimestamp(cue.startMs)}
                   </span>
@@ -228,19 +228,31 @@ export function TranscriptPane({
                   : {})}
                 aria-current={isActive ? 'true' : undefined}
                 className={cn(
-                  'flex w-full gap-3 rounded-lg border-l-2 px-3 py-3 text-left sm:gap-4',
-                  isActive ? 'border-accent bg-raised' : 'border-transparent',
-                  isFocusedMatch ? 'bg-accent-soft' : '',
+                  // Every row keeps the same 4px left border (transparent when
+                  // idle), so lighting one up never shifts its text sideways.
+                  'flex w-full gap-3 rounded-lg border-l-4 px-3 py-3 text-left sm:gap-4',
+                  // The playing line: tinted, ruled and lifted — readable at a
+                  // glance in both themes. Deliberately not animated (ui-ux rule:
+                  // no motion in the transcript pane).
+                  isActive
+                    ? 'border-accent bg-accent-soft shadow-sm ring-1 ring-accent-line'
+                    : isFocusedMatch
+                      ? 'border-transparent bg-raised ring-1 ring-accent-line'
+                      : 'border-transparent',
                   onSeek && !isActive && !isFocusedMatch ? 'hover:bg-raised/60' : '',
                 )}
               >
                 <span
                   className={cn(
                     'w-11 shrink-0 pt-0.5 font-mono text-xs tabular-nums sm:w-12 sm:text-sm',
-                    isFocusedMatch || isActive ? 'text-accent-ink' : isMatch ? 'text-accent' : 'text-faint',
+                    isActive ? 'text-canvas' : isFocusedMatch ? 'text-accent-ink' : isMatch ? 'text-accent' : 'text-faint',
                   )}
                 >
-                  {formatTimestamp(cue.startMs)}
+                  {isActive ? (
+                    <span className="-mx-1 rounded bg-accent px-1 py-0.5 font-semibold">{formatTimestamp(cue.startMs)}</span>
+                  ) : (
+                    formatTimestamp(cue.startMs)
+                  )}
                 </span>
                 {/* Spans, not p/div: a row can be a <button>, which only holds phrasing content. */}
                 <span className="block min-w-0 flex-1">
@@ -257,7 +269,10 @@ export function TranscriptPane({
                     <span
                       lang={translationLang}
                       {...nosnippet}
-                      className="mt-1 block border-l-2 border-line pl-2.5 text-sm leading-relaxed text-muted text-pretty"
+                      className={cn(
+                        'mt-1 block border-l-2 pl-2.5 text-sm leading-relaxed text-pretty',
+                        isActive ? 'border-accent-line text-ink/80' : 'border-line text-muted',
+                      )}
                     >
                       {highlight(translation, query)}
                     </span>

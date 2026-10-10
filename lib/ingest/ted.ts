@@ -493,6 +493,8 @@ export interface TedTalkInfo {
   streamUrl: string | null
   /** TED's page already carries a transcript. */
   hasTranscript: boolean
+  /** TED's own photo of the talk, when the page has one. */
+  thumbnailUrl?: string
 }
 
 /**
@@ -513,5 +515,6 @@ export async function fetchTedTalkInfo(slug: string): Promise<TedTalkInfo> {
     lang: props.transcriptData?.translation?.language?.internalLanguageCode ?? video?.internalLanguageCode ?? 'en',
     streamUrl: tedStreamUrl(video?.hlsUrl),
     hasTranscript: toTimedText(props.transcriptData?.translation).length > 0,
+    ...(video?.videoPlayerData?.thumb ? { thumbnailUrl: video.videoPlayerData.thumb } : {}),
   }
 }
