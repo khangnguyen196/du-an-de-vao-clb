@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { resolveSource } from '@/lib/ingest/resolve'
 import { parseTedSlug } from '@/lib/ingest/ted'
-import { isYouTubeLink } from '@/lib/ingest/youtube-url'
+import { isYouTubeLink, parseYouTubeVideoId } from '@/lib/ingest/youtube-url'
 
 describe('parseTedSlug', () => {
   it.each([
@@ -54,6 +54,38 @@ describe('isYouTubeLink', () => {
   )
 })
 
+describe('parseYouTubeVideoId', () => {
+  it.each([
+    'https://www.youtube.com/watch?v=iCvmsMzlF7o',
+    'https://www.youtube.com/watch?v=iCvmsMzlF7o&t=42s',
+    'https://www.youtube.com/watch?feature=share&v=iCvmsMzlF7o',
+    'https://youtu.be/iCvmsMzlF7o',
+    'https://youtu.be/iCvmsMzlF7o?si=abc',
+    'https://m.youtube.com/watch?v=iCvmsMzlF7o',
+    'https://www.youtube.com/shorts/iCvmsMzlF7o',
+    'https://www.youtube.com/embed/iCvmsMzlF7o',
+    'https://www.youtube.com/live/iCvmsMzlF7o',
+    'https://www.youtube-nocookie.com/embed/iCvmsMzlF7o',
+    'youtube.com/watch?v=iCvmsMzlF7o',
+    'iCvmsMzlF7o',
+  ])('reads the id from %s', (input) => {
+    expect(parseYouTubeVideoId(input)).toBe('iCvmsMzlF7o')
+  })
+
+  it.each([
+    '',
+    'https://www.youtube.com/',
+    'https://www.youtube.com/@TED',
+    'https://www.youtube.com/playlist?list=PL123',
+    'https://www.youtube.com/watch?v=short',
+    'https://vimeo.com/123456',
+    // An 11-letter lowercase word is a title search, not an id.
+    'procrastina',
+  ])('finds no video in %s', (input) => {
+    expect(parseYouTubeVideoId(input)).toBeNull()
+  })
+})
+
 describe('resolveSource', () => {
   it('routes a TED link to the talk page', () => {
     expect(resolveSource('https://www.ted.com/talks/some_talk')).toEqual({
@@ -64,8 +96,18 @@ describe('resolveSource', () => {
     })
   })
 
-  it('flags a YouTube link separately so the user gets the real reason', () => {
-    expect(resolveSource('https://youtu.be/dQw4w9WgXcQ')).toEqual({ status: 'youtube-blocked' })
+  it('sends a YouTube video to the lookup page that finds it on ted.com', () => {
+    expect(resolveSource('https://youtu.be/dQw4w9WgXcQ')).toEqual({
+      status: 'ok',
+      kind: 'youtube',
+      id: 'dQw4w9WgXcQ',
+      href: '/watch/youtube/dQw4w9WgXcQ',
+    })
+  })
+
+  it('flags a YouTube link that names no video separately so the user gets the real reason', () => {
+    expect(resolveSource('https://www.youtube.com/@TED')).toEqual({ status: 'youtube-blocked' })
+    expect(resolveSource('https://www.youtube.com/playlist?list=PL123')).toEqual({ status: 'youtube-blocked' })
   })
 
   it('returns unknown for anything else', () => {

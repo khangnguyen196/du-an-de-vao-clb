@@ -73,6 +73,13 @@ export function UrlForm({ size = 'lg', align = 'start' }: { size?: 'lg' | 'md'; 
     setError(null)
     setOpen(false)
 
+    // Only a TED talk can be checked ahead; any other kind of link has its
+    // own page that explains what happens with it.
+    if (source.kind !== 'ted') {
+      startTransition(() => router.push(source.href))
+      return
+    }
+
     setChecking(true)
     try {
       const result = await checkTalk({ slug: source.id })

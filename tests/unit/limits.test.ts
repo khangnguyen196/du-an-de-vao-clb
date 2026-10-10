@@ -118,7 +118,11 @@ describe('trimPageProps', () => {
         title: 'T',
         duration: 60,
         hlsUrl: 'https://hls.ted.com/project_masters/1/manifest.m3u8',
-        videoPlayerData: { thumb: 'https://pi.tedcdn.com/x.jpg', id: '1' },
+        videoPlayerData: {
+          thumb: 'https://pi.tedcdn.com/x.jpg',
+          id: '1',
+          external: { __typename: 'VideoPlayerExternal', service: 'YouTube', code: 'iCvmsMzlF7o', duration: 1250 },
+        },
         relatedVideos: new Array(50).fill({ title: 'other talk' }),
       },
       transcriptData: { translation: { paragraphs: [{ cues: [{ time: 0, text: 'Hi.' }] }] } },
@@ -131,7 +135,10 @@ describe('trimPageProps', () => {
         title: 'T',
         duration: 60,
         hlsUrl: 'https://hls.ted.com/project_masters/1/manifest.m3u8',
-        videoPlayerData: { thumb: 'https://pi.tedcdn.com/x.jpg' },
+        videoPlayerData: {
+          thumb: 'https://pi.tedcdn.com/x.jpg',
+          external: { service: 'YouTube', code: 'iCvmsMzlF7o' },
+        },
       },
       transcriptData: { translation: { paragraphs: [{ cues: [{ time: 0, text: 'Hi.' }] }] } },
     })

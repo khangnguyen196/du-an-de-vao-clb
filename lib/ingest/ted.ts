@@ -139,7 +139,12 @@ export interface TedPageProps {
     duration?: number
     canonicalUrl?: string
     internalLanguageCode?: string
-    videoPlayerData?: { thumb?: string; id?: string }
+    videoPlayerData?: {
+      thumb?: string
+      id?: string
+      /** Where TED also publishes the talk, e.g. `{ service: 'YouTube', code: 'iCvmsMzlF7o' }`. */
+      external?: { service?: string; code?: string } | null
+    }
   }
   transcriptData?: {
     translation?: TedTranslation | null
@@ -236,6 +241,13 @@ async function fetchTedPagePropsLive(slug: string, lang?: string): Promise<TedPa
 export function trimPageProps(props: TedPageProps): TedPageProps {
   const video = props.videoData
   const thumb = video?.videoPlayerData?.thumb
+  const external = video?.videoPlayerData?.external
+  const playerData = {
+    ...(typeof thumb === 'string' ? { thumb } : {}),
+    ...(typeof external?.service === 'string' && typeof external.code === 'string'
+      ? { external: { service: external.service, code: external.code } }
+      : {}),
+  }
   return {
     ...(video
       ? {
@@ -246,7 +258,7 @@ export function trimPageProps(props: TedPageProps): TedPageProps {
             ...(video.duration ? { duration: video.duration } : {}),
             ...(video.canonicalUrl ? { canonicalUrl: video.canonicalUrl } : {}),
             ...(video.internalLanguageCode ? { internalLanguageCode: video.internalLanguageCode } : {}),
-            ...(typeof thumb === 'string' ? { videoPlayerData: { thumb } } : {}),
+            ...(Object.keys(playerData).length > 0 ? { videoPlayerData: playerData } : {}),
           },
         }
       : {}),
@@ -260,7 +272,9 @@ export function trimPageProps(props: TedPageProps): TedPageProps {
  */
 function fetchTedPageProps(slug: string, lang?: string): Promise<TedPageProps> {
   if (!process.env.NEXT_RUNTIME) return fetchTedPagePropsLive(slug, lang)
-  return unstable_cache(() => fetchTedPagePropsLive(slug, lang), ['ted-page-props', slug, lang ?? ''], {
+  // Versioned: entries cached before `external` was kept lack it, and would
+  // make every YouTube link look unmatched until they expired.
+  return unstable_cache(() => fetchTedPagePropsLive(slug, lang), ['ted-page-props-v2', slug, lang ?? ''], {
     revalidate: PAGE_CACHE_SECONDS,
     tags: [`ted:${slug}`],
   })()
@@ -454,6 +468,18 @@ function languageEndonym(code: string): string {
   } catch {
     return code
   }
+}
+
+/**
+ * The YouTube video id TED lists for this talk, or null when TED lists none.
+ * Throws like any TED fetch — VIDEO_UNAVAILABLE for a slug that does not exist.
+ */
+export async function fetchTedYouTubeCode(slug: string): Promise<string | null> {
+  if (!SLUG.test(slug)) {
+    throw new AppError(ERROR_CODES.INVALID_URL, `"${slug}" is not a TED talk slug`)
+  }
+  const external = (await fetchTedPageProps(slug)).videoData?.videoPlayerData?.external
+  return external?.service === 'YouTube' && external.code ? external.code : null
 }
 
 export interface TedTalkInfo {

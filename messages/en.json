@@ -25,7 +25,7 @@
     "submitting": "Opening…",
     "hint": "Free · No sign-up",
     "invalidUrl": "We do not recognise that link or title. Paste a ted.com/talks/… link or pick a suggestion.",
-    "youtubeBlocked": "YouTube now blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
+    "youtubeBlocked": "This YouTube link does not point to a single video. Paste the link of a TED talk video.",
     "sampleLabel": "No link handy? Try:",
     "checking": "Checking…",
     "noTranscript": "This link has no transcript yet, so it cannot be built. TED usually adds transcripts a few days after release. Pick another one!",
@@ -233,11 +233,33 @@
     "transcriptCreditWhisper": "Talk by TED, licensed CC BY-NC-ND 4.0.",
     "creditLink": "Original talk on TED"
   },
+  "youtube": {
+    "metaTitle": "Find the TED talk for a YouTube link",
+    "videoLine": "Video: “{title}” · channel {channel}",
+    "searchTed": "Search for this talk on TED",
+    "openYouTube": "Open on YouTube",
+    "unavailable": {
+      "title": "This video is not public",
+      "body": "YouTube does not show this video publicly: it is private, removed, or the link is wrong. Without its title there is no way to find the matching TED talk."
+    },
+    "ted": {
+      "title": "Could not find this talk on ted.com",
+      "body": "Transcripts come from the talk's page on ted.com, but this YouTube title matches no talk there. Search TED for it, then paste the ted.com link below."
+    },
+    "tedx": {
+      "title": "This TEDx talk is not on ted.com",
+      "body": "Most TEDx talks are published only on YouTube, and YouTube does not let servers read captions, so there is no transcript to get. If the talk is on ted.com, search for it and paste the ted.com link below."
+    },
+    "other": {
+      "title": "This is not a TED video",
+      "body": "Only TED talks are supported for now. A YouTube link opens only when the video is a TED talk that is also on ted.com."
+    }
+  },
   "errors": {
     "title": "Could not build a transcript",
     "INVALID_URL": "That link is not valid. Check it and paste a TED URL.",
     "UNSUPPORTED_SOURCE": "That source is not supported yet. TED only for now.",
-    "YOUTUBE_BLOCKED": "YouTube blocks servers from downloading captions, so YouTube links are not supported. Please use a TED link.",
+    "YOUTUBE_BLOCKED": "This YouTube link does not point to a single video, or no matching TED talk was found.",
     "VIDEO_UNAVAILABLE": "This talk does not exist or has been removed.",
     "VIDEO_PRIVATE": "This talk is not public, so its transcript cannot be read.",
     "AGE_RESTRICTED": "This content is restricted, so its transcript cannot be read.",

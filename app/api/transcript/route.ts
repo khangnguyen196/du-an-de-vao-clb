@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { ERROR_CODES, toAppError } from '@/lib/errors'
 import { resolveSource } from '@/lib/ingest/resolve'
 import { getTranslatedTranscript } from '@/lib/ingest/transcript-cache'
+import { findTedTalkForYouTube } from '@/lib/ingest/youtube-ted'
 import { assertCanOpenTalk, RateLimitedError } from '@/lib/limits/guard'
 
 const BodySchema = z.object({
@@ -52,7 +53,7 @@ export async function POST(request: Request) {
       {
         error: {
           code: ERROR_CODES.YOUTUBE_BLOCKED,
-          message: 'YouTube no longer serves caption payloads to servers',
+          message: 'This YouTube link names no single video',
         },
       },
       { status: 422 },
@@ -67,10 +68,25 @@ export async function POST(request: Request) {
   }
 
   try {
-    await assertCanOpenTalk(source.id)
+    await assertCanOpenTalk(source.kind === 'youtube' ? `youtube:${source.id}` : source.id)
+
+    let slug = source.id
+    if (source.kind === 'youtube') {
+      // YouTube captions stay out of reach; the same talk on ted.com does not.
+      const match = await findTedTalkForYouTube(source.id)
+      if (match.status !== 'found') {
+        return NextResponse.json(
+          { error: { code: ERROR_CODES.YOUTUBE_BLOCKED, message: 'No TED talk was found for this YouTube video' } },
+          { status: 422 },
+        )
+      }
+      slug = match.slug
+      await assertCanOpenTalk(slug)
+    }
+
     // One JSON document, one chance to be complete: unlike a page, this caller
     // cannot be sent the translation afterwards, so it waits for it.
-    const transcript = await getTranslatedTranscript(source.id, parsed.data.lang)
+    const transcript = await getTranslatedTranscript(slug, parsed.data.lang)
     return NextResponse.json({ status: 'ready', transcript })
   } catch (error) {
     const appError = toAppError(error)

@@ -25,7 +25,7 @@
     "submitting": "Đang mở…",
     "hint": "Miễn phí · Không cần đăng ký",
     "invalidUrl": "Chưa nhận ra link hoặc tên bài này. Dán link dạng ted.com/talks/… hoặc chọn một bài trong gợi ý.",
-    "youtubeBlocked": "YouTube đã chặn máy chủ tải phụ đề, nên hiện chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
+    "youtubeBlocked": "Link YouTube này không trỏ tới một video cụ thể. Dán link của một video bài nói TED.",
     "sampleLabel": "Chưa có link? Thử:",
     "checking": "Đang kiểm tra…",
     "noTranscript": "Link này chưa có transcript nên chưa tạo được. TED thường đăng transcript sau vài ngày. Chọn một bài khác nhaaaa",
@@ -233,11 +233,33 @@
     "transcriptCreditWhisper": "Bài nói của TED, giấy phép CC BY-NC-ND 4.0.",
     "creditLink": "Bài gốc trên TED"
   },
+  "youtube": {
+    "metaTitle": "Tìm bài TED từ link YouTube",
+    "videoLine": "Video: “{title}” · kênh {channel}",
+    "searchTed": "Tìm bài này trên TED",
+    "openYouTube": "Mở trên YouTube",
+    "unavailable": {
+      "title": "Video này không xem được công khai",
+      "body": "YouTube không cho xem video này công khai: video riêng tư, đã bị gỡ, hoặc link bị sai. Không có tiêu đề thì không tìm được bài TED tương ứng."
+    },
+    "ted": {
+      "title": "Chưa tìm thấy bài này trên ted.com",
+      "body": "Transcript lấy từ trang của bài trên ted.com, nhưng tiêu đề trên YouTube không khớp với bài nào. Tìm bài trên TED, rồi dán link ted.com vào ô bên dưới."
+    },
+    "tedx": {
+      "title": "Bài TEDx này chưa có trên ted.com",
+      "body": "Phần lớn bài TEDx chỉ đăng trên YouTube, và YouTube không cho máy chủ đọc phụ đề, nên chưa lấy được transcript. Nếu bài có trên ted.com, tìm rồi dán link ted.com vào ô bên dưới."
+    },
+    "other": {
+      "title": "Đây không phải video TED",
+      "body": "Hiện mới hỗ trợ bài nói TED. Link YouTube chỉ mở được khi video là một bài TED có trên ted.com."
+    }
+  },
   "errors": {
     "title": "Chưa tạo được transcript",
     "INVALID_URL": "Link không hợp lệ. Kiểm tra lại rồi dán một link TED.",
     "UNSUPPORTED_SOURCE": "Nguồn này chưa được hỗ trợ. Hiện tại mới có TED.",
-    "YOUTUBE_BLOCKED": "YouTube đã chặn máy chủ tải phụ đề, nên chưa hỗ trợ link YouTube. Dùng link TED giúp tôi.",
+    "YOUTUBE_BLOCKED": "Link YouTube này không trỏ tới một video cụ thể, hoặc không tìm thấy bài TED tương ứng.",
     "VIDEO_UNAVAILABLE": "Bài nói này không tồn tại hoặc đã bị gỡ.",
     "VIDEO_PRIVATE": "Bài nói này không công khai nên không đọc được transcript.",
     "AGE_RESTRICTED": "Nội dung này bị giới hạn nên không đọc được transcript.",
