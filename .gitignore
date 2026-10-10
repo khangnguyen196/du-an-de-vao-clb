@@ -28,3 +28,8 @@ godly.design_website_griffin_.png
 # Machine translations of TED transcripts (CC BY-NC-ND: no derivatives are
 # published). They ship with deployments made from this machine, not via git.
 data/translations/
+# Whisper transcripts of TED talks: same rule, same route to production.
+data/transcripts/
+
+# Local Whisper install (Python env + model, hundreds of MB)
+.tools/

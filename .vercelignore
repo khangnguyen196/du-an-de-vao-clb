@@ -15,6 +15,8 @@ build
 *.tsbuildinfo
 
 # Local tooling and notes, not part of the app
+# (.tools holds the Whisper Python env and model — hundreds of MB)
+.tools
 .claude
 Claude outputs
 tests

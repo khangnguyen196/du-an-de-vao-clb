@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: TedPageProps): Promise<Metada
     // Metadata fetches the transcript too, so it must pass the same limit —
     // otherwise it would be a way to make the server call TED unchecked.
     await assertCanOpenTalk(slug)
-    const { source } = await getTranscript(slug)
+    const { source, origin } = await getTranscript(slug)
     const t = await getTranslations('watch')
     const description = t('metaDescription', {
       title: source.title,
@@ -55,6 +55,10 @@ export async function generateMetadata({ params }: TedPageProps): Promise<Metada
     return {
       title: source.title,
       description,
+      // A Whisper transcript is shown to readers but not offered to search
+      // engines: it is machine output that may misquote the speaker, and it
+      // would be indexed under the speaker's name and TED's.
+      ...(origin === 'whisper' ? { robots: { index: false, follow: true } } : {}),
       // `?lang=` variants are the same talk; search engines should see one page.
       alternates: { canonical: `/watch/ted/${slug}` },
       openGraph: { type: 'article', title: source.title, description, url: `/watch/ted/${slug}` },

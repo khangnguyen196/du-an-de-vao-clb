@@ -36,6 +36,15 @@ registerHooks({
 
     const resolved = basePath ? resolveTsPath(basePath) : null
     if (resolved) return nextResolve(pathToFileURL(resolved).href, context)
-    return nextResolve(specifier, context)
+    try {
+      return nextResolve(specifier, context)
+    } catch (error) {
+      // Packages without an `exports` map (Next.js is one) expose subpaths such
+      // as `next/cache` only as files; the bundler adds the `.js`, Node does not.
+      if (error?.code === 'ERR_MODULE_NOT_FOUND' && /^(@[^/]+\/)?[^./][^/]*\/.+/.test(specifier) && !specifier.endsWith('.js')) {
+        return nextResolve(`${specifier}.js`, context)
+      }
+      throw error
+    }
   },
 })

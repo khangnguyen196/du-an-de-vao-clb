@@ -69,6 +69,7 @@ function toMarkdown(transcript: Transcript, bilingual: boolean): string {
     '',
     source.author ? `**${source.author}**` : null,
     `[${source.url}](${source.url})`,
+    transcript.origin === 'whisper' ? '_Transcript: machine transcription (Whisper)_' : null,
     credit,
     '',
     '---',

@@ -15,6 +15,7 @@ import { applyTranslations } from '@/lib/ai/translate-core'
 import { useBrowserTranslation, type BrowserTranslationState } from '@/lib/ai/use-browser-translation'
 import { searchCues } from '@/lib/cues'
 import { tedEmbedUrl } from '@/lib/ingest/ted'
+import { rememberTalk } from '@/lib/recent-talks'
 import type { DeferredTranslation } from '@/lib/ingest/transcript-cache'
 import { formatDuration } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -114,6 +115,16 @@ export function WatchView({
 
   const machine = useMachineTranslation(machineTranslation)
 
+  // This page only renders for a talk that opened, so it is one the link box
+  // can suggest again with confidence.
+  useEffect(() => {
+    rememberTalk({
+      slug: transcript.source.externalId,
+      title: transcript.source.title,
+      speaker: transcript.source.author ?? null,
+    })
+  }, [transcript.source.externalId, transcript.source.title, transcript.source.author])
+
   /*
    * Last in line: TED's human translation, then the agent's file and Claude via
    * the server, and only when all of those came back empty does the reader's
@@ -207,6 +218,8 @@ export function WatchView({
     setFocusedMatch(0)
   }, [])
 
+  /** Whisper's words, not TED's — said plainly, since some words will be wrong. */
+  const machineTranscript = transcript.origin === 'whisper'
   const coveragePercent = translation ? Math.round(translation.coverage * 100) : 0
   const browserTranslating = browser.state.status === 'translating'
 
@@ -230,6 +243,7 @@ export function WatchView({
             {[
               source.author,
               transcript.langLabel,
+              machineTranscript ? t('machineTranscript') : null,
               source.durationMs ? formatDuration(source.durationMs) : null,
               t('cueCount', { count: cues.length }),
             ]
@@ -381,7 +395,9 @@ export function WatchView({
 
             <p className="text-xs leading-snug text-faint">{synced ? t('syncHint') : t('noSync')}</p>
             <p className="text-xs leading-snug text-faint">
-              {t('transcriptCredit')}{' '}
+              {/* One paragraph with the credit: on a 640px-tall phone every line here is a transcript line fewer. */}
+              {machineTranscript ? <span className="text-muted">{t('machineTranscriptHint')} </span> : null}
+              {machineTranscript ? t('transcriptCreditWhisper') : t('transcriptCredit')}{' '}
               <a
                 href={source.url}
                 target="_blank"

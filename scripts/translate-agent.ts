@@ -20,6 +20,7 @@ import { buildTranslationUserPrompt, TRANSLATION_SYSTEM_PROMPT } from '@/lib/ai/
 import { buildTranslationBatches, mergeTranslations, TranslationWireSchema, type TranslationWire } from '@/lib/ai/translate-core'
 import { fetchTedTranscript, parseTedSlug } from '@/lib/ingest/ted'
 import { needsMachineTranslation } from '@/lib/ingest/transcript-cache'
+import { readStoredTranscript } from '@/lib/ingest/transcript-store'
 import {
   fingerprintCues,
   readStoredTranslation,
@@ -74,8 +75,13 @@ function workDir(slug: string, sourceLang: string): string {
   return join(WORK_ROOT, `${slug}.${sourceLang}`)
 }
 
+/** The same transcript the app shows — TED's, or the Whisper file when TED has none. */
+function fetchTranscript(slug: string, lang: string | undefined) {
+  return fetchTedTranscript(slug, { ...(lang ? { lang } : {}), storedTranscript: (video) => readStoredTranscript(video) })
+}
+
 async function prepare(slug: string, lang: string | undefined, force: boolean) {
-  const transcript = await fetchTedTranscript(slug, lang ? { lang } : undefined)
+  const transcript = await fetchTranscript(slug, lang)
 
   if (!needsMachineTranslation(transcript)) {
     console.log(
@@ -140,7 +146,7 @@ function readAnswer(dir: string, position: number): { output: TranslationWire | 
 }
 
 async function save(slug: string, lang: string | undefined) {
-  const transcript = await fetchTedTranscript(slug, lang ? { lang } : undefined)
+  const transcript = await fetchTranscript(slug, lang)
   const dir = workDir(slug, transcript.lang)
   const jobPath = join(dir, 'job.json')
   if (!existsSync(jobPath)) fail(`no prepared job in ${dir} — run translate:prepare first`)

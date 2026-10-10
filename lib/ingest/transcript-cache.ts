@@ -3,6 +3,7 @@ import { describeErrorCause, hasAnthropicKey, isAuthError, isBillingError } from
 import { translateCues } from '@/lib/ai/translate'
 import { applyTranslations } from '@/lib/ai/translate-core'
 import { fetchTedTranscript } from '@/lib/ingest/ted'
+import { readStoredTranscript } from '@/lib/ingest/transcript-store'
 import { readStoredTranslation } from '@/lib/ingest/translation-store'
 import type { Transcript, TranscriptTranslation } from '@/types/transcript'
 
@@ -214,7 +215,10 @@ export const getTranscript = cache(async (slug: string, lang?: string): Promise<
   const cached = readTranscript(key)
   if (cached) return cached
 
-  const transcript = await fetchTedTranscript(slug, lang ? { lang } : undefined)
+  const transcript = await fetchTedTranscript(slug, {
+    ...(lang ? { lang } : {}),
+    storedTranscript: (video) => readStoredTranscript(video),
+  })
   transcripts.set(key, { transcript, storedAt: Date.now() })
   return transcript
 })

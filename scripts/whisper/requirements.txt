@@ -1,0 +1,12 @@
+# Local speech-to-text for `npm run transcribe`. Installed into .tools/whisper/venv
+# by `npm run transcribe:setup`; never part of the web app or its deployment.
+# faster-whisper: MIT. The model it downloads (Systran/faster-whisper-small.en): MIT.
+faster-whisper==1.1.1
+# faster-whisper 1.1.1 imports `requests` and passes 0.x-only arguments to
+# huggingface_hub; the 1.x+ line dropped both, and the install then fails on the
+# first `import faster_whisper` (No module named 'requests').
+huggingface_hub<1.0
+# It also opens audio with av.open(..., metadata_errors=...), an argument later
+# PyAV releases removed (TypeError on 19.x). 14.2.0 still takes it and ships a
+# prebuilt wheel for Python 3.12 on Windows (14.4 has none and fails to build).
+av==14.2.0
