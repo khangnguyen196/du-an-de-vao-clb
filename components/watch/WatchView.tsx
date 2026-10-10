@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { PlayerMode } from '@/components/player/TedPlayer'
-import { usePlaybackSync } from '@/components/player/usePlaybackSync'
+import { usePlaybackSync, type PlaybackMedia } from '@/components/player/usePlaybackSync'
 import { SearchBar } from '@/components/transcript/SearchBar'
 import { TranscriptPane } from '@/components/transcript/TranscriptPane'
 import { WordBookLink } from '@/components/study/WordBookLink'
@@ -110,7 +110,7 @@ export function WatchView({
   const t = useTranslations('watch')
   const tv = useTranslations('vocab')
 
-  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const videoRef = useRef<PlaybackMedia | null>(null)
   const [playerMode, setPlayerMode] = useState<PlayerMode>('checking')
 
   const machine = useMachineTranslation(machineTranslation)
@@ -163,7 +163,7 @@ export function WatchView({
 
   const { cues, source, translation } = effective
 
-  const synced = playerMode === 'stream'
+  const synced = playerMode === 'stream' || playerMode === 'youtube'
   const { activeIndex, seek, currentMs } = usePlaybackSync(videoRef, cues, synced)
   const seekToCue = useCallback(
     (index: number) => {
@@ -277,6 +277,7 @@ export function WatchView({
           <div className="aspect-video w-full overflow-hidden bg-black lg:rounded-xl">
             <TedPlayer
               {...(source.streamUrl ? { streamUrl: source.streamUrl } : {})}
+              {...(source.youtubeId ? { youtubeId: source.youtubeId } : {})}
               {...(source.thumbnailUrl ? { poster: source.thumbnailUrl } : {})}
               embedUrl={tedEmbedUrl(source.externalId)}
               title={source.title}
@@ -394,7 +395,10 @@ export function WatchView({
               </p>
             ) : null}
 
-            <p className="text-xs leading-snug text-faint">{synced ? t('syncHint') : t('noSync')}</p>
+            <p className="text-xs leading-snug text-faint">
+              {synced ? t('syncHint') : t('noSync')}
+              {playerMode === 'youtube' ? ` ${t('viaYouTube')}` : null}
+            </p>
             <p className="text-xs leading-snug text-faint">
               {/* One paragraph with the credit: on a 640px-tall phone every line here is a transcript line fewer. */}
               {machineTranscript ? <span className="text-muted">{t('machineTranscriptHint')} </span> : null}

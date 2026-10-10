@@ -225,6 +225,7 @@
     "browserTranslating": "Chrome is translating on your device… {done}/{total} lines",
     "browserFailed": "Not translated yet (Chrome could not translate it either) — transcript only.",
     "syncHint": "The line being spoken is highlighted as the video plays. Tap a line to play from there.",
+    "viaYouTube": "TED has no video of its own for this talk, so it plays from YouTube and may show YouTube ads.",
     "backToPlaying": "Back to the current line",
     "ogNote": "Bilingual transcript · Vocabulary practice",
     "metaDescription": "English transcript and Vietnamese translation of the TED talk “{title}”{byline}. Follows the video, searchable, with vocabulary practice.",

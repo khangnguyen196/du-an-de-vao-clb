@@ -5,14 +5,26 @@ import { findActiveCueIndex } from '@/lib/cues'
 import type { Cue } from '@/types/transcript'
 
 /**
- * The cue under the playhead, read from the <video> itself.
+ * What the sync reads: a <video>, or anything shaped like one — YouTube's
+ * player wrapped by `YouTubeMedia`.
+ */
+export interface PlaybackMedia {
+  currentTime: number
+  readonly paused: boolean
+  play(): Promise<void>
+  addEventListener(type: string, listener: () => void): void
+  removeEventListener(type: string, listener: () => void): void
+}
+
+/**
+ * The cue under the playhead, read from the player itself.
  *
  * requestAnimationFrame while playing and a binary search per frame, so a talk
  * with thousands of cues costs nothing measurable; state changes only when the
  * line changes. While paused, seeks and metadata loads still update it.
  */
 export function usePlaybackSync(
-  videoRef: RefObject<HTMLVideoElement | null>,
+  videoRef: RefObject<PlaybackMedia | null>,
   cues: readonly Cue[],
   enabled: boolean,
 ): { activeIndex: number; seek: (startMs: number) => void; currentMs: () => number } {

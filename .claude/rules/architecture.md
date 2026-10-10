@@ -17,7 +17,8 @@ app/
 components/
   ui/                    # shadcn — chỉ sửa qua CLI, không tự chế
   transcript/            # TranscriptPane, Cue, SearchBar
-  player/                # TedPlayer (HLS của TED qua hls.js, lùi về embed), usePlaybackSync
+  player/                # TedPlayer (HLS của TED qua hls.js → YouTube IFrame API cho bài
+                         # không có luồng → embed), usePlaybackSync, youtube-media.ts
   study/                 # FlashcardDeck, FlipCard, RatingBar, ReviewSession, NoteEditor
 lib/
   db/schema.ts           # Drizzle schema — nguồn sự thật của DB

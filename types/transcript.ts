@@ -83,6 +83,13 @@ export interface TranscriptSource {
    * page then falls back to the official embed, which reports no position.
    */
   streamUrl?: string
+  /**
+   * The YouTube video TED itself plays for this talk. Some talks — TEDx mostly —
+   * have no TED stream at all, and TED's embed then wraps this video. Played
+   * through YouTube's IFrame API instead, it reports its position, so the
+   * transcript can still follow along.
+   */
+  youtubeId?: string
 }
 
 export interface Transcript {

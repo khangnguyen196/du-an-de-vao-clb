@@ -400,6 +400,8 @@ export async function fetchTedTranscript(slug: string, options?: FetchTedOptions
   const durationMs = video?.duration ? video.duration * 1000 : undefined
   const fragments = toTimedText(props.transcriptData?.translation, durationMs)
   const streamUrl = tedStreamUrl(video?.hlsUrl)
+  const external = video?.videoPlayerData?.external
+  const youtubeId = external?.service === 'YouTube' && external.code ? external.code : undefined
   const language = props.transcriptData?.translation?.language
 
   let segments: RawSegment[] = fragments
@@ -451,6 +453,7 @@ export async function fetchTedTranscript(slug: string, options?: FetchTedOptions
       ...(durationMs ? { durationMs } : {}),
       ...(video?.videoPlayerData?.thumb ? { thumbnailUrl: video.videoPlayerData.thumb } : {}),
       ...(streamUrl ? { streamUrl } : {}),
+      ...(youtubeId ? { youtubeId } : {}),
     },
     lang,
     langLabel,

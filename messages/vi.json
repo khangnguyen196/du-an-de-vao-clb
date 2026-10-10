@@ -225,6 +225,7 @@
     "browserTranslating": "Chrome đang dịch trên máy bạn… {done}/{total} câu",
     "browserFailed": "Chưa dịch được bài này (Chrome cũng không dịch được) — hiện chỉ có transcript.",
     "syncHint": "Câu đang nói được tô sáng theo video. Bấm vào một câu để phát từ đó.",
+    "viaYouTube": "Bài này TED không có video riêng nên phát qua YouTube, có thể có quảng cáo của YouTube.",
     "backToPlaying": "Về câu đang phát",
     "ogNote": "Transcript song ngữ · Học từ vựng",
     "metaDescription": "Transcript tiếng Anh và bản dịch tiếng Việt của bài nói “{title}”{byline} trên TED. Tô sáng theo video, tìm trong lời nói, học từ vựng.",
