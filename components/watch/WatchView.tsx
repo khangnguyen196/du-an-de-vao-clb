@@ -164,7 +164,7 @@ export function WatchView({
   const { cues, source, translation } = effective
 
   const synced = playerMode === 'stream'
-  const { activeIndex, seek } = usePlaybackSync(videoRef, cues, synced)
+  const { activeIndex, seek, currentMs } = usePlaybackSync(videoRef, cues, synced)
   const seekToCue = useCallback(
     (index: number) => {
       const cue = cues[index]
@@ -419,7 +419,7 @@ export function WatchView({
             {...(translation ? { translationLang: translation.lang } : {})}
             activeIndex={activeIndex}
             translationIsMachine={translation?.origin === 'model'}
-            {...(synced ? { onSeek: seekToCue } : {})}
+            {...(synced ? { onSeek: seekToCue, currentMs } : {})}
           />
         </section>
       </div>

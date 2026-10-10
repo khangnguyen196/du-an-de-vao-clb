@@ -15,7 +15,8 @@
     "translate:prepare": "node --import ./scripts/register-ts-alias.mjs scripts/translate-agent.ts prepare",
     "translate:save": "node --import ./scripts/register-ts-alias.mjs scripts/translate-agent.ts save",
     "transcribe": "node --import ./scripts/register-ts-alias.mjs scripts/transcribe.ts",
-    "transcribe:setup": "node scripts/whisper-setup.mjs"
+    "transcribe:setup": "node scripts/whisper-setup.mjs",
+    "align": "node --import ./scripts/register-ts-alias.mjs scripts/align-words.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^4.0.46",

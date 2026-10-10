@@ -15,28 +15,13 @@
  * it reports the word error rate and how far apart Whisper and TED put the
  * start of each line — the measurement behind trusting these files at all.
  */
-import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { pickAudioPlaylist, parseMediaPlaylist, isTedMediaUrl } from '@/lib/ingest/hls-audio'
 import { normalizeCues } from '@/lib/ingest/normalize'
 import { fetchTedTalkInfo, fetchTedTranscript, parseTedSlug } from '@/lib/ingest/ted'
 import { readStoredTranscript, streamPathOf, writeStoredTranscript } from '@/lib/ingest/transcript-store'
-import { measureAgainstReference, percentile, WhisperOutputSchema, wordsToSegments } from '@/lib/ingest/whisper'
-
-const MODEL = 'small.en'
-const ROOT = process.cwd()
-const WORK_ROOT = join(ROOT, '.cache', 'transcribe')
-const MODELS_DIR = join(ROOT, '.tools', 'whisper', 'models')
-const VENV = join(ROOT, '.tools', 'whisper', 'venv')
-const VENV_PYTHON = process.platform === 'win32' ? join(VENV, 'Scripts', 'python.exe') : join(VENV, 'bin', 'python')
-const WORKER = join(ROOT, 'scripts', 'whisper', 'transcribe.py')
-
-const REQUEST_TIMEOUT_MS = 30_000
-const REQUEST_ATTEMPTS = 3
-const DOWNLOAD_CONCURRENCY = 4
-/** The audio should run as long as TED says the talk does; more apart than this is worth a warning. */
-const LENGTH_WARNING_MS = 5_000
+import { measureAgainstReference, percentile, wordsToSegments } from '@/lib/ingest/whisper'
+import { hearTalk, MODEL, whisperInstalled, WORK_ROOT } from './lib/whisper-run'
 
 function fail(message: string): never {
   console.error(`✗ ${message}`)
@@ -54,65 +39,6 @@ function parseArgs(argv: readonly string[]) {
     keepAudio: rest.includes('--keep-audio'),
     compare: rest.includes('--compare'),
   }
-}
-
-async function fetchOnce(url: string): Promise<Response> {
-  if (!isTedMediaUrl(url)) throw new Error(`refusing to fetch outside TED's hosts: ${url}`)
-  const response = await fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
-  if (!response.ok) throw new Error(`TED returned ${String(response.status)} for ${url}`)
-  return response
-}
-
-async function withRetries<T>(work: () => Promise<T>): Promise<T> {
-  for (let attempt = 1; ; attempt += 1) {
-    try {
-      return await work()
-    } catch (error) {
-      if (attempt >= REQUEST_ATTEMPTS) throw error
-    }
-  }
-}
-
-const fetchText = (url: string) => withRetries(async () => (await fetchOnce(url)).text())
-const fetchBytes = (url: string) => withRetries(async () => new Uint8Array(await (await fetchOnce(url)).arrayBuffer()))
-
-/**
- * Downloads the audio rendition's segments in order into one file. MPEG-TS is
- * built to be cut and joined, so the segments concatenated byte for byte are a
- * valid stream the decoder reads from start to end.
- */
-async function downloadAudio(streamUrl: string, dest: string): Promise<{ durationMs: number; bytes: number }> {
-  const playlistUrl = pickAudioPlaylist(await fetchText(streamUrl), streamUrl)
-  const playlist = parseMediaPlaylist(await fetchText(playlistUrl), playlistUrl)
-
-  const parts: Uint8Array[] = new Array<Uint8Array>(playlist.segmentUrls.length)
-  let next = 0
-  let done = 0
-  const worker = async () => {
-    while (next < playlist.segmentUrls.length) {
-      const index = next
-      next += 1
-      parts[index] = await fetchBytes(playlist.segmentUrls[index]!)
-      done += 1
-      if (done % 25 === 0 || done === parts.length) process.stdout.write(`  ${String(done)}/${String(parts.length)} audio segments\r`)
-    }
-  }
-  await Promise.all(Array.from({ length: DOWNLOAD_CONCURRENCY }, worker))
-  process.stdout.write('\n')
-
-  const bytes = parts.reduce((sum, part) => sum + part.byteLength, 0)
-  writeFileSync(dest, Buffer.concat(parts))
-  return { durationMs: playlist.durationMs, bytes }
-}
-
-function runWhisper(audioPath: string, outPath: string) {
-  const result = spawnSync(VENV_PYTHON, [WORKER, audioPath, outPath, '--model', MODEL, '--models-dir', MODELS_DIR], {
-    stdio: 'inherit',
-    env: { ...process.env, PYTHONIOENCODING: 'utf-8', HF_HUB_DISABLE_SYMLINKS_WARNING: '1' },
-  })
-  // Thrown, not `fail()`: process.exit inside the caller's try would skip the
-  // `finally` that deletes the audio.
-  if (result.status !== 0) throw new Error(`Whisper exited with ${String(result.status ?? result.signal)}`)
 }
 
 function seconds(ms: number): string {
@@ -136,30 +62,10 @@ async function main() {
     console.log(`✓ Already transcribed: data/transcripts/ted/${slug}.${talk.lang}.json — pass --force to redo it.`)
     return
   }
-  if (!existsSync(VENV_PYTHON)) fail('Whisper is not set up yet — run: npm run transcribe:setup')
+  if (!whisperInstalled()) fail('Whisper is not set up yet — run: npm run transcribe:setup')
 
   const dir = join(WORK_ROOT, slug)
-  mkdirSync(dir, { recursive: true })
-  const audioPath = join(dir, 'audio.ts')
-  const outPath = join(dir, 'whisper.json')
-
-  try {
-    console.log(`↓ Fetching the audio of "${talk.title}"…`)
-    const audio = await downloadAudio(talk.streamUrl, audioPath)
-    console.log(`  ${(audio.bytes / 1024 / 1024).toFixed(1)} MB, ${(audio.durationMs / 60_000).toFixed(1)} min`)
-    if (talk.durationMs !== undefined && Math.abs(audio.durationMs - talk.durationMs) > LENGTH_WARNING_MS) {
-      console.warn(`  ! the audio runs ${seconds(audio.durationMs - talk.durationMs)} against TED's stated length`)
-    }
-
-    console.log(`♪ Transcribing with Whisper ${MODEL} on the CPU…`)
-    runWhisper(audioPath, outPath)
-  } finally {
-    // The talk's audio is TED's; it is only ever held for the length of this run.
-    if (!keepAudio) rmSync(audioPath, { force: true })
-  }
-
-  const output = WhisperOutputSchema.parse(JSON.parse(readFileSync(outPath, 'utf8')))
-  if (output.words.length === 0) fail('Whisper heard no speech in this audio')
+  const output = await hearTalk({ ...talk, streamUrl: talk.streamUrl }, { keepAudio })
   const segments = wordsToSegments(output.words)
 
   if (compare) {

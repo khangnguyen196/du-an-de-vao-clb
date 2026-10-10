@@ -5,6 +5,7 @@ import { applyTranslations } from '@/lib/ai/translate-core'
 import { fetchTedTranscript } from '@/lib/ingest/ted'
 import { readStoredTranscript } from '@/lib/ingest/transcript-store'
 import { readStoredTranslation } from '@/lib/ingest/translation-store'
+import { applyStoredWordTimings } from '@/lib/ingest/word-timing-store'
 import type { Transcript, TranscriptTranslation } from '@/types/transcript'
 
 const TTL_MS = 30 * 60 * 1000
@@ -213,15 +214,25 @@ export const getTranscript = cache(async (slug: string, lang?: string): Promise<
   const key = cacheKey(slug, lang)
 
   const cached = readTranscript(key)
-  if (cached) return cached
+  if (cached) return withWordTimings(slug, cached)
 
   const transcript = await fetchTedTranscript(slug, {
     ...(lang ? { lang } : {}),
     storedTranscript: (video) => readStoredTranscript(video),
   })
   transcripts.set(key, { transcript, storedAt: Date.now() })
-  return transcript
+  return withWordTimings(slug, transcript)
 })
+
+/**
+ * Word-by-word marks from `npm run align`, when there is a file for exactly
+ * these cues. Read on every call, like stored translations, so a file saved
+ * while the server runs shows up at once.
+ */
+function withWordTimings(slug: string, transcript: Transcript): Transcript {
+  const cues = applyStoredWordTimings(slug, transcript.lang, transcript.cues)
+  return cues ? { ...transcript, cues } : transcript
+}
 
 /**
  * The whole transcript with the machine translation already merged in.

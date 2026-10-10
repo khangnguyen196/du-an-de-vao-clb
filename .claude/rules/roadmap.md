@@ -1,6 +1,7 @@
 # Roadmap
 
 - [x] M1 — Ingest TED + transcript pane + search + export · Player sync cho TED qua luồng HLS + hls.js: tô sáng câu đang nói, bấm câu để tua, auto-scroll tắt khi tự cuộn (xong; đã kiểm trong trình duyệt của app, **chưa kiểm trên Chrome thật có tiếng**)
+- [~] Chữ sáng theo lời nói — theo cụm (mốc TED) cho mọi bài (xong) · theo từng từ qua `npm run align` (xong cho Matt Cutts, Blake Mycoskie, Molly Graham). Còn: chạy `align` cho 7 bài mẫu còn lại (~50 phút CPU)
 - [x] Link YouTube của bài TED → mở bài trên ted.com (oEmbed + đối chiếu mã YouTube trên trang TED; xem `ingest.md`). Bài TEDx chỉ có trên YouTube vẫn chưa lấy được transcript
 - [ ] M2 — Auth, lưu source, Notebook, search toàn văn (Postgres FTS)
 - [ ] M3 — AI summary + chat có trích dẫn timestamp

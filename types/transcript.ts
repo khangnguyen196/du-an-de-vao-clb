@@ -3,6 +3,18 @@ export type TranscriptOrigin = 'captions' | 'whisper' | 'manual'
 export type TranscriptStatus = 'pending' | 'processing' | 'ready' | 'failed'
 
 /**
+ * A point inside a cue where speech reaches a given character: `offset` into
+ * `Cue.text`, and when that part starts being spoken. Either the start of each
+ * caption fragment TED timed (a phrase of ~7 words) or, once a talk has been
+ * aligned with Whisper, the start of every word. Always measured, never
+ * interpolated across a whole line.
+ */
+export interface CueMark {
+  offset: number
+  startMs: number
+}
+
+/**
  * Smallest unit of a transcript. Every study feature (summary, flashcard,
  * quiz, chat) must reference a cue so the content stays traceable.
  * All times are milliseconds — never seconds.
@@ -13,6 +25,13 @@ export interface Cue {
   endMs: number
   text: string
   speaker?: string
+  /**
+   * Ascending by offset and time; lets the line light up as it is spoken.
+   * Absent when the cue is a single timed piece — then the line is the unit.
+   */
+  marks?: CueMark[]
+  /** What `marks` resolve: TED's caption fragments, or single words. */
+  markUnit?: 'phrase' | 'word'
   /**
    * Translation of this line, when one exists. Absent rather than empty when
    * nothing was aligned here, so the UI never renders a blank line as if it

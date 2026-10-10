@@ -4,14 +4,14 @@ import type { NextConfig } from 'next'
 const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
-  // Translations written by the translator agent and Whisper transcripts are
-  // read from disk at request time (`lib/ingest/translation-store.ts`,
-  // `transcript-store.ts`); file tracing cannot see a path built at runtime, so
+  // Translations written by the translator agent, Whisper transcripts and word
+  // timings are read from disk at request time (`lib/ingest/translation-store.ts`,
+  // `transcript-store.ts`, `word-timing-store.ts`); file tracing cannot see a path built at runtime, so
   // ship the folders with the routes that read them. Keys match as "contains",
   // so the talk key also covers its vocab page and share image.
   outputFileTracingIncludes: {
-    '/watch/ted/[slug]': ['./data/translations/**/*', './data/transcripts/**/*'],
-    '/api/transcript': ['./data/translations/**/*', './data/transcripts/**/*'],
+    '/watch/ted/[slug]': ['./data/translations/**/*', './data/transcripts/**/*', './data/word-timings/**/*'],
+    '/api/transcript': ['./data/translations/**/*', './data/transcripts/**/*', './data/word-timings/**/*'],
   },
   images: {
     remotePatterns: [

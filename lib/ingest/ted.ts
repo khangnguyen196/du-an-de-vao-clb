@@ -420,7 +420,9 @@ export async function fetchTedTranscript(slug: string, options?: FetchTedOptions
     langLabel = languageEndonym(lang)
   }
 
-  let cues = normalizeCues(segments)
+  // Keep where each TED fragment starts inside the merged sentence, so the
+  // line can light up phrase by phrase on measured times.
+  let cues = normalizeCues(segments, { marks: true })
   let translation: TranscriptTranslation | undefined
 
   // Translating a transcript into its own language would just print it twice.

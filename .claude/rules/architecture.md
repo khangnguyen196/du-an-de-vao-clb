@@ -25,7 +25,8 @@ lib/
   ingest/                # ted.ts, align.ts, resolve.ts, normalize.ts, upload.ts (M5),
                          # youtube-url.ts + youtube-ted.ts (link YouTube → bài ted.com),
                          # hls-audio.ts + whisper.ts + transcript-store.ts (Whisper
-                         # chạy local cho bài TED chưa có transcript)
+                         # chạy local cho bài TED chưa có transcript),
+                         # word-align.ts + word-timing-store.ts (mốc từng từ)
   ai/                    # prompts.ts, vocabulary.ts, summarize.ts, chat.ts
   study/                 # candidates.ts, wordlists.ts, inflect.ts, vocab-set.ts,
                          # srs.ts (engine thuần, now truyền vào), srs-store.ts

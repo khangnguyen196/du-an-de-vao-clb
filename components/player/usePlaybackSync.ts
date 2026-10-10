@@ -15,7 +15,7 @@ export function usePlaybackSync(
   videoRef: RefObject<HTMLVideoElement | null>,
   cues: readonly Cue[],
   enabled: boolean,
-): { activeIndex: number; seek: (startMs: number) => void } {
+): { activeIndex: number; seek: (startMs: number) => void; currentMs: () => number } {
   const [activeIndex, setActiveIndex] = useState(-1)
 
   useEffect(() => {
@@ -80,5 +80,12 @@ export function usePlaybackSync(
     [videoRef],
   )
 
-  return { activeIndex, seek }
+  /**
+   * The playhead right now, read on demand. A getter rather than state: the
+   * word inside the playing line changes several times a second, and only the
+   * component drawing that one line should re-render for it.
+   */
+  const currentMs = useCallback(() => (videoRef.current?.currentTime ?? 0) * 1000, [videoRef])
+
+  return { activeIndex, seek, currentMs }
 }

@@ -3,6 +3,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
+import { SpokenText } from '@/components/transcript/SpokenText'
 import { formatTimestamp } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import type { Cue } from '@/types/transcript'
@@ -26,6 +27,11 @@ interface TranscriptPaneProps {
    * CC BY-NC-ND, and a machine translation is a derivative we do not publish.
    */
   translationIsMachine?: boolean
+  /**
+   * Reads the playhead in ms. Present only while the player reports its
+   * position; lets the playing line light up word by word (`SpokenText`).
+   */
+  currentMs?: () => number
 }
 
 /** Splits a cue so the searched term can be marked without dangerous HTML. */
@@ -75,6 +81,7 @@ export function TranscriptPane({
   activeIndex = -1,
   onSeek,
   translationIsMachine = false,
+  currentMs,
 }: TranscriptPaneProps) {
   const t = useTranslations('watch')
   const scrollRef = useRef<HTMLDivElement | null>(null)
@@ -263,7 +270,17 @@ export function TranscriptPane({
                     )}
                   >
                     {cue.speaker ? <span className="mr-1.5 font-semibold">{cue.speaker}:</span> : null}
-                    {highlight(cue.text, query)}
+                    {/* The playing line follows the voice; while searching, the hits take over. */}
+                    {isActive && currentMs && cue.marks && cue.marks.length > 1 && query.trim().length === 0 ? (
+                      <SpokenText
+                        text={cue.text}
+                        marks={cue.marks}
+                        unit={cue.markUnit ?? 'phrase'}
+                        currentMs={currentMs}
+                      />
+                    ) : (
+                      highlight(cue.text, query)
+                    )}
                   </span>
                   {translation ? (
                     <span

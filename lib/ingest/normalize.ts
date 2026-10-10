@@ -17,6 +17,12 @@ export interface NormalizeOptions {
   maxGapMs?: number
   /** Don't end a cue below this length — avoids one-word orphans. */
   minChars?: number
+  /**
+   * Keep where each merged fragment starts inside the cue (`Cue.marks`), so
+   * the line can light up phrase by phrase. Off by default: only the TED
+   * ingest wants it.
+   */
+  marks?: boolean
 }
 
 const DEFAULTS: Required<NormalizeOptions> = {
@@ -24,6 +30,7 @@ const DEFAULTS: Required<NormalizeOptions> = {
   maxDurationMs: 12_000,
   maxGapMs: 2_000,
   minChars: 40,
+  marks: false,
 }
 
 /**
@@ -84,6 +91,7 @@ export function normalizeCues(segments: readonly RawSegment[], options?: Normali
   const cues: Cue[] = []
 
   let buffer: string[] = []
+  let bufferStarts: number[] = []
   let startMs = 0
   let endMs = 0
   let speaker: string | undefined
@@ -93,9 +101,26 @@ export function normalizeCues(segments: readonly RawSegment[], options?: Normali
     if (buffer.length === 0) return
     const text = buffer.join(' ').replace(/\s+/g, ' ').trim()
     if (text.length > 0) {
-      cues.push({ idx: cues.length, startMs, endMs, text, ...(speaker ? { speaker } : {}) })
+      // Each piece is already cleaned (single spaces, trimmed), so joining
+      // with one space puts piece k at the sum of the earlier lengths + 1.
+      const marks =
+        config.marks && buffer.length > 1
+          ? buffer.map((_, k) => ({
+              offset: buffer.slice(0, k).reduce((sum, piece) => sum + piece.length + 1, 0),
+              startMs: bufferStarts[k] ?? startMs,
+            }))
+          : undefined
+      cues.push({
+        idx: cues.length,
+        startMs,
+        endMs,
+        text,
+        ...(speaker ? { speaker } : {}),
+        ...(marks ? { marks, markUnit: 'phrase' as const } : {}),
+      })
     }
     buffer = []
+    bufferStarts = []
     length = 0
     speaker = undefined
   }
@@ -116,6 +141,7 @@ export function normalizeCues(segments: readonly RawSegment[], options?: Normali
     }
 
     buffer.push(text)
+    bufferStarts.push(segment.startMs)
     endMs = Math.max(segment.endMs, segment.startMs)
     length += text.length + 1
 

@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { RawSegment } from '@/lib/ingest/normalize'
+import { alignSequences } from '@/lib/ingest/word-align'
 import type { Cue } from '@/types/transcript'
 
 /**
@@ -115,8 +116,6 @@ export interface WhisperAccuracy {
  * error rate from an edit-distance alignment, and — through the same alignment
  * — how far apart the two put the start of each line. That second number is
  * what the reader feels: it is how early or late a line lights up.
- *
- * Quadratic in words; a long talk (~3 000 words a side) is a few million cells.
  */
 export function measureAgainstReference(reference: readonly Cue[], words: readonly WhisperWord[]): WhisperAccuracy {
   const refTokens: { token: string; cue: number; firstOfCue: boolean }[] = []
@@ -132,47 +131,20 @@ export function measureAgainstReference(reference: readonly Cue[], words: readon
   }
 
   const n = refTokens.length
-  const m = hypTokens.length
-  const width = m + 1
-  const cost = new Uint32Array((n + 1) * width)
-  for (let j = 0; j <= m; j += 1) cost[j] = j
-  for (let i = 1; i <= n; i += 1) {
-    cost[i * width] = i
-    const ref = refTokens[i - 1]!.token
-    for (let j = 1; j <= m; j += 1) {
-      const substitute = cost[(i - 1) * width + j - 1]! + (ref === hypTokens[j - 1]!.token ? 0 : 1)
-      const remove = cost[(i - 1) * width + j]! + 1
-      const insert = cost[i * width + j - 1]! + 1
-      cost[i * width + j] = Math.min(substitute, remove, insert)
-    }
-  }
+  const { distance, matchOf } = alignSequences(
+    refTokens.map((ref) => ref.token),
+    hypTokens.map((hyp) => hyp.token),
+  )
 
-  // Walk back to find which reference words were matched exactly.
   const startOffsetsMs: number[] = []
-  let i = n
-  let j = m
-  while (i > 0 && j > 0) {
-    const here = cost[i * width + j]!
-    const ref = refTokens[i - 1]!
-    const hyp = hypTokens[j - 1]!
-    const same = ref.token === hyp.token
-    if (here === cost[(i - 1) * width + j - 1]! + (same ? 0 : 1)) {
-      if (same && ref.firstOfCue) {
-        const cue = reference[ref.cue]
-        if (cue) startOffsetsMs.push(hyp.startMs - cue.startMs)
-      }
-      i -= 1
-      j -= 1
-    } else if (here === cost[(i - 1) * width + j]! + 1) {
-      i -= 1
-    } else {
-      j -= 1
-    }
-  }
-  startOffsetsMs.reverse()
+  refTokens.forEach((ref, index) => {
+    const at = matchOf[index]!
+    const cue = reference[ref.cue]
+    if (ref.firstOfCue && at >= 0 && cue) startOffsetsMs.push(hypTokens[at]!.startMs - cue.startMs)
+  })
 
   return {
-    wordErrorRate: n === 0 ? 0 : cost[n * width + m]! / n,
+    wordErrorRate: n === 0 ? 0 : distance / n,
     referenceWords: n,
     measuredCues: startOffsetsMs.length,
     totalCues: reference.length,

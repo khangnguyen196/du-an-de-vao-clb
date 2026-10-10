@@ -7,6 +7,7 @@ Không đi vòng qua rào đó. Đừng viết lại fetcher YouTube trừ khi t
 **Link YouTube của bài TED → bài trên ted.com (đã có, 2026-10-11).** Không đọc gì của YouTube ngoài tiêu đề + tên kênh qua **oEmbed** (endpoint công khai, chính thức). Không phụ đề, không media, không watch page.
 - `lib/ingest/youtube-url.ts`: nhận diện + lấy mã video (`parseYouTubeVideoId`). Mã trần 11 ký tự toàn chữ thường bị coi là tìm tên bài, không phải mã.
 - `lib/ingest/youtube-ted.ts`: từ tiêu đề đoán tối đa 4 slug (`slugCandidates`: "Tên bài | Diễn giả | TED", "Tên bài | Diễn giả", "Diễn giả: Tên bài", hai diễn giả thử cả hai thứ tự), rồi **chỉ nhận slug nào mà trang TED ghi đúng mã YouTube đó** (`videoData.videoPlayerData.external.code`, giữ lại trong `trimPageProps`; khoá cache `ted-page-props-v2`). Đoán sai chỉ tốn một request, không bao giờ mở nhầm bài.
+- Đoán trượt hết thì mở **trang diễn giả** `ted.com/speakers/<tên>` (robots.txt cho phép; chỉ cấm `/people`, `/profiles`), đối chiếu tối đa 5 bài, ưu tiên slug bắt đầu bằng slug đã đoán: TED thêm hậu tố ngày khi dùng lại slug (`…_sep_2025`, link YouTube `K_RSZC0s8a4`). Không phải diễn giả nào cũng có trang theo tên (Ari Matusiak, Sal Khan → 404).
 - Kênh ngoài họ TED thì không gọi TED. Slug không tồn tại = trượt, thử slug sau; lỗi TED khác (chặn, quá tải) thì ném lên, không báo "không tìm thấy".
 - Đo 33 bài: oEmbed trả về mọi video công khai (403 = video riêng tư); đoán trúng ~11/14. Trượt khi YouTube đổi hẳn tiêu đề (vd. bài của Ari Matusiak) → trang `/watch/youtube/[id]` báo rõ, có nút "Tìm trên TED" cho người dùng tự bấm. Trang tìm kiếm và `/graphql` của TED bị `robots.txt` cấm — **không** gọi chúng từ server. Sitemap của TED thiếu bài, không có mã YouTube.
 - Bài **TEDx** chỉ có trên YouTube: không lấy được transcript. Không tải audio YouTube để chạy Whisper (vi phạm ToS YouTube + phải vượt rào chống bot).
@@ -24,6 +25,13 @@ Thứ tự thử, dừng ở bước đầu tiên thành công:
 - Lưu `data/transcripts/ted/<slug>.<lang>.json` (`lib/ingest/transcript-store.ts`), gắn đường dẫn luồng + độ dài video: TED thay video thì file bị bỏ qua. App chỉ đọc file khi trang TED **không có** transcript — TED đăng bản chính thức là tự chuyển sang. Truyền vào `fetchTedTranscript` qua `storedTranscript` vì `ted.ts` cũng bị bundle cho trình duyệt, không được import `node:fs`.
 - `origin: 'whisper'`, UI ghi "Transcript máy", trang gắn `noindex`, không lên git (giống bản dịch máy).
 - `--compare` chạy trên bài **đã có** transcript TED để đo tỷ lệ sai từ và độ lệch mốc đầu câu; không lưu gì.
+
+**Chữ sáng theo lời nói (đã có, 2026-10-11)** — `Cue.marks` (offset ký tự trong `text` + `startMs`), `markUnit`:
+- **Theo cụm, mọi bài:** TED đặt mốc khoảng 7 từ/2,6 s một lần. `normalizeCues(..., { marks: true })` (chỉ `ted.ts` bật) giữ chỗ từng mảnh bắt đầu trong câu đã gộp. Mốc thật, không suy ra.
+- **Theo từng từ, bài đã căn chỉnh:** `npm run align -- <slug>` (`scripts/align-words.ts`) chạy Whisper (hoặc dùng lại `.cache/transcribe/<slug>/whisper.json` cùng model), khớp từ Whisper với **chữ của TED** bằng `alignSequences` (`lib/ingest/word-align.ts`), lưu `data/word-timings/ted/<slug>.<lang>.json` — chỉ có số (offset, ms), không chép chữ của TED, nên được lên git. Từ Whisper nghe khác (số viết bằng chữ, tên riêng) lấy mốc nội suy giữa hai từ khớp gần nhất — khoảng vài trăm ms, không bao giờ nội suy cả dòng. Khớp dưới 60% thì không lưu.
+- File gắn `fingerprintCues` như bản dịch: TED sửa transcript → bỏ qua, quay về mốc theo cụm. `getTranscript` đọc file mỗi lần gọi.
+- Đo: Matt Cutts 98,1% từ khớp; Blake 99,7%, Molly 99,9% (transcript vốn là Whisper). Đầu câu lệch trung vị 0 s.
+- Hiển thị: `SpokenText` chỉ gắn cho dòng đang phát, có vòng rAF riêng đọc `currentMs()` từ `usePlaybackSync` — phần còn lại của transcript không re-render. Đổi màu tức thì, không transition (luật không animate trong transcript pane). Đang tìm kiếm thì tô kết quả tìm, không tô theo lời.
 
 Xử lý bất đồng bộ:
 - `POST /api/transcript` trả về ngay `{ transcriptId, status: 'pending' }`.
