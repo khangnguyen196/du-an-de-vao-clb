@@ -24,3 +24,5 @@ playwright-report
 test-results
 *.png
 !public/**/*.png
+# Next.js icon conventions (app/apple-icon.png) are part of the app, not screenshots.
+!app/**/*.png
