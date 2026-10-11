@@ -40,30 +40,40 @@ export default function LandingPage() {
             <div className="hero-glow" />
           </div>
 
-          <Reveal
+          {/*
+            Words on the left, the working demo on the right; stacked on a phone,
+            words first so the link box stays near the top.
+          */}
+          <div
             id="start"
-            className="mx-auto flex w-full max-w-4xl scroll-mt-24 flex-col items-center px-4 pt-14 text-center sm:px-6 sm:pt-20"
+            className="mx-auto grid w-full max-w-6xl scroll-mt-24 gap-12 px-4 pt-14 sm:px-6 sm:pt-20 lg:grid-cols-2 lg:items-center lg:gap-14"
           >
-            <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-xs font-medium text-muted shadow-sm backdrop-blur sm:text-sm">
-              <span className="bg-brand-gradient size-2 rounded-full" aria-hidden />
-              {t('hero.badge')}
-            </p>
+            <Reveal className="flex min-w-0 flex-col items-start">
+              <p className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/80 px-3.5 py-1.5 text-xs font-medium text-muted shadow-sm backdrop-blur sm:text-sm">
+                <span className="bg-brand-gradient size-2 rounded-full" aria-hidden />
+                {t('hero.badge')}
+              </p>
 
-            <h1 className="mt-6 text-[2.5rem] leading-[1.05] font-extrabold tracking-tight text-balance sm:text-6xl lg:text-7xl">
-              {t('hero.headline')}
-              <span className="text-brand-gradient mt-2 block text-[1.75rem] leading-tight font-bold sm:text-4xl lg:text-5xl">
-                {t('hero.headlineAccent')}
-              </span>
-            </h1>
+              <h1 className="mt-6 text-[2.5rem] leading-[1.05] font-extrabold tracking-tight text-balance sm:text-6xl lg:mt-8 lg:text-[3.5rem] xl:text-[4rem]">
+                {t('hero.headline')}
+                <span className="text-brand-gradient mt-3 block text-[1.75rem] leading-tight font-bold sm:text-4xl lg:text-[2.25rem] xl:text-[2.5rem]">
+                  {t('hero.headlineAccent')}
+                </span>
+              </h1>
 
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted text-pretty sm:text-lg">
-              {t('hero.subtitle')}
-            </p>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted text-pretty sm:text-lg lg:mt-7">
+                {t('hero.subtitle')}
+              </p>
 
-            <div className="mt-8 w-full max-w-xl text-left">
-              <UrlForm align="center" />
-            </div>
-          </Reveal>
+              <div className="mt-8 w-full max-w-xl lg:mt-10">
+                <UrlForm />
+              </div>
+            </Reveal>
+
+            <Reveal delayMs={60} className="min-w-0">
+              <TranscriptPreview />
+            </Reveal>
+          </div>
 
           <div className="mt-12 sm:mt-16">
             <FeatureRibbon />
@@ -89,13 +99,6 @@ export default function LandingPage() {
             </ul>
             <p className="mt-6 text-center text-xs text-faint">{t('try.credit')}</p>
           </div>
-        </section>
-
-        {/* Product preview ------------------------------------------------- */}
-        <section className="border-t border-line bg-raised/50">
-          <Reveal className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
-            <TranscriptPreview />
-          </Reveal>
         </section>
 
         {/* No more… -------------------------------------------------------- */}

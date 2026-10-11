@@ -36,7 +36,7 @@
   "preview": {
     "title": "Transcript",
     "nowPlaying": "Now playing",
-    "credit": "From “{title}” — {speaker}; transcript and translation by the TED community, CC BY-NC-ND 4.0.",
+    "credit": "“{title}” — {speaker} · Transcript and translation by the TED community · CC BY-NC-ND 4.0",
     "openTalk": "Open this talk"
   },
   "steps": {

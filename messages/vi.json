@@ -36,7 +36,7 @@
   "preview": {
     "title": "Transcript",
     "nowPlaying": "Đang phát",
-    "credit": "Trích “{title}” — {speaker}, transcript và bản dịch của cộng đồng TED, giấy phép CC BY-NC-ND 4.0.",
+    "credit": "“{title}” — {speaker} · Transcript và bản dịch của cộng đồng TED · CC BY-NC-ND 4.0",
     "openTalk": "Mở bài này"
   },
   "steps": {

@@ -26,16 +26,16 @@ export function TranscriptPreview() {
 
   return (
     <figure className="relative">
-      <FloatingChip className="top-10 -left-10" delay="0s" dot="bg-violet-500">
+      <FloatingChip className="top-16 -left-8" delay="0s" dot="bg-violet-500">
         {ta('chipPlaying', { time: restingTime })}
       </FloatingChip>
-      <FloatingChip className="top-1/3 -right-12" delay="-2s" dot="bg-orange-500">
+      <FloatingChip className="top-[30%] -right-6" delay="-2s" dot="bg-orange-500">
         {ta('chipSaved', { word: 'memorable' })}
       </FloatingChip>
-      <FloatingChip className="bottom-24 -left-14" delay="-4s" dot="bg-fuchsia-500">
+      <FloatingChip className="top-[36%] -left-10" delay="-4s" dot="bg-fuchsia-500">
         {ta('chipDue')}
       </FloatingChip>
-      <FloatingChip className="-right-8 bottom-10" delay="-1s" dot="bg-red-500">
+      <FloatingChip className="top-3 -right-4" delay="-1s" dot="bg-red-500">
         {ta('chipBilingual')}
       </FloatingChip>
 
@@ -51,14 +51,15 @@ export function TranscriptPreview() {
           <span className="ml-3 h-5 flex-1 rounded-full bg-raised sm:max-w-xs" />
         </div>
 
-        <div className="grid gap-3 rounded-[1.25rem] border border-line bg-canvas p-3 sm:p-4 lg:grid-cols-[1.2fr_1fr] lg:gap-5">
+        {/* Player above transcript: the preview sits in half the hero, too narrow for the two side by side. */}
+        <div className="grid gap-3 rounded-[1.25rem] border border-line bg-canvas p-3 sm:p-4">
           {/* Player stand-in */}
           <div className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl bg-black p-3">
             <Image
               src={talk.image}
               alt=""
               fill
-              sizes="(min-width: 1024px) 34rem, 100vw"
+              sizes="(min-width: 1024px) 36rem, 100vw"
               className="object-cover"
             />
             {/* Darkens the photo at top and bottom so the badge and the time stay readable. */}
@@ -90,16 +91,10 @@ export function TranscriptPreview() {
 
           {/* Transcript stand-in */}
           <div className="flex flex-col">
-            <div className="flex items-center justify-between border-b border-line pb-3">
-              <span className="text-sm font-semibold">{t('title')}</span>
-              <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent-ink">
-                {t('nowPlaying')}
-              </span>
-            </div>
-
-            <ul className="mt-1 flex flex-col">
+            {/* No "Transcript" header row: the player's badge already says what is playing, and the hero has no height to spare. */}
+            <ul className="flex flex-col">
               {lines.map((line, index) => (
-                <li key={line.startMs} className="relative flex gap-3 rounded-lg px-2 py-2.5 text-sm leading-relaxed">
+                <li key={line.startMs} className="relative flex gap-3 rounded-lg px-2 py-2 text-[0.8125rem] leading-snug">
                   {/* The moving highlight: background and left bar, faded in turn. */}
                   <span
                     className={cn(
@@ -108,10 +103,10 @@ export function TranscriptPreview() {
                     )}
                     style={{ animationDelay: LINE_DELAYS[index] }}
                   />
-                  <span className="relative shrink-0 font-mono text-xs text-accent-ink">{formatTimestamp(line.startMs)}</span>
+                  <span className="relative shrink-0 pt-px font-mono text-[11px] text-accent-ink">{formatTimestamp(line.startMs)}</span>
                   <span className="relative min-w-0">
                     <span lang="en" className="block text-pretty text-ink">{line.en}</span>
-                    <span className="mt-1 block border-l-2 border-line pl-2 text-xs text-muted text-pretty">
+                    <span className="mt-1 block border-l-2 border-line pl-2 text-xs leading-snug text-muted text-pretty">
                       {line.vi}
                     </span>
                   </span>
@@ -121,11 +116,12 @@ export function TranscriptPreview() {
           </div>
         </div>
       </div>
-      <figcaption className="mt-3 text-center text-xs text-faint text-pretty">
-        {t('credit', { title: talk.title, speaker: talk.speaker })}{' '}
+      {/* Credit and link side by side: the link keeps its 44px touch target without adding a second row. */}
+      <figcaption className="mt-2 flex items-center justify-between gap-3 px-1 text-[11px] leading-snug text-faint">
+        <span className="min-w-0 text-pretty">{t('credit', { title: talk.title, speaker: talk.speaker })}</span>
         <Link
           href={`/watch/ted/${talk.slug}`}
-          className="inline-flex min-h-11 items-center font-medium text-muted underline decoration-line underline-offset-4 hover:text-ink"
+          className="inline-flex min-h-11 shrink-0 items-center font-medium whitespace-nowrap text-muted underline decoration-line underline-offset-4 hover:text-ink"
         >
           {t('openTalk')}
         </Link>
