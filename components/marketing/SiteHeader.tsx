@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { AccountMenu } from '@/components/auth/AccountMenu'
+import { BrandMark } from '@/components/marketing/BrandMark'
 import { WordBookLink } from '@/components/study/WordBookLink'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
@@ -12,12 +13,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 px-3 pt-3 sm:px-4">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-2 rounded-full border border-line/80 bg-surface/80 pr-1.5 pl-2 shadow-[0_8px_30px_-12px_rgb(17_24_39/0.25)] backdrop-blur-md sm:h-16 sm:pr-2 sm:pl-3">
         <Link href="/" className="flex min-h-11 min-w-0 items-center gap-2 rounded-full pr-2 font-semibold tracking-tight">
-          <span
-            aria-hidden
-            className="bg-brand-gradient grid size-8 shrink-0 place-items-center rounded-xl text-sm font-bold text-white shadow-sm"
-          >
-            {t('common.appName').charAt(0)}
-          </span>
+          <BrandMark />
           <span className="text-brand-gradient truncate text-base sm:text-lg">{t('common.appName')}</span>
         </Link>
 
