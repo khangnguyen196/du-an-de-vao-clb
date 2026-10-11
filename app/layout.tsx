@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getTranslations } from 'next-intl/server'
+import { AccountSync } from '@/components/study/AccountSync'
 import { THEME_INIT_SCRIPT } from '@/lib/theme'
 import { siteUrl } from '@/lib/site'
 import './globals.css'
@@ -56,7 +57,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
       <body className="min-h-screen-dvh antialiased">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          {/* Idle (renders nothing) unless signed in with something to bring over, or a save failed. */}
+          <AccountSync />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

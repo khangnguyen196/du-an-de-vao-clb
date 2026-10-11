@@ -272,7 +272,10 @@
     "RATE_LIMITED": "Too many talks at once. Try again in a few minutes.",
     "INTERNAL": "Something unexpected broke. Please try again.",
     "RATE_LIMITED_TALKS": "You opened many different talks in a short time. Try again in about {minutes} minutes. Talks you already opened still work as usual.",
-    "tryFeatured": "Try a ready-made talk"
+    "tryFeatured": "Try a ready-made talk",
+    "INVALID_INPUT": "The data sent was not valid.",
+    "UNAUTHENTICATED": "You need to sign in for this.",
+    "DB_UNAVAILABLE": "The data server is unavailable. Try again later."
   },
   "vocab": {
     "title": "Vocabulary",
@@ -411,10 +414,11 @@
     "noCardsTitle": "No cards to review yet",
     "noCardsBody": "Save words to your word book from a talk’s Vocabulary page — only saved words are reviewed.",
     "fromTalk": "From: {title}",
-    "localOnly": "Progress is saved in this browser only. Clearing site data erases it; syncing across devices comes with accounts.",
+    "localOnly": "Progress is saved in this browser only. Clearing site data erases it.",
     "loading": "Loading your schedule…",
     "backHome": "Home",
-    "openBook": "Word book"
+    "openBook": "Word book",
+    "inAccount": "Progress is saved to your account, on every device."
   },
   "wordBook": {
     "title": "Word book",
@@ -443,13 +447,14 @@
     "remove": "Remove from book",
     "removed": "Removed “{word}”. Its review progress is kept if you save it again.",
     "undo": "Undo",
-    "localOnly": "Your word book is stored in this browser. Clearing site data erases it; syncing across devices comes with accounts.",
+    "localOnly": "Your word book is stored in this browser. Clearing site data erases it.",
     "notice": {
       "title": "You now choose what goes in your word book",
       "body": "Opening a Vocabulary page used to put every word of the talk on your review schedule. Now only words you save with ☆ are reviewed. {count, plural, one {# word} other {# words}} added that way but never reviewed were taken out; words you already reviewed stay in the book with their progress. To review one again, open its talk’s Vocabulary page and tap Save.",
       "dismiss": "Got it"
     },
-    "quiz": "Take a quiz"
+    "quiz": "Take a quiz",
+    "inAccount": "Your word book is saved to your account, on every device."
   },
   "quiz": {
     "title": "Vocabulary quiz",
@@ -515,5 +520,43 @@
       "Export TXT · SRT · VTT · MD",
       "Smooth on your phone"
     ]
+  },
+  "auth": {
+    "title": "Sign in",
+    "subtitle": "Enter your email and we send you a sign-in link. No password; following the first link creates your account.",
+    "back": "Back",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "send": "Send sign-in link",
+    "sending": "Sending…",
+    "sentTitle": "Link sent — open your email to sign in",
+    "sentBody": "We sent a link to {email}. Open it in this same browser; it works once. Check your spam folder if it is not there.",
+    "useAnother": "Use another email",
+    "linkFailed": "That sign-in link has expired, was already used, or was opened in a different browser from the one that asked for it. Send a new link and open it in this browser.",
+    "unavailable": "Accounts are not enabled here. Everything still works; progress stays in this browser.",
+    "optional": "Signing in is optional. An account only keeps your word book, review progress, your own meanings and quiz history on every device.",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…",
+    "account": "Account",
+    "signedInAs": "Signed in as {email}",
+    "keepIt": "Sign in to keep it on every device.",
+    "error": {
+      "INVALID_EMAIL": "That email does not look right.",
+      "RATE_LIMITED": "Too many sign-in emails this hour. Try again in about an hour.",
+      "DB_UNAVAILABLE": "Accounts are not enabled here.",
+      "INTERNAL": "The link could not be sent. Try again in a few minutes."
+    }
+  },
+  "sync": {
+    "regionLabel": "Account sync",
+    "importTitle": "Bring this browser’s progress into your account?",
+    "importBody": "This browser has {words} words, {notes} notes and {quizzes} quiz attempts your account does not. Progress already in your account is not overwritten.",
+    "importAction": "Add to my account",
+    "importing": "Adding…",
+    "later": "Later",
+    "errorGeneric": "Progress did not reach your account. Check your connection; changes stay on this page but are lost on reload.",
+    "errorSession": "Your session expired, so progress was not saved. Sign in again and carry on.",
+    "dismiss": "Close"
   }
 }

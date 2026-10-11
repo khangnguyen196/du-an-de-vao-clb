@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { AccountMenu } from '@/components/auth/AccountMenu'
 import { WordBookLink } from '@/components/study/WordBookLink'
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
 
@@ -39,6 +40,7 @@ export function SiteHeader() {
         <div className="flex shrink-0 items-center gap-1 sm:gap-1.5">
           <ThemeToggle />
           <WordBookLink compact />
+          <AccountMenu />
           <a
             href="#start"
             className="hidden min-h-11 items-center rounded-full bg-ink px-5 text-sm font-semibold text-canvas transition-transform hover:scale-[1.03] active:scale-[0.98] sm:inline-flex"

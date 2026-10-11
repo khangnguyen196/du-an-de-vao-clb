@@ -97,7 +97,7 @@ export class NoteValidationError extends Error {
 
 const isoDate = z.string().refine((value) => !Number.isNaN(Date.parse(value)), 'not an ISO date')
 
-const StoredNoteSchema = z.object({
+export const CardNoteSchema = z.object({
   id: z.string().min(1),
   updatedAt: isoDate,
   senses: z.array(
@@ -162,7 +162,7 @@ export class LocalNotesStore implements NotesStore {
 
     let dropped = 0
     for (const candidate of file.notes) {
-      const parsed = StoredNoteSchema.safeParse(candidate)
+      const parsed = CardNoteSchema.safeParse(candidate)
       const valid = parsed.success ? validateNote(parsed.data.senses) : null
       if (parsed.success && valid?.ok) notes.set(parsed.data.id, { ...parsed.data, senses: valid.senses })
       else dropped += 1
@@ -190,7 +190,7 @@ export class LocalNotesStore implements NotesStore {
   }
 
   async put(note: CardNote): Promise<void> {
-    const parsed = StoredNoteSchema.parse(note)
+    const parsed = CardNoteSchema.parse(note)
     const valid = validateNote(parsed.senses)
     if (!valid.ok) throw new NoteValidationError(valid.issues)
 

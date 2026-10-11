@@ -14,7 +14,7 @@ import {
   type QuizKind,
   type QuizQuestion,
 } from '@/lib/study/quiz'
-import { lastAttempt, recordAttempt, type QuizAttempt } from '@/lib/study/quiz-store'
+import { useQuizHistory } from '@/lib/study/use-quiz-history'
 import { formatTimestamp } from '@/lib/time'
 import { cn } from '@/lib/utils'
 
@@ -51,15 +51,10 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
   const [answers, setAnswers] = useState<Answer[]>([])
   const [typed, setTyped] = useState('')
   const [finished, setFinished] = useState(false)
-  const [previous, setPrevious] = useState<QuizAttempt | null>(null)
+  const { previous, record } = useQuizHistory(scope)
   const [savedNow, setSavedNow] = useState(false)
   /** True between answering a question and moving on to the next one. */
   const [showingFeedback, setShowingFeedback] = useState(false)
-
-  // History lives in the browser; read it after mount.
-  useEffect(() => {
-    setPrevious(lastAttempt(scope))
-  }, [scope, finished])
 
   const askable = useMemo(() => askableCount(items, kinds), [items, kinds])
   const withoutMeaning = useMemo(() => items.filter((item) => !item.meaning).length, [items])
@@ -95,7 +90,7 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
     setTyped('')
     if (answers.length >= questions.length) {
       const wrongIds = questions.filter((_, i) => !answers[i]?.correct).map((q) => q.itemId)
-      recordAttempt({
+      void record({
         scope,
         at: new Date().toISOString(),
         total: questions.length,
@@ -104,7 +99,7 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
       })
       setFinished(true)
     }
-  }, [answers, questions, scope])
+  }, [answers, questions, record, scope])
 
   // 1–4 picks an option. Never while typing — `shouldIgnoreShortcut` covers inputs.
   useEffect(() => {

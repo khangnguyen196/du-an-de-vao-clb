@@ -91,7 +91,13 @@ export function NoteEditor({ cardId, note, modelSenses, onSave, onRemove, onAdop
       return
     }
     setStatus('saving')
-    await onSave(result.senses)
+    try {
+      await onSave(result.senses)
+    } catch {
+      // Did not reach the account (a notice says so). Keep the draft open, not lost.
+      setStatus('idle')
+      return
+    }
     setEditing(false)
     setIssues([])
     setStatus('saved')

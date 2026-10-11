@@ -10,6 +10,9 @@ app/
     notebook/
     watch/ted/[slug]/vocab/  # flashcard từ vựng + đánh giá 4 mức
     review/              # hàng đợi ôn tập gom từ mọi bài (client, đọc localStorage)
+  login/                 # (app)/login — magic link
+  auth/callback/route.ts # đổi code trong link email lấy phiên đăng nhập
+  actions/               # auth.ts (gửi link, đăng xuất), study.ts (đọc/ghi dữ liệu học)
   api/
     transcript/route.ts  # POST: ingest link → job
     ai/summarize/route.ts
@@ -35,7 +38,12 @@ lib/
                          # notes-store.ts (ghi chú người học + validateNote),
                          # card-content.ts (ghép ghi chú + nghĩa model), use-notes.ts,
                          # keyboard.ts (chặn phím tắt khi đang gõ / nút đang focus)
-  supabase/              # client.ts (browser), server.ts (RSC/route)
+  supabase/              # env.ts (hasSupabase), client.ts (browser, chỉ auth),
+                         # server.ts (RSC/action/route — tạo mới mỗi request)
+  auth/                  # session.ts (currentUserId/requireUserId), use-auth.ts,
+                         # next-path.ts (chặn open redirect sau đăng nhập)
+  db/                    # index.ts (Drizzle + postgres-js, server-only),
+                         # queries/study.ts (review_cards, card_notes, quiz_attempts)
 types/
 supabase/migrations/
 ```

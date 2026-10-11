@@ -100,6 +100,7 @@ describe('findTedTalkForYouTube', () => {
     const result = await findTedTalkForYouTube('AAAAAAAAAA1', {
       videoInfo: async () => brene,
       tedYouTubeCode: async () => 'iCvmsMzlF7o',
+      speakerTalks: async () => ['brene_brown_listening_to_shame'],
     })
     expect(result).toMatchObject({ status: 'not-found', kind: 'ted' })
   })

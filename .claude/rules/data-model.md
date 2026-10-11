@@ -1,5 +1,22 @@
 # Data model
 
+**Đã có trong DB (M2 bước 1–2, `lib/db/schema.ts`, migration `supabase/migrations/`):**
+
+```
+review_cards       user_id, card_id (ted:<slug>:<term>), deck_id, term,
+                   snapshot (jsonb — ReviewSnapshot), scheduling (jsonb — Card
+                   của ts-fsrs, ngày ISO), due_at, added_at, first_reviewed_at,
+                   in_book, updated_at · PK (user_id, card_id) · idx (user_id, due_at)
+card_notes         user_id, card_id, senses (jsonb — NoteSense[]), updated_at
+                   · PK (user_id, card_id)
+quiz_attempts      id, user_id, scope (ted:<slug> | book), taken_at, total,
+                   correct, wrong_ids (jsonb)
+```
+
+Ba bảng này giữ **đúng shape của store trong trình duyệt** (`ReviewRecord`, `CardNote`, `QuizAttempt`) thay vì tách `decks`/`cards` như bản thiết kế dưới — để một bản ghi đi qua lại giữa localStorage và DB không phải dịch. RLS bật cả ba, policy `(select auth.uid()) = user_id` nằm ngay trong schema (`pgPolicy`), có test canh.
+
+**Thiết kế cho các bước sau (chưa có bảng):**
+
 ```
 users              (Supabase auth.users)
 sources            id, kind: youtube|ted|upload, external_id, url, title,

@@ -15,4 +15,9 @@
 - Snapshot ôn tập có mảng (senses): so sánh bằng `===` sẽ luôn "khác" → effect ghi danh ghi lại mãi. Dùng so sánh sâu, không phụ thuộc thứ tự khoá (`deepEqual` trong `lib/study/srs.ts`).
 - Phím tắt toàn trang (Space lật, 1–4 chấm) phải qua `shouldIgnoreShortcut` (`lib/study/keyboard.ts`): bỏ qua khi đang gõ, và Space nhường cho nút đang focus — nếu không, gõ ghi chú sẽ lật/chấm thẻ, và Space trên nút "Lưu" sẽ lật thẻ thay vì lưu.
 - Supabase server client phải tạo mới mỗi request (đọc cookie), **không** để module-level singleton.
+- **Dữ liệu học có hai kho, cùng interface.** Chưa đăng nhập: localStorage (`browserReviewStore`…). Đã đăng nhập: Server Action → Drizzle (`lib/study/remote-stores.ts`, nạp lười qua `lazy-remote.ts`). Hook chọn kho theo `useStudySource`; trong lúc chưa biết trạng thái đăng nhập thì **chờ** (records `null`), không đọc localStorage trước rồi đổi — sẽ nháy dữ liệu của người khác trên máy dùng chung.
+- **Kết nối DB của server bỏ qua RLS** (user `postgres`). Mọi query trong `lib/db/queries` phải lọc theo `user_id` lấy từ `requireUserId()` (đã xác minh với Supabase), không bao giờ lấy id do client gửi lên. RLS chỉ là lớp chặn anon key.
+- **Đừng import tĩnh `remote-stores` hay `@/lib/supabase/client` vào component dùng chung** (header, trang xem bài). Kéo theo cả server action + supabase-js: người không đăng nhập phải tải thêm, và test trang xem bài vượt 5 s. Dùng `lazy-remote.ts` / `import()` như `use-auth.ts`.
+- `drizzle-kit migrate` **không báo lỗi rõ** khi sai mật khẩu DB — chỉ quay spinner rồi thoát. Sau khi migrate, kiểm tra bảng thật có trong `pg_class`/`pg_policies`.
+- Magic link dùng PKCE: link phải mở **trên chính trình duyệt đã yêu cầu** (code verifier nằm trong cookie). Mở trên máy khác → `/login?error=link`, có thông báo giải thích.
 - Timezone: lưu `timestamptz`, hiển thị theo locale người dùng.

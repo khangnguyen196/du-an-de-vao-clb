@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { WordBook } from '@/components/study/WordBook'
+import { StorageNotice } from '@/components/study/StorageNotice'
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('wordBook')
@@ -33,7 +34,7 @@ export default async function WordsPage() {
       </div>
 
       <p className="mt-10 border-t border-line pt-4 text-xs leading-relaxed text-faint text-pretty">
-        {t('localOnly')}
+        <StorageNotice namespace="wordBook" />
       </p>
     </main>
   )

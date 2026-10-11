@@ -13,7 +13,7 @@ npm run transcribe:setup             # một lần: Python env + faster-whisper 
 npm run transcribe -- <slug>         # Whisper cho bài TED chưa có transcript (xem ingest.md)
 npm run transcribe -- <slug> --compare  # đo Whisper so với transcript TED, không lưu
 npm run align -- <slug>              # mốc từng từ (chữ sáng theo lời) — dùng lại lần chạy Whisper cũ nếu có
-npm run db:generate  # sinh migration từ schema Drizzle
+npm run db:generate  # sinh migration từ schema Drizzle (vào supabase/migrations)
 npm run db:migrate   # apply migration
 npm run db:studio    # drizzle studio
 ```

@@ -272,7 +272,10 @@
     "RATE_LIMITED": "Bạn đang xử lý quá nhiều bài cùng lúc. Thử lại sau vài phút.",
     "INTERNAL": "Có lỗi ngoài dự tính. Thử lại giúp tôi.",
     "RATE_LIMITED_TALKS": "Bạn vừa mở nhiều bài khác nhau trong thời gian ngắn. Thử lại sau khoảng {minutes} phút. Những bài đã mở trước đó vẫn xem được bình thường.",
-    "tryFeatured": "Thử một bài có sẵn"
+    "tryFeatured": "Thử một bài có sẵn",
+    "INVALID_INPUT": "Dữ liệu gửi lên không hợp lệ.",
+    "UNAUTHENTICATED": "Cần đăng nhập để làm việc này.",
+    "DB_UNAVAILABLE": "Máy chủ dữ liệu đang không dùng được. Thử lại sau."
   },
   "vocab": {
     "title": "Từ vựng",
@@ -411,10 +414,11 @@
     "noCardsTitle": "Chưa có thẻ nào để ôn",
     "noCardsBody": "Lưu từ vào sổ ở trang Từ vựng của một bài nói — chỉ từ đã lưu mới vào lịch ôn.",
     "fromTalk": "Từ bài: {title}",
-    "localOnly": "Tiến độ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất; đồng bộ giữa nhiều thiết bị sẽ có khi có tài khoản.",
+    "localOnly": "Tiến độ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất.",
     "loading": "Đang tải lịch ôn…",
     "backHome": "Trang chủ",
-    "openBook": "Sổ từ"
+    "openBook": "Sổ từ",
+    "inAccount": "Tiến độ đang lưu vào tài khoản của bạn, mở trên thiết bị nào cũng thấy."
   },
   "wordBook": {
     "title": "Sổ từ",
@@ -443,13 +447,14 @@
     "remove": "Bỏ khỏi sổ",
     "removed": "Đã bỏ “{word}” khỏi sổ. Tiến độ ôn vẫn được giữ nếu bạn lưu lại.",
     "undo": "Hoàn tác",
-    "localOnly": "Sổ từ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất; đồng bộ giữa nhiều thiết bị sẽ có khi có tài khoản.",
+    "localOnly": "Sổ từ đang lưu trên trình duyệt này. Xoá dữ liệu trang web là mất.",
     "notice": {
       "title": "Sổ từ giờ do bạn chọn",
       "body": "Trước đây, mở trang Từ vựng là mọi từ của bài tự vào lịch ôn. Giờ chỉ những từ bạn bấm ☆ Lưu mới được ôn. {count, plural, other {# từ}} tự vào trước đây mà bạn chưa ôn lần nào đã được bỏ ra; các từ đã ôn vẫn ở trong sổ, giữ nguyên tiến độ. Muốn ôn lại từ nào, mở trang Từ vựng của bài đó và bấm Lưu.",
       "dismiss": "Đã hiểu"
     },
-    "quiz": "Làm quiz"
+    "quiz": "Làm quiz",
+    "inAccount": "Sổ từ đang lưu vào tài khoản của bạn, mở trên thiết bị nào cũng thấy."
   },
   "quiz": {
     "title": "Quiz từ vựng",
@@ -515,5 +520,43 @@
       "Xuất TXT · SRT · VTT · MD",
       "Mượt trên điện thoại"
     ]
+  },
+  "auth": {
+    "title": "Đăng nhập",
+    "subtitle": "Nhập email, chúng tôi gửi một đường link đăng nhập. Không cần mật khẩu; lần đầu bấm link là có tài khoản.",
+    "back": "Quay lại",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ban@vidu.com",
+    "send": "Gửi link đăng nhập",
+    "sending": "Đang gửi…",
+    "sentTitle": "Đã gửi link, mở email để đăng nhập",
+    "sentBody": "Link đã gửi tới {email}. Mở trên chính trình duyệt này, link chỉ dùng được một lần. Không thấy thì xem thư mục Spam.",
+    "useAnother": "Dùng email khác",
+    "linkFailed": "Link đăng nhập đã hết hạn, đã dùng rồi, hoặc được mở trên trình duyệt khác với trình duyệt đã yêu cầu. Gửi link mới rồi mở trên cùng trình duyệt này.",
+    "unavailable": "Bản này chưa bật tài khoản. Mọi thứ vẫn dùng được, tiến độ lưu trong trình duyệt.",
+    "optional": "Không bắt buộc đăng nhập. Tài khoản chỉ để giữ sổ từ, tiến độ ôn tập, nghĩa tự viết và lịch sử quiz trên mọi thiết bị.",
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "signingOut": "Đang đăng xuất…",
+    "account": "Tài khoản",
+    "signedInAs": "Đăng nhập với {email}",
+    "keepIt": "Đăng nhập để giữ trên mọi thiết bị.",
+    "error": {
+      "INVALID_EMAIL": "Email chưa đúng. Kiểm tra lại giúp mình.",
+      "RATE_LIMITED": "Đã gửi quá nhiều email đăng nhập trong giờ này. Thử lại sau khoảng một tiếng.",
+      "DB_UNAVAILABLE": "Bản này chưa bật tài khoản.",
+      "INTERNAL": "Chưa gửi được link. Thử lại sau ít phút."
+    }
+  },
+  "sync": {
+    "regionLabel": "Đồng bộ tài khoản",
+    "importTitle": "Đưa tiến độ trên máy này vào tài khoản?",
+    "importBody": "Trình duyệt này có {words} từ, {notes} ghi chú nghĩa và {quizzes} lần làm quiz chưa có trong tài khoản. Tiến độ đã có trong tài khoản không bị ghi đè.",
+    "importAction": "Đưa vào tài khoản",
+    "importing": "Đang đưa lên…",
+    "later": "Để sau",
+    "errorGeneric": "Chưa lưu được tiến độ lên tài khoản. Kiểm tra mạng; thay đổi vẫn còn trên trang này nhưng sẽ mất nếu tải lại.",
+    "errorSession": "Phiên đăng nhập đã hết hạn nên tiến độ chưa được lưu. Đăng nhập lại rồi làm tiếp.",
+    "dismiss": "Đóng"
   }
 }
