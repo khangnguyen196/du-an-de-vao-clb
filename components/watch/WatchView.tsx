@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { PlayerMode } from '@/components/player/TedPlayer'
@@ -108,7 +109,7 @@ export function WatchView({
   browserFallback?: boolean
 }) {
   const t = useTranslations('watch')
-  const tv = useTranslations('vocab')
+  const pathname = usePathname()
 
   const videoRef = useRef<PlaybackMedia | null>(null)
   const [playerMode, setPlayerMode] = useState<PlayerMode>('checking')
@@ -254,13 +255,7 @@ export function WatchView({
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href={`/watch/ted/${source.externalId}/vocab`}
-            className="inline-flex min-h-11 items-center rounded-xl border border-line px-3 text-sm font-medium hover:border-accent-line hover:text-accent-ink"
-          >
-            {tv('openVocab')}
-          </Link>
-          <WordBookLink compact />
+          <WordBookLink compact from={pathname} />
           <div className="hidden sm:block">
             <ExportMenu transcript={effective} bilingualByDefault={translationVisible} />
           </div>
@@ -285,6 +280,20 @@ export function WatchView({
               onModeChange={setPlayerMode}
             />
           </div>
+
+          {/* The way into the word list, set apart so it reads as the next step after watching. */}
+          <Link
+            href={`/watch/ted/${source.externalId}/vocab`}
+            className="flex min-h-11 items-center justify-center gap-2 border-y border-accent-line bg-accent-soft px-3 py-2 text-sm font-semibold text-accent-ink ring-accent-line hover:bg-accent-soft/80 lg:mt-4 lg:rounded-xl lg:border lg:py-3 lg:text-base lg:ring-2"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden className="size-5 shrink-0 fill-current">
+              <path d="M6 3h11a2 2 0 0 1 2 2v14a1 1 0 0 1-1 1H7a3 3 0 0 1-3-3V5a2 2 0 0 1 2-2Zm0 2v10.2c.3-.1.6-.2 1-.2h10V5H6Zm1 12a1 1 0 1 0 0 2h10v-2H7Z" />
+            </svg>
+            {t('getVocab')}
+            <svg viewBox="0 0 24 24" aria-hidden className="size-4 shrink-0 fill-current">
+              <path d="m10 6.5 1.4-1.5 6.6 6.6-6.6 6.6L10 16.8l5.2-5.2z" />
+            </svg>
+          </Link>
 
           <div className="hidden lg:mt-4 lg:block">
             <h2 className="text-lg leading-snug font-semibold text-balance">{source.title}</h2>

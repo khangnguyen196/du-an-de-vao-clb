@@ -232,7 +232,8 @@
     "metaBy": " của {author}",
     "transcriptCredit": "Transcript của cộng đồng TED, giấy phép CC BY-NC-ND 4.0.",
     "transcriptCreditWhisper": "Bài nói của TED, giấy phép CC BY-NC-ND 4.0.",
-    "creditLink": "Bài gốc trên TED"
+    "creditLink": "Bài gốc trên TED",
+    "getVocab": "Lấy từ vựng từ bài transcript"
   },
   "youtube": {
     "metaTitle": "Tìm bài TED từ link YouTube",
@@ -400,7 +401,42 @@
     "notSaved": "Chưa lưu",
     "saveHint": "Lưu từ này vào sổ để ôn theo lịch nhắc lại.",
     "openQuiz": "Làm quiz bài này",
-    "aiIssueDevLabel": "Chỉ hiện khi chạy dev:"
+    "aiIssueDevLabel": "Chỉ hiện khi chạy dev:",
+    "colWord": "Từ",
+    "colIpa": "Phiên âm",
+    "colPos": "Từ loại",
+    "tabWords": "Từ đơn",
+    "tabPhrases": "Cụm từ",
+    "tapHint": "Bấm vào một từ để điền nghĩa, đặt ví dụ và lưu vào sổ từ.",
+    "savedSummary": "Đã lưu {count, plural, other {# từ}} của bài này",
+    "allSaved": "Bạn đã lưu hết từ trong mục này.",
+    "quizSaved": "Quiz từ đã lưu",
+    "savedToast": "Đã lưu “{word}” vào sổ từ.",
+    "dictCredit": "Phiên âm theo CMUdict (giọng Mỹ), từ loại theo WordNet (Princeton). Từ loại điền sẵn là loại hay gặp nhất của từ, trong bài có thể khác — bạn sửa lại được.",
+    "detail": {
+      "close": "Đóng",
+      "inTalk": "Câu trong bài",
+      "pos": "Từ loại",
+      "posUnknown": "Chưa rõ",
+      "meaning": "Nghĩa tiếng Việt",
+      "meaningPlaceholder": "Nghĩa của từ trong câu trên",
+      "example": "Ví dụ của bạn (tiếng Anh)",
+      "examplePlaceholder": "Tự đặt một câu có dùng từ này",
+      "save": "Lưu vào sổ từ",
+      "saving": "Đang lưu…",
+      "needBoth": "Điền nghĩa và ví dụ thì mới lưu được.",
+      "failed": "Chưa lưu được. Thử lại nhé."
+    },
+    "pos": {
+      "noun": "danh từ",
+      "verb": "động từ",
+      "adjective": "tính từ",
+      "adverb": "trạng từ",
+      "phrasal verb": "cụm động từ",
+      "thành ngữ": "thành ngữ",
+      "collocation": "cụm từ cố định",
+      "cụm từ": "cụm từ"
+    }
   },
   "review": {
     "title": "Ôn tập hôm nay",
@@ -440,7 +476,7 @@
     },
     "noMatch": "Không có từ nào khớp.",
     "emptyTitle": "Sổ từ đang trống",
-    "emptyBody": "Mở trang Từ vựng của một bài nói, rồi bấm ☆ Lưu vào sổ từ ở những từ bạn muốn nhớ.",
+    "emptyBody": "Mở trang Từ vựng của một bài nói, bấm vào một từ, điền nghĩa và ví dụ rồi lưu vào sổ.",
     "sourceQuote": "Câu gốc trong bài",
     "openTalk": "Mở bài: {title}",
     "details": "Xem chi tiết “{word}”",
@@ -454,7 +490,8 @@
       "dismiss": "Đã hiểu"
     },
     "quiz": "Làm quiz",
-    "inAccount": "Sổ từ đang lưu vào tài khoản của bạn, mở trên thiết bị nào cũng thấy."
+    "inAccount": "Sổ từ đang lưu vào tài khoản của bạn, mở trên thiết bị nào cũng thấy.",
+    "backToTalk": "Quay lại bài"
   },
   "quiz": {
     "title": "Quiz từ vựng",
@@ -484,13 +521,13 @@
     "previous": "Lần trước: {correct}/{total}",
     "start": "Bắt đầu ({count} câu)",
     "close": "Đóng",
-    "quit": "Dừng quiz",
-    "progress": "Câu {current}/{total}",
+    "quit": "Dừng",
+    "progress": "{current}/{total}",
     "ask": {
-      "cloze": "Diễn giả đã nói từ nào ở chỗ trống?",
-      "meaningToWord": "Từ nào có nghĩa này?",
-      "wordToMeaning": "Nghĩa của từ này là gì?",
-      "typing": "Gõ từ tiếng Anh có nghĩa này:"
+      "cloze": "Điền từ còn thiếu",
+      "meaningToWord": "Từ nào mang nghĩa này?",
+      "wordToMeaning": "Nghĩa là gì?",
+      "typing": "Gõ từ mang nghĩa này"
     },
     "blank": "chỗ trống",
     "typingHint": "Bắt đầu bằng “{first}”, {length} ký tự",
@@ -506,7 +543,23 @@
     "retryWrong": "Làm lại {count, plural, other {# câu sai}}",
     "saveWrong": "Lưu {count, plural, other {# từ sai}} vào sổ từ",
     "savedWrong": "Đã lưu vào sổ từ.",
-    "again": "Quiz mới"
+    "again": "Quiz mới",
+    "setupTitle": "Quiz",
+    "startShort": "Bắt đầu",
+    "explain": {
+      "title": "Vì sao sai",
+      "clozeAnswer": "Diễn giả nói “{answer}”.",
+      "chosenMeans": "“{word}” nghĩa là: {meaning}.",
+      "chosenOther": "“{word}” là một từ khác trong bài, không phải từ ở chỗ này.",
+      "rightWordFor": "Từ mang nghĩa “{meaning}” là “{answer}”.",
+      "meaningBelongsTo": "Nghĩa bạn chọn là của từ “{word}”.",
+      "wordMeans": "“{word}” nghĩa là: {meaning}.",
+      "typed": "Bạn gõ",
+      "expected": "Đúng là",
+      "typoAt": "Sai từ chữ thứ {n}.",
+      "typoShort": "Còn thiếu chữ ở cuối.",
+      "typoLong": "Thừa chữ ở cuối."
+    }
   },
   "ribbon": {
     "label": "Tính năng nổi bật",

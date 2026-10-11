@@ -88,7 +88,7 @@ export function FlipCard({ content, flipped, onFlip, badge }: FlipCardProps) {
                     <span lang="en" className="text-muted">
                       {sense.example.en}
                     </span>
-                    <span className="text-faint">{sense.example.vi}</span>
+                    {sense.example.vi ? <span className="text-faint">{sense.example.vi}</span> : null}
                   </span>
                 </span>
               ))}

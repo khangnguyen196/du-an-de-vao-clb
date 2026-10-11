@@ -232,7 +232,8 @@
     "metaBy": " by {author}",
     "transcriptCredit": "Transcript by the TED community, licensed CC BY-NC-ND 4.0.",
     "transcriptCreditWhisper": "Talk by TED, licensed CC BY-NC-ND 4.0.",
-    "creditLink": "Original talk on TED"
+    "creditLink": "Original talk on TED",
+    "getVocab": "Get vocabulary from this transcript"
   },
   "youtube": {
     "metaTitle": "Find the TED talk for a YouTube link",
@@ -400,7 +401,42 @@
     "notSaved": "Not saved",
     "saveHint": "Save this word to review it on a spaced-repetition schedule.",
     "openQuiz": "Quiz this talk",
-    "aiIssueDevLabel": "Shown in dev only:"
+    "aiIssueDevLabel": "Shown in dev only:",
+    "colWord": "Word",
+    "colIpa": "Pronunciation",
+    "colPos": "Part of speech",
+    "tabWords": "Words",
+    "tabPhrases": "Phrases",
+    "tapHint": "Tap a word to write its meaning and an example, then save it to your word book.",
+    "savedSummary": "{count, plural, one {# word} other {# words}} from this talk saved",
+    "allSaved": "You have saved every word in this list.",
+    "quizSaved": "Quiz saved words",
+    "savedToast": "Saved “{word}” to your word book.",
+    "dictCredit": "Pronunciation from CMUdict (American), part of speech from Princeton WordNet. The prefilled part of speech is the word’s most common one and may differ in the talk — you can change it.",
+    "detail": {
+      "close": "Close",
+      "inTalk": "In the talk",
+      "pos": "Part of speech",
+      "posUnknown": "Not sure",
+      "meaning": "Vietnamese meaning",
+      "meaningPlaceholder": "What the word means in the line above",
+      "example": "Your example (English)",
+      "examplePlaceholder": "Write your own sentence using this word",
+      "save": "Save to word book",
+      "saving": "Saving…",
+      "needBoth": "Fill in the meaning and an example to save.",
+      "failed": "Could not save. Please try again."
+    },
+    "pos": {
+      "noun": "noun",
+      "verb": "verb",
+      "adjective": "adjective",
+      "adverb": "adverb",
+      "phrasal verb": "phrasal verb",
+      "thành ngữ": "idiom",
+      "collocation": "collocation",
+      "cụm từ": "phrase"
+    }
   },
   "review": {
     "title": "Today's review",
@@ -440,7 +476,7 @@
     },
     "noMatch": "No words match.",
     "emptyTitle": "Your word book is empty",
-    "emptyBody": "Open the Vocabulary page of a talk and tap ☆ Save to word book on the words you want to remember.",
+    "emptyBody": "Open a talk’s vocabulary page, tap a word, write its meaning and an example, then save it.",
     "sourceQuote": "Original line in the talk",
     "openTalk": "Open talk: {title}",
     "details": "Show details for “{word}”",
@@ -454,7 +490,8 @@
       "dismiss": "Got it"
     },
     "quiz": "Take a quiz",
-    "inAccount": "Your word book is saved to your account, on every device."
+    "inAccount": "Your word book is saved to your account, on every device.",
+    "backToTalk": "Back to the talk"
   },
   "quiz": {
     "title": "Vocabulary quiz",
@@ -484,13 +521,13 @@
     "previous": "Last time: {correct}/{total}",
     "start": "Start ({count} questions)",
     "close": "Close",
-    "quit": "Stop quiz",
-    "progress": "Question {current}/{total}",
+    "quit": "Stop",
+    "progress": "{current}/{total}",
     "ask": {
-      "cloze": "Which word did the speaker say in the gap?",
-      "meaningToWord": "Which word has this meaning?",
-      "wordToMeaning": "What does this word mean?",
-      "typing": "Type the English word with this meaning:"
+      "cloze": "Fill in the missing word",
+      "meaningToWord": "Which word means this?",
+      "wordToMeaning": "What does it mean?",
+      "typing": "Type the word that means this"
     },
     "blank": "blank",
     "typingHint": "Starts with “{first}”, {length} characters",
@@ -506,7 +543,23 @@
     "retryWrong": "Retry {count, plural, one {# missed question} other {# missed questions}}",
     "saveWrong": "Save {count, plural, one {# missed word} other {# missed words}} to the word book",
     "savedWrong": "Saved to the word book.",
-    "again": "New quiz"
+    "again": "New quiz",
+    "setupTitle": "Quiz",
+    "startShort": "Start",
+    "explain": {
+      "title": "Why it was wrong",
+      "clozeAnswer": "The speaker said “{answer}”.",
+      "chosenMeans": "“{word}” means: {meaning}.",
+      "chosenOther": "“{word}” is another word from the talk, not the one said here.",
+      "rightWordFor": "The word that means “{meaning}” is “{answer}”.",
+      "meaningBelongsTo": "The meaning you picked belongs to “{word}”.",
+      "wordMeans": "“{word}” means: {meaning}.",
+      "typed": "You typed",
+      "expected": "Correct",
+      "typoAt": "Wrong from letter {n}.",
+      "typoShort": "Letters missing at the end.",
+      "typoLong": "Extra letters at the end."
+    }
   },
   "ribbon": {
     "label": "Highlights",

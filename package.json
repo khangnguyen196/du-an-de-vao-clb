@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:check": "node scripts/build-check.mjs",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -13,6 +14,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "translate:prepare": "node --import ./scripts/register-ts-alias.mjs scripts/translate-agent.ts prepare",
+    "dict:build": "node scripts/build-dictionary.ts",
     "translate:save": "node --import ./scripts/register-ts-alias.mjs scripts/translate-agent.ts save",
     "transcribe": "node --import ./scripts/register-ts-alias.mjs scripts/transcribe.ts",
     "transcribe:setup": "node scripts/whisper-setup.mjs",

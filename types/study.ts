@@ -51,8 +51,12 @@ export interface VocabGroup {
   items: VocabCard[]
 }
 
-/** Why a deck has no meanings, so the page can say what to do about it. */
-export type VocabAiIssue = 'no-key' | 'auth' | 'billing' | 'failed' | 'limited'
+/**
+ * Why a deck has no meanings, so the page can say what to do about it. `off`
+ * means no model was asked on purpose — the vocabulary page leaves meanings to
+ * the learner (2026-10-11).
+ */
+export type VocabAiIssue = 'no-key' | 'auth' | 'billing' | 'failed' | 'limited' | 'off'
 
 export interface VocabSet {
   groups: VocabGroup[]

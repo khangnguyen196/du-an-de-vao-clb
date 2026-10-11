@@ -13,7 +13,14 @@ import { cn } from '@/lib/utils'
  * The count comes from browser storage, so it appears after mount; the link
  * itself is there from the first paint and works without it.
  */
-export function WordBookLink({ compact = false }: { compact?: boolean }) {
+export function WordBookLink({
+  compact = false,
+  from,
+}: {
+  compact?: boolean
+  /** In-app path the word book's back link should return to, e.g. the talk being read. */
+  from?: string
+}) {
   const t = useTranslations('nav')
   const { records } = useReviewRecords()
   const now = useNow(60_000)
@@ -26,7 +33,7 @@ export function WordBookLink({ compact = false }: { compact?: boolean }) {
 
   return (
     <Link
-      href="/words"
+      href={from ? `/words?from=${encodeURIComponent(from)}` : '/words'}
       aria-label={compact ? t('wordBook') : undefined}
       className={cn(
         'relative inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl border border-line text-sm font-medium hover:border-accent-line hover:text-accent-ink',

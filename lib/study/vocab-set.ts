@@ -2,6 +2,7 @@ import { cache } from 'react'
 import { describeErrorCause, isAuthError, isBillingError } from '@/lib/ai/structured'
 import { generateVocabSet, hasAnthropicKey } from '@/lib/ai/vocabulary'
 import { extractCandidates, type VocabCandidate } from '@/lib/study/candidates'
+import { lookupWord } from '@/lib/study/dictionary'
 import type { VocabAiIssue, VocabCard, VocabSet } from '@/types/study'
 import type { Transcript } from '@/types/transcript'
 
@@ -12,11 +13,13 @@ const FALLBACK_WORD_LIMIT = 40
 const FALLBACK_PHRASE_LIMIT = 25
 
 function toBareCard(candidate: VocabCandidate): VocabCard {
+  const entry = candidate.kind === 'word' ? lookupWord(candidate.term) : null
   return {
     term: candidate.term,
     display: candidate.display,
-    ipa: '',
-    partOfSpeech: candidate.kind === 'phrase' ? 'cụm từ' : '',
+    // A dictionary lookup, not a model guess — so it is filled in even here.
+    ipa: entry?.ipa ?? '',
+    partOfSpeech: candidate.kind === 'phrase' ? 'cụm từ' : (entry?.partOfSpeech ?? ''),
     // No meaning is written here on purpose. Inventing one to fill the card
     // would be worse than an obviously empty back.
     meaningVi: '',
@@ -53,6 +56,37 @@ function fallbackSet(candidates: readonly VocabCandidate[], aiIssue: VocabAiIssu
 }
 
 /**
+ * The vocabulary list with no model call: words and phrases extracted from the
+ * transcript, pronunciation and part of speech from the open dictionary.
+ *
+ * What the vocabulary page uses. Meanings and examples are the learner's to
+ * write, so paying a model for meanings nobody is shown would be waste.
+ * `buildVocabSet` below keeps the model path for whenever that changes.
+ */
+export const buildWordList = cache((transcript: Transcript): VocabSet =>
+  fallbackSet(extractCandidates(transcript.cues, { limit: CANDIDATE_LIMIT }), 'off'),
+)
+
+/**
+ * Fills pronunciation and part of speech the model left empty — it is told to
+ * leave IPA blank when unsure — from the dictionary. Phrases keep theirs.
+ */
+function withDictionary(set: VocabSet): VocabSet {
+  let changed = false
+  const groups = set.groups.map((group) => ({
+    ...group,
+    items: group.items.map((card) => {
+      if ((card.ipa && card.partOfSpeech) || card.term.includes(' ')) return card
+      const entry = lookupWord(card.term)
+      if (!entry) return card
+      changed = true
+      return { ...card, ipa: card.ipa || entry.ipa, partOfSpeech: card.partOfSpeech || entry.partOfSpeech }
+    }),
+  }))
+  return changed ? { ...set, groups } : set
+}
+
+/**
  * Builds the vocabulary set for a transcript.
  *
  * Deduped per render pass. This is NOT cached across requests: a model call
@@ -78,11 +112,13 @@ export const buildVocabSet = cache(
      * and the page says why the backs are empty.
      */
     try {
-      return await generateVocabSet({
-        title: transcript.source.title,
-        ...(transcript.source.author ? { author: transcript.source.author } : {}),
-        candidates,
-      })
+      return withDictionary(
+        await generateVocabSet({
+          title: transcript.source.title,
+          ...(transcript.source.author ? { author: transcript.source.author } : {}),
+          candidates,
+        }),
+      )
     } catch (error) {
       const issue: VocabAiIssue = isAuthError(error) ? 'auth' : isBillingError(error) ? 'billing' : 'failed'
       const cause = describeErrorCause(error)

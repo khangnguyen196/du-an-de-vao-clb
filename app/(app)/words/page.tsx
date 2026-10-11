@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { WordBook } from '@/components/study/WordBook'
 import { StorageNotice } from '@/components/study/StorageNotice'
+import { safeNextPath } from '@/lib/auth/next-path'
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('wordBook')
@@ -14,16 +15,20 @@ export async function generateMetadata(): Promise<Metadata> {
  * The word book lives in the browser for now, so everything below the heading
  * is a client component; the server only renders the frame.
  */
-export default async function WordsPage() {
+export default async function WordsPage({ searchParams }: { searchParams: Promise<{ from?: string | string[] }> }) {
   const t = await getTranslations('wordBook')
+  const { from } = await searchParams
+  // Opened from a talk, the back link returns there. Only in-app paths are
+  // followed, so the query cannot send anyone to another site.
+  const back = safeNextPath(typeof from === 'string' ? from : null)
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
-      <Link href="/" className="inline-flex min-h-11 items-center gap-1.5 text-sm text-muted hover:text-ink">
+      <Link href={back} className="inline-flex min-h-11 items-center gap-1.5 text-sm text-muted hover:text-ink">
         <svg viewBox="0 0 24 24" aria-hidden className="size-4 fill-current">
           <path d="M14 6.5 12.6 5 6 11.6l6.6 6.6L14 16.8l-5.2-5.2z" />
         </svg>
-        {t('backHome')}
+        {back === '/' ? t('backHome') : t('backToTalk')}
       </Link>
 
       <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{t('title')}</h1>

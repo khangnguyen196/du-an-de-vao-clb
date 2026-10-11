@@ -210,7 +210,6 @@ export function NoteEditor({ cardId, note, modelSenses, onSave, onRemove, onAdop
               {renderField(index, 'meaningVi', t('meaning'), sense.meaningVi, false)}
               {renderField(index, 'partOfSpeech', t('partOfSpeech'), sense.partOfSpeech, false)}
               {renderField(index, 'exampleEn', t('exampleEn'), sense.example.en, true)}
-              {renderField(index, 'exampleVi', t('exampleVi'), sense.example.vi, true)}
               <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
                 <input
                   type="checkbox"

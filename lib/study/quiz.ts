@@ -277,3 +277,67 @@ export function isCorrect(question: QuizQuestion, answer: number | string): bool
   if (question.kind === 'typing') return typeof answer === 'string' && question.accepted.includes(normalizeAnswer(answer))
   return answer === question.correctIndex
 }
+
+// --- explaining a wrong answer --------------------------------------------------
+
+/**
+ * What a wrong answer was, so the learner sees why it was wrong rather than
+ * just the right answer. Built from the same data as the question — the words
+ * of the quiz and the meanings the learner wrote — so it costs no model call
+ * and can only say what the app actually knows.
+ */
+export type MistakeExplanation =
+  | {
+      kind: 'cloze' | 'meaningToWord' | 'wordToMeaning'
+      /** The option the learner picked, as shown. */
+      chosen: string
+      /** The word that option belongs to, when it is one of the quiz's words. */
+      chosenItem: QuizItem | null
+    }
+  | {
+      kind: 'typing'
+      typed: string
+      expected: string
+      /** Index of the first character that differs, in the normalised spelling. */
+      firstDiff: number
+    }
+
+/** Where two spellings start to differ; the shorter length when one is a prefix of the other. */
+export function firstDifference(a: string, b: string): number {
+  const limit = Math.min(a.length, b.length)
+  for (let i = 0; i < limit; i += 1) if (a[i] !== b[i]) return i
+  return limit
+}
+
+/** The quiz word an option belongs to — the option is that word's text for this question kind. */
+function ownerOf(option: string, kind: ChoiceQuestion['kind'], pool: readonly QuizItem[]): QuizItem | null {
+  const textOf = kind === 'cloze' ? clozeText : kind === 'meaningToWord' ? displayText : meaningText
+  const key = normalizeAnswer(option)
+  return pool.find((candidate) => {
+    const text = textOf(candidate)
+    return text !== null && normalizeAnswer(text) === key
+  }) ?? null
+}
+
+/** Null when the answer was right. */
+export function explainMistake(
+  question: QuizQuestion,
+  given: number | string,
+  item: QuizItem,
+  pool: readonly QuizItem[],
+): MistakeExplanation | null {
+  if (isCorrect(question, given)) return null
+
+  if (question.kind === 'typing') {
+    const typed = typeof given === 'string' ? given.trim() : ''
+    return {
+      kind: 'typing',
+      typed,
+      expected: item.display,
+      firstDiff: firstDifference(normalizeAnswer(typed), normalizeAnswer(item.display)),
+    }
+  }
+
+  const chosen = typeof given === 'number' ? (question.options[given] ?? '') : ''
+  return { kind: question.kind, chosen, chosenItem: ownerOf(chosen, question.kind, pool) }
+}

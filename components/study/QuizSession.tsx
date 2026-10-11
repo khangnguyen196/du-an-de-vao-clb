@@ -8,7 +8,10 @@ import {
   askableCount,
   buildQuiz,
   clozeParts,
+  explainMistake,
   isCorrect,
+  normalizeAnswer,
+  type MistakeExplanation,
   QUIZ_KINDS,
   type QuizItem,
   type QuizKind,
@@ -57,7 +60,6 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
   const [showingFeedback, setShowingFeedback] = useState(false)
 
   const askable = useMemo(() => askableCount(items, kinds), [items, kinds])
-  const withoutMeaning = useMemo(() => items.filter((item) => !item.meaning).length, [items])
 
   const start = useCallback(
     (pool: readonly QuizItem[], size: number) => {
@@ -117,14 +119,16 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
 
   if (questions === null) {
     return (
-      <div className="flex flex-col gap-5 rounded-card border border-line bg-surface p-4 sm:p-6">
-        <div>
-          <h2 className="text-lg font-semibold">{t('title')}</h2>
-          <p className="mt-1 text-sm text-muted text-pretty">{t('intro')}</p>
+      <div className="flex flex-col gap-4 rounded-card border border-line bg-surface p-4 sm:p-6">
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 className="text-lg font-semibold">{t('setupTitle')}</h2>
+          {previous ? (
+            <span className="text-sm text-muted">{t('previous', { correct: previous.correct, total: previous.total })}</span>
+          ) : null}
         </div>
 
         <fieldset>
-          <legend className="text-sm font-medium">{t('countLabel')}</legend>
+          <legend className="text-sm text-muted">{t('countLabel')}</legend>
           <div className="mt-2 flex flex-wrap gap-2">
             {COUNTS.map((value) => (
               <button
@@ -145,59 +149,42 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
           </div>
         </fieldset>
 
-        <fieldset>
-          <legend className="text-sm font-medium">{t('kindsLabel')}</legend>
-          <div className="mt-2 flex flex-col gap-2">
+        {/* All kinds are on by default; changing them is the exception, so it stays folded away. */}
+        <details className="group">
+          <summary className="inline-flex min-h-11 cursor-pointer items-center text-sm text-muted hover:text-ink">
+            {t('kindsLabel')}
+          </summary>
+          <div className="mt-1 flex flex-wrap gap-2">
             {QUIZ_KINDS.map((kind) => {
               const on = kinds.includes(kind)
               return (
                 <button
                   key={kind}
                   type="button"
-                  onClick={() =>
-                    setKinds((list) => (on ? list.filter((k) => k !== kind) : [...list, kind]))
-                  }
+                  onClick={() => setKinds((list) => (on ? list.filter((k) => k !== kind) : [...list, kind]))}
                   aria-pressed={on}
                   className={cn(
-                    'flex min-h-11 items-center gap-3 rounded-xl border px-3 py-2 text-left text-sm',
+                    'min-h-11 rounded-xl border px-3 text-sm',
                     on ? 'border-accent-line bg-accent-soft text-accent-ink' : 'border-line text-muted hover:border-accent-line',
                   )}
                 >
-                  <span
-                    aria-hidden
-                    className={cn(
-                      'grid size-5 shrink-0 place-items-center rounded border text-xs',
-                      on ? 'border-accent-line bg-accent text-canvas' : 'border-line',
-                    )}
-                  >
-                    {on ? '✓' : ''}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-medium">{t(`kind.${kind}.label`)}</span>
-                    <span className="block text-xs opacity-80">{t(`kind.${kind}.hint`)}</span>
-                  </span>
+                  {t(`kind.${kind}.label`)}
                 </button>
               )
             })}
           </div>
-        </fieldset>
+        </details>
 
-        <div className="flex flex-col gap-1 text-sm text-muted">
-          {withoutMeaning > 0 ? <p className="text-pretty">{t('withoutMeaning', { count: withoutMeaning })}</p> : null}
-          {kinds.length > 0 && askable === 0 ? <p className="text-accent-ink text-pretty">{t('notEnough')}</p> : null}
-          {previous ? (
-            <p>{t('previous', { correct: previous.correct, total: previous.total })}</p>
-          ) : null}
-        </div>
+        {kinds.length > 0 && askable === 0 ? <p className="text-sm text-accent-ink text-pretty">{t('notEnough')}</p> : null}
 
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => start(items, count)}
             disabled={kinds.length === 0 || askable === 0}
-            className="inline-flex min-h-11 items-center rounded-xl bg-ink px-4 text-sm font-medium text-canvas hover:opacity-90 disabled:opacity-40"
+            className="inline-flex min-h-11 items-center rounded-xl bg-ink px-5 text-sm font-medium text-canvas hover:opacity-90 disabled:opacity-40"
           >
-            {t('start', { count: Math.min(count, askable) })}
+            {t('startShort')}
           </button>
           <button
             type="button"
@@ -424,6 +411,14 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
         </ol>
       )}
 
+      {result && !result.correct ? (
+        <MistakeNote
+          explanation={explainMistake(question, result.given, item, items)}
+          item={item}
+          rightAnswer={rightAnswer}
+        />
+      ) : null}
+
       {result ? (
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p role="status" className={cn('text-sm font-medium', result.correct ? 'text-accent-ink' : 'text-wrong')}>
@@ -439,6 +434,76 @@ export function QuizSession({ items, scope, onClose, showSource = false, isSaved
           </button>
         </div>
       ) : null}
+    </div>
+  )
+}
+
+/**
+ * Why a wrong answer was wrong, in a line or two: what the picked option
+ * actually is, and what the right one means. Only states what the quiz's own
+ * words and the learner's meanings say — no model, so no grammar lessons.
+ */
+function MistakeNote({
+  explanation,
+  item,
+  rightAnswer,
+}: {
+  explanation: MistakeExplanation | null
+  item: QuizItem
+  rightAnswer: string
+}) {
+  const t = useTranslations('quiz.explain')
+  if (!explanation) return null
+
+  const lines: string[] = []
+  let typo: { typed: string; expected: string; at: number } | null = null
+
+  if (explanation.kind === 'typing') {
+    const typed = normalizeAnswer(explanation.typed)
+    const expected = normalizeAnswer(explanation.expected)
+    const at = explanation.firstDiff
+    typo = { typed, expected, at }
+    if (at < Math.min(typed.length, expected.length)) lines.push(t('typoAt', { n: at + 1 }))
+    else lines.push(typed.length < expected.length ? t('typoShort') : t('typoLong'))
+    if (item.meaning) lines.push(t('wordMeans', { word: item.display, meaning: item.meaning }))
+  } else {
+    const { kind, chosen, chosenItem } = explanation
+    const chosenMeaning = chosenItem?.meaning
+    if (kind === 'cloze') {
+      lines.push(t('clozeAnswer', { answer: rightAnswer }))
+      lines.push(chosenMeaning ? t('chosenMeans', { word: chosen, meaning: chosenMeaning }) : t('chosenOther', { word: chosen }))
+      if (item.meaning) lines.push(t('wordMeans', { word: rightAnswer, meaning: item.meaning }))
+    } else if (kind === 'meaningToWord') {
+      if (chosenMeaning) lines.push(t('chosenMeans', { word: chosen, meaning: chosenMeaning }))
+      lines.push(t('rightWordFor', { meaning: item.meaning, answer: item.display }))
+    } else {
+      if (chosenItem) lines.push(t('meaningBelongsTo', { word: chosenItem.display }))
+      lines.push(t('wordMeans', { word: item.display, meaning: item.meaning }))
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-wrong-line bg-wrong-soft p-3 text-sm leading-relaxed">
+      <p className="font-medium text-wrong">{t('title')}</p>
+      {typo ? (
+        <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 font-mono">
+          <dt className="font-sans text-muted">{t('typed')}</dt>
+          <dd className="break-all">
+            {typo.typed.slice(0, typo.at)}
+            <span className="rounded bg-wrong/20 text-wrong underline decoration-2">{typo.typed.slice(typo.at) || ' '}</span>
+          </dd>
+          <dt className="font-sans text-muted">{t('expected')}</dt>
+          <dd className="break-all">
+            {typo.expected.slice(0, typo.at)}
+            <span className="font-semibold text-accent-ink">{typo.expected.slice(typo.at)}</span>
+          </dd>
+        </dl>
+      ) : null}
+      <ul className="mt-1 flex flex-col gap-0.5 text-ink">
+        {lines.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
     </div>
   )
 }

@@ -4,6 +4,10 @@ import type { NextConfig } from 'next'
 const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
+  // `next dev` and `next build` share `.next` and break each other. Building
+  // with NEXT_DIST_DIR=.next-build checks a production build while a dev server
+  // keeps running. Unset (Vercel, normal use) it is the default `.next`.
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   // Translations written by the translator agent, Whisper transcripts and word
   // timings are read from disk at request time (`lib/ingest/translation-store.ts`,
   // `transcript-store.ts`, `word-timing-store.ts`); file tracing cannot see a path built at runtime, so

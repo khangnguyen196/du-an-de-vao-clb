@@ -22,7 +22,7 @@ components/
   transcript/            # TranscriptPane, Cue, SearchBar
   player/                # TedPlayer (HLS của TED qua hls.js → YouTube IFrame API cho bài
                          # không có luồng → embed), usePlaybackSync, youtube-media.ts
-  study/                 # FlashcardDeck, FlipCard, RatingBar, ReviewSession, NoteEditor
+  study/                 # VocabTable (bảng từ + form lưu), FlipCard, RatingBar, ReviewSession, NoteEditor, QuizSession
 lib/
   db/schema.ts           # Drizzle schema — nguồn sự thật của DB
   db/queries/            # mọi truy vấn DB nằm ở đây, không nằm trong component
@@ -37,7 +37,9 @@ lib/
                          # (interface + localStorage), use-review.ts (hook client),
                          # notes-store.ts (ghi chú người học + validateNote),
                          # card-content.ts (ghép ghi chú + nghĩa model), use-notes.ts,
-                         # keyboard.ts (chặn phím tắt khi đang gõ / nút đang focus)
+                         # keyboard.ts (chặn phím tắt khi đang gõ / nút đang focus),
+                         # dictionary.ts + dictionary.json (IPA + từ loại từ CMUdict/WordNet,
+                         # sinh bằng `npm run dict:build`, giấy phép nằm trong JSON)
   supabase/              # env.ts (hasSupabase), client.ts (browser, chỉ auth),
                          # server.ts (RSC/action/route — tạo mới mỗi request)
   auth/                  # session.ts (currentUserId/requireUserId), use-auth.ts,

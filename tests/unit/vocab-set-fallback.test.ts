@@ -11,7 +11,7 @@ vi.mock('@/lib/ai/vocabulary', () => ({
   hasAnthropicKey: () => hasAnthropicKey(),
 }))
 
-const { buildVocabSet } = await import('@/lib/study/vocab-set')
+const { buildVocabSet, buildWordList } = await import('@/lib/study/vocab-set')
 
 /** Shape copied from the real refusal the API returned for an account with no credit. */
 const billingApiError = Object.assign(new Error('Your credit balance is too low to access the Anthropic API.'), {
@@ -157,5 +157,30 @@ describe('buildVocabSet when the model is unavailable', () => {
     generateVocabSet.mockResolvedValue(ok)
 
     expect(await buildVocabSet(transcript())).toBe(ok)
+  })
+})
+
+describe('buildWordList', () => {
+  beforeEach(() => {
+    generateVocabSet.mockReset()
+    hasAnthropicKey.mockReset()
+  })
+
+  /** Meanings are the learner's to write, so the vocabulary page must not spend credit on them. */
+  it('never calls the model, even with a key configured', () => {
+    hasAnthropicKey.mockReturnValue(true)
+    const set = buildWordList(transcript())
+
+    expect(generateVocabSet).not.toHaveBeenCalled()
+    expect(set).toMatchObject({ hasMeanings: false, aiIssue: 'off', model: null })
+  })
+
+  it('still prefills pronunciation and part of speech from the dictionary', () => {
+    const words = buildWordList(transcript()).groups.flatMap((group) => group.items)
+    expect(words.find((card) => card.term === 'methodology')).toMatchObject({
+      ipa: expect.stringMatching(/^\/.+\/$/),
+      partOfSpeech: 'noun',
+      meaningVi: '',
+    })
   })
 })

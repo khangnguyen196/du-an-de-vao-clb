@@ -3,6 +3,8 @@ import {
   askableCount,
   buildQuiz,
   clozeParts,
+  explainMistake,
+  firstDifference,
   isCorrect,
   normalizeAnswer,
   OPTION_COUNT,
@@ -187,5 +189,59 @@ describe('quiz history', () => {
     const store = memory()
     store.data.set(QUIZ_STORAGE_KEY, '{not json')
     expect(readAttempts(store)).toEqual([])
+  })
+})
+
+describe('explainMistake', () => {
+  const pool = [
+    item('resilient', 'kiên cường'),
+    item('fragile', 'dễ vỡ'),
+    item('generous', 'hào phóng'),
+    item('stubborn', 'bướng bỉnh'),
+  ]
+  const [target] = pool
+
+  it('says nothing about a right answer', () => {
+    const question: ChoiceQuestion = { kind: 'meaningToWord', itemId: target!.id, options: ['fragile', 'resilient'], correctIndex: 1 }
+    expect(explainMistake(question, 1, target!, pool)).toBeNull()
+  })
+
+  it('names the word a wrong pick belongs to, so its meaning can be shown', () => {
+    const question: ChoiceQuestion = { kind: 'meaningToWord', itemId: target!.id, options: ['fragile', 'resilient'], correctIndex: 1 }
+    const explanation = explainMistake(question, 0, target!, pool)
+    expect(explanation).toMatchObject({ kind: 'meaningToWord', chosen: 'fragile', chosenItem: { term: 'fragile', meaning: 'dễ vỡ' } })
+  })
+
+  it('finds the owner of a picked meaning', () => {
+    const question: ChoiceQuestion = { kind: 'wordToMeaning', itemId: target!.id, options: ['hào phóng', 'kiên cường'], correctIndex: 1 }
+    expect(explainMistake(question, 0, target!, pool)).toMatchObject({ chosenItem: { term: 'generous' } })
+  })
+
+  it('finds the owner of a fill-in option, which is the word as said, lowercased', () => {
+    const question: ChoiceQuestion = { kind: 'cloze', itemId: target!.id, options: ['stubborn', 'resilient'], correctIndex: 1 }
+    expect(explainMistake(question, 0, target!, pool)).toMatchObject({ kind: 'cloze', chosenItem: { term: 'stubborn' } })
+  })
+
+  it('leaves the owner empty rather than guessing when no word matches', () => {
+    const question: ChoiceQuestion = { kind: 'wordToMeaning', itemId: target!.id, options: ['không có', 'kiên cường'], correctIndex: 1 }
+    expect(explainMistake(question, 0, target!, pool)).toMatchObject({ chosen: 'không có', chosenItem: null })
+  })
+
+  it('points a typo at the first wrong letter', () => {
+    const word = item('receive', 'nhận')
+    const question = { kind: 'typing' as const, itemId: word.id, accepted: ['receive'] }
+    expect(explainMistake(question, ' Recieve ', word, [word])).toEqual({
+      kind: 'typing',
+      typed: 'Recieve',
+      expected: 'receive',
+      firstDiff: 3,
+    })
+  })
+})
+
+describe('firstDifference', () => {
+  it('returns the shorter length when one spelling is cut short', () => {
+    expect(firstDifference('recei', 'receive')).toBe(5)
+    expect(firstDifference('same', 'same')).toBe(4)
   })
 })

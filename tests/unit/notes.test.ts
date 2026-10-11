@@ -62,10 +62,15 @@ describe('validateNote', () => {
     })
   })
 
-  it('requires the Vietnamese translation of the example', () => {
-    expect(validateNote([sense({ example: { en: 'An example.', vi: '' } })])).toEqual({
+  it('no longer asks for a Vietnamese translation of the example', () => {
+    expect(validateNote([sense({ example: { en: 'An example.', vi: '' } })])).toMatchObject({ ok: true })
+  })
+
+  it('still caps a translation an older note already has', () => {
+    const long = 'x'.repeat(NOTE_LIMITS.example + 1)
+    expect(validateNote([sense({ example: { en: 'An example.', vi: long } })])).toEqual({
       ok: false,
-      issues: [{ scope: 'sense', senseIndex: 0, field: 'exampleVi', code: 'required' }],
+      issues: [{ scope: 'sense', senseIndex: 0, field: 'exampleVi', code: 'too-long', max: NOTE_LIMITS.example }],
     })
   })
 

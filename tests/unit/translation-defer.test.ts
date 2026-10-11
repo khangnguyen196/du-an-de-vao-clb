@@ -319,7 +319,13 @@ describe('getTranslatedTranscript', () => {
  * its markup while the model is still working. If someone re-adds an `await` in
  * front of `getMachineTranslation`, this is what fails.
  */
-describe('the watch page does not wait for the translation', () => {
+/*
+ * Each test here re-imports the whole page and its component tree from cold
+ * (`vi.resetModules`). That takes about a second alone and can pass 5 s when
+ * the full suite runs in parallel, so these get more room. A real wait on the
+ * translation would hang forever, not take 6 s, so this hides nothing.
+ */
+describe('the watch page does not wait for the translation', { timeout: 30_000 }, () => {
   const single: Cue[] = [{ idx: 0, startMs: 0, endMs: 1000, text: 'Hello.' }]
 
   /** The page renders JSON-LD next to the view; the props under test are the view's. */

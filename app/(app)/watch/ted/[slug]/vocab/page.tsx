@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
-import { FlashcardDeck } from '@/components/study/FlashcardDeck'
+import { VocabTable } from '@/components/study/VocabTable'
 import { TranscriptError } from '@/components/watch/TranscriptError'
 import { toAppError } from '@/lib/errors'
 import { parseTedSlug, tedTalkUrl } from '@/lib/ingest/ted'
-import { assertCanOpenTalk, currentClient, mayUseModel, retryAfterMinutes } from '@/lib/limits/guard'
+import { assertCanOpenTalk, retryAfterMinutes } from '@/lib/limits/guard'
 import { getTranscript } from '@/lib/ingest/transcript-cache'
-import { buildVocabSet } from '@/lib/study/vocab-set'
+import { buildWordList } from '@/lib/study/vocab-set'
 
 interface VocabPageProps {
   params: Promise<{ slug: string }>
@@ -51,9 +51,8 @@ export default async function VocabPage({ params }: VocabPageProps) {
     )
   }
 
-  const client = await currentClient()
-  const set = await buildVocabSet(transcript, { allowModel: () => mayUseModel(client, slug) })
-  const issue = set.aiIssue ?? 'no-key'
+  // No model here: meanings are the learner's to write (see `buildWordList`).
+  const set = buildWordList(transcript)
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
@@ -67,35 +66,11 @@ export default async function VocabPage({ params }: VocabPageProps) {
         {t('backToTranscript')}
       </Link>
 
-      <h1 className="mt-3 text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-        {t('title')} — {transcript.source.title}
-      </h1>
-      <p className="mt-2 text-muted text-pretty">{t('subtitle')}</p>
+      <h1 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">{t('title')}</h1>
+      <p className="mt-1 text-muted text-pretty">{transcript.source.title}</p>
 
-      {/*
-        Shown whenever the deck came out of the deterministic path alone. The
-        user must never be left guessing why the backs of the cards are empty.
-        The public deployment runs with no key on purpose, so the main copy
-        speaks to learners; how to fix it (.env.local, credit) is for whoever
-        runs `next dev` and is never shown to visitors.
-      */}
-      {!set.hasMeanings ? (
-        <div role="status" className="mt-6 rounded-card border border-accent-line bg-accent-soft p-4">
-          <p className="font-medium text-accent-ink">{t(`aiIssue.${issue}.title`)}</p>
-          <p className="mt-1 text-sm leading-relaxed text-accent-ink/90 text-pretty">{t(`aiIssue.${issue}.body`)}</p>
-          {process.env.NODE_ENV === 'development' ? (
-            <p className="mt-3 border-t border-accent-line pt-3 text-xs leading-relaxed text-accent-ink/80 text-pretty">
-              <span className="font-medium">
-                {t('aiIssueDevLabel')} {t(`aiIssue.${issue}.devTitle`)}.
-              </span>{' '}
-              {t(`aiIssue.${issue}.devHint`)}
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-
-      <div className="mt-8">
-        <FlashcardDeck
+      <div className="mt-6">
+        <VocabTable
           set={set}
           deckId={`ted:${slug}`}
           sourceTitle={transcript.source.title}
@@ -103,7 +78,7 @@ export default async function VocabPage({ params }: VocabPageProps) {
         />
       </div>
 
-      <footer className="mt-10 border-t border-line pt-4 text-xs text-muted">
+      <footer className="mt-10 flex flex-col gap-1 border-t border-line pt-4 text-xs text-muted">
         <a
           href={transcript.source.url}
           target="_blank"
@@ -112,6 +87,7 @@ export default async function VocabPage({ params }: VocabPageProps) {
         >
           {t('attribution', { title: transcript.source.title })}
         </a>
+        <p className="leading-relaxed text-faint text-pretty">{t('dictCredit')}</p>
       </footer>
     </main>
   )

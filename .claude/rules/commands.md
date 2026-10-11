@@ -3,6 +3,9 @@
 ```bash
 npm run dev          # dev server (turbopack)
 npm run build        # production build — chạy trước khi báo "xong"
+npm run build:check  # build y như trên nhưng vào .next-build, chạy được khi `next dev` đang bật;
+                     # tự trả tsconfig.json/next-env.d.ts về như cũ và xoá .next-build
+npm run dict:build -- <cmudict.dict> <wordnet/dict> [cmudict LICENSE]  # sinh lib/study/dictionary.json
 npm run lint         # eslint
 npm run typecheck    # tsc --noEmit
 npm run test         # vitest
@@ -18,4 +21,4 @@ npm run db:migrate   # apply migration
 npm run db:studio    # drizzle studio
 ```
 
-**Trước khi báo hoàn thành bất kỳ task code nào: chạy `npm run typecheck && npm run lint && npm run build`.** Nếu fail thì chưa xong.
+**Trước khi báo hoàn thành bất kỳ task code nào: chạy `npm run typecheck && npm run lint && npm run build`.** Nếu fail thì chưa xong. Dev server đang chạy (của mình hay phiên khác) thì dùng `npm run build:check` thay cho `npm run build` — đừng tắt server của người khác.

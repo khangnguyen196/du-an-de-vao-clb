@@ -24,7 +24,7 @@ export interface NoteSense {
   partOfSpeech: string
   /** The meaning used in the talk. At most one per note. */
   inTranscript: boolean
-  /** Required: every meaning the learner writes carries its own example. */
+  /** `en` is required: every meaning carries its own example. `vi` is optional, usually empty. */
   example: { en: string; vi: string }
 }
 
@@ -53,8 +53,9 @@ export type NoteValidation = { ok: true; senses: NoteSense[] } | { ok: false; is
  * form accepts is exactly what the store will write.
  *
  * Agreed with the learner: no minimum number of meanings (one is fine), but
- * every meaning needs an example sentence AND its Vietnamese translation.
- * Whitespace does not count as content.
+ * every meaning needs an example sentence. Its Vietnamese translation is no
+ * longer asked for (2026-10-11) — kept optional so older notes that have one
+ * stay valid. Whitespace does not count as content.
  */
 export function validateNote(senses: readonly NoteSense[]): NoteValidation {
   const issues: NoteIssue[] = []
@@ -80,7 +81,7 @@ export function validateNote(senses: readonly NoteSense[]): NoteValidation {
     check('meaningVi', sense.meaningVi, true, NOTE_LIMITS.meaning)
     check('partOfSpeech', sense.partOfSpeech, false, NOTE_LIMITS.partOfSpeech)
     check('exampleEn', sense.example.en, true, NOTE_LIMITS.example)
-    check('exampleVi', sense.example.vi, true, NOTE_LIMITS.example)
+    check('exampleVi', sense.example.vi, false, NOTE_LIMITS.example)
   })
 
   return issues.length > 0 ? { ok: false, issues } : { ok: true, senses: normalized }
