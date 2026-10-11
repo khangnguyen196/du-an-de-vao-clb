@@ -36,24 +36,8 @@
   "preview": {
     "title": "Transcript",
     "nowPlaying": "Đang phát",
-    "lines": {
-      "one": {
-        "time": "0:42",
-        "en": "So I want to start with a question.",
-        "vi": "Tôi muốn bắt đầu bằng một câu hỏi."
-      },
-      "two": {
-        "time": "0:47",
-        "en": "What would you do with one extra hour a day?",
-        "vi": "Bạn sẽ làm gì với thêm một giờ mỗi ngày?"
-      },
-      "three": {
-        "time": "0:51",
-        "en": "Tap any line to jump the video there.",
-        "vi": "Bấm vào một dòng để video nhảy tới đó."
-      }
-    },
-    "note": "Minh hoạ giao diện, không phải trích từ bài nói thật."
+    "credit": "Trích “{title}” — {speaker}, transcript và bản dịch của cộng đồng TED, giấy phép CC BY-NC-ND 4.0.",
+    "openTalk": "Mở bài này"
   },
   "steps": {
     "title": "Từ bài nói đến vốn từ <g>chỉ trong 3 bước</g>",
@@ -114,8 +98,8 @@
     "quizPrompt": "“persevere” nghĩa là?",
     "quizRight": "kiên trì",
     "quizWrong": "bỏ cuộc",
-    "chipPlaying": "Đang phát · 0:47",
-    "chipSaved": "Đã lưu “persevere”",
+    "chipPlaying": "Đang phát · {time}",
+    "chipSaved": "Đã lưu “{word}”",
     "chipDue": "Ôn hôm nay · 12 thẻ",
     "chipBilingual": "Anh – Việt từng dòng",
     "cardMeaning": "kiên trì, bền bỉ"
@@ -564,14 +548,38 @@
   "ribbon": {
     "label": "Tính năng nổi bật",
     "items": [
-      "Tô sáng theo từng câu",
-      "Song ngữ Anh – Việt",
-      "Bấm câu để tua video",
-      "Thẻ từ kèm câu gốc",
-      "Ôn tập ngắt quãng FSRS",
-      "Quiz 4 dạng",
-      "Xuất TXT · SRT · VTT · MD",
-      "Mượt trên điện thoại"
+      {
+        "icon": "highlight",
+        "text": "Tô sáng theo từng câu"
+      },
+      {
+        "icon": "bilingual",
+        "text": "Song ngữ Anh – Việt"
+      },
+      {
+        "icon": "seek",
+        "text": "Bấm câu để tua video"
+      },
+      {
+        "icon": "cards",
+        "text": "Thẻ từ kèm câu gốc"
+      },
+      {
+        "icon": "review",
+        "text": "Ôn tập ngắt quãng FSRS"
+      },
+      {
+        "icon": "quiz",
+        "text": "Quiz 4 dạng"
+      },
+      {
+        "icon": "export",
+        "text": "Xuất TXT · SRT · VTT · MD"
+      },
+      {
+        "icon": "mobile",
+        "text": "Mượt trên điện thoại"
+      }
     ]
   },
   "auth": {

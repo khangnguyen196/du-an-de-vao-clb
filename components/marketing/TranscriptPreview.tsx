@@ -1,32 +1,36 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { PREVIEW_EXCERPT } from '@/lib/featured-talks'
+import { formatTimestamp } from '@/lib/time'
 import { cn } from '@/lib/utils'
 
-const LINES = ['one', 'two', 'three'] as const
 /** Delay per line so the highlight walks down the list; see `.line-glow`. */
 const LINE_DELAYS = ['0s', '-6s', '-3s'] as const
-/** The line lit when motion is reduced — what the watch screen shows at rest. */
-const RESTING = 'two'
 
 /**
  * Animated illustration of the watch screen, framed like a device on a desk:
  * the "now playing" highlight walks down the lines, the progress bar runs, a
  * few chips float around the frame (wide screens only, where there is room).
  *
- * Its lines are invented and say so on screen; nothing here is fetched or
- * quoted from a real talk — which is also why the "video" is an abstract
- * gradient rather than a real speaker's photo.
+ * Built from a real sample talk: TED's own photo of it, and three lines it
+ * really contains with the TED community's translation (`PREVIEW_EXCERPT`).
+ * A real speaker's face is never paired with words they did not say, so if
+ * the photo changes, the lines must change with it.
  */
 export function TranscriptPreview() {
   const t = useTranslations('preview')
   const ta = useTranslations('art')
+  const { talk, lines, restingIndex } = PREVIEW_EXCERPT
+  const restingTime = formatTimestamp(lines[restingIndex]!.startMs)
 
   return (
     <figure className="relative">
       <FloatingChip className="top-10 -left-10" delay="0s" dot="bg-violet-500">
-        {ta('chipPlaying')}
+        {ta('chipPlaying', { time: restingTime })}
       </FloatingChip>
       <FloatingChip className="top-1/3 -right-12" delay="-2s" dot="bg-orange-500">
-        {ta('chipSaved')}
+        {ta('chipSaved', { word: 'memorable' })}
       </FloatingChip>
       <FloatingChip className="bottom-24 -left-14" delay="-4s" dot="bg-fuchsia-500">
         {ta('chipDue')}
@@ -49,8 +53,17 @@ export function TranscriptPreview() {
 
         <div className="grid gap-3 rounded-[1.25rem] border border-line bg-canvas p-3 sm:p-4 lg:grid-cols-[1.2fr_1fr] lg:gap-5">
           {/* Player stand-in */}
-          <div className="panel-mesh flex aspect-video flex-col justify-between rounded-xl p-3">
-            <span className="flex items-center gap-2 self-start rounded-full bg-black/45 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <div className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl bg-black p-3">
+            <Image
+              src={talk.image}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 34rem, 100vw"
+              className="object-cover"
+            />
+            {/* Darkens the photo at top and bottom so the badge and the time stay readable. */}
+            <span className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/55" />
+            <span className="relative flex items-center gap-2 self-start rounded-full bg-black/45 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
               <span className="flex h-3 items-end gap-0.5">
                 {['0s', '-0.4s', '-0.8s', '-0.2s'].map((delay) => (
                   <span key={delay} className="eq-bar block h-3 w-0.5 rounded-full bg-white" style={{ animationDelay: delay }} />
@@ -66,12 +79,12 @@ export function TranscriptPreview() {
                 </svg>
               </span>
             </span>
-            <span className="flex items-center gap-2">
-              <span className="font-mono text-[11px] text-white/90">0:47</span>
+            <span className="relative flex items-center gap-2">
+              <span className="font-mono text-[11px] text-white/90">{restingTime}</span>
               <span className="h-1 flex-1 overflow-hidden rounded-full bg-white/35">
                 <span className="progress-run block h-full w-full rounded-full bg-white" />
               </span>
-              <span className="font-mono text-[11px] text-white/90">3:10</span>
+              <span className="font-mono text-[11px] text-white/90">{formatTimestamp(talk.durationMs)}</span>
             </span>
           </div>
 
@@ -85,21 +98,21 @@ export function TranscriptPreview() {
             </div>
 
             <ul className="mt-1 flex flex-col">
-              {LINES.map((line, index) => (
-                <li key={line} className="relative flex gap-3 rounded-lg px-2 py-2.5 text-sm leading-relaxed">
+              {lines.map((line, index) => (
+                <li key={line.startMs} className="relative flex gap-3 rounded-lg px-2 py-2.5 text-sm leading-relaxed">
                   {/* The moving highlight: background and left bar, faded in turn. */}
                   <span
                     className={cn(
                       'line-glow absolute inset-0 rounded-lg border-l-2 border-accent bg-accent-soft/70',
-                      line === RESTING && 'is-lit',
+                      index === restingIndex && 'is-lit',
                     )}
                     style={{ animationDelay: LINE_DELAYS[index] }}
                   />
-                  <span className="relative shrink-0 font-mono text-xs text-accent-ink">{t(`lines.${line}.time`)}</span>
+                  <span className="relative shrink-0 font-mono text-xs text-accent-ink">{formatTimestamp(line.startMs)}</span>
                   <span className="relative min-w-0">
-                    <span className="block text-pretty text-ink">{t(`lines.${line}.en`)}</span>
+                    <span lang="en" className="block text-pretty text-ink">{line.en}</span>
                     <span className="mt-1 block border-l-2 border-line pl-2 text-xs text-muted text-pretty">
-                      {t(`lines.${line}.vi`)}
+                      {line.vi}
                     </span>
                   </span>
                 </li>
@@ -108,7 +121,15 @@ export function TranscriptPreview() {
           </div>
         </div>
       </div>
-      <figcaption className="mt-3 text-center text-xs text-faint">{t('note')}</figcaption>
+      <figcaption className="mt-3 text-center text-xs text-faint text-pretty">
+        {t('credit', { title: talk.title, speaker: talk.speaker })}{' '}
+        <Link
+          href={`/watch/ted/${talk.slug}`}
+          className="inline-flex min-h-11 items-center font-medium text-muted underline decoration-line underline-offset-4 hover:text-ink"
+        >
+          {t('openTalk')}
+        </Link>
+      </figcaption>
     </figure>
   )
 }

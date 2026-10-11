@@ -36,24 +36,8 @@
   "preview": {
     "title": "Transcript",
     "nowPlaying": "Now playing",
-    "lines": {
-      "one": {
-        "time": "0:42",
-        "en": "So I want to start with a question.",
-        "vi": "Tôi muốn bắt đầu bằng một câu hỏi."
-      },
-      "two": {
-        "time": "0:47",
-        "en": "What would you do with one extra hour a day?",
-        "vi": "Bạn sẽ làm gì với thêm một giờ mỗi ngày?"
-      },
-      "three": {
-        "time": "0:51",
-        "en": "Tap any line to jump the video there.",
-        "vi": "Bấm vào một dòng để video nhảy tới đó."
-      }
-    },
-    "note": "Interface illustration, not quoted from a real talk."
+    "credit": "From “{title}” — {speaker}; transcript and translation by the TED community, CC BY-NC-ND 4.0.",
+    "openTalk": "Open this talk"
   },
   "steps": {
     "title": "From talk to vocabulary <g>in 3 steps</g>",
@@ -114,8 +98,8 @@
     "quizPrompt": "What does “persevere” mean?",
     "quizRight": "kiên trì",
     "quizWrong": "bỏ cuộc",
-    "chipPlaying": "Now playing · 0:47",
-    "chipSaved": "Saved “persevere”",
+    "chipPlaying": "Now playing · {time}",
+    "chipSaved": "Saved “{word}”",
     "chipDue": "Today’s review · 12 cards",
     "chipBilingual": "English – Vietnamese, line by line",
     "cardMeaning": "to keep going"
@@ -564,14 +548,38 @@
   "ribbon": {
     "label": "Highlights",
     "items": [
-      "Line-by-line highlight",
-      "English – Vietnamese",
-      "Tap a line to seek",
-      "Cards with the original line",
-      "FSRS spaced review",
-      "Four kinds of quiz",
-      "Export TXT · SRT · VTT · MD",
-      "Smooth on your phone"
+      {
+        "icon": "highlight",
+        "text": "Line-by-line highlight"
+      },
+      {
+        "icon": "bilingual",
+        "text": "English – Vietnamese"
+      },
+      {
+        "icon": "seek",
+        "text": "Tap a line to seek"
+      },
+      {
+        "icon": "cards",
+        "text": "Cards with the original line"
+      },
+      {
+        "icon": "review",
+        "text": "FSRS spaced review"
+      },
+      {
+        "icon": "quiz",
+        "text": "Four kinds of quiz"
+      },
+      {
+        "icon": "export",
+        "text": "Export TXT · SRT · VTT · MD"
+      },
+      {
+        "icon": "mobile",
+        "text": "Smooth on your phone"
+      }
     ]
   },
   "auth": {

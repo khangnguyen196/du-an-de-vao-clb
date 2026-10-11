@@ -79,3 +79,46 @@ export const FEATURED_TALKS: readonly FeaturedTalk[] = [
     image: `${TED_PHOTOS}/9595cdc1-fd8e-4aa1-863a-2c6641ae3cbb/BreneBrown_2010X-embed.jpg`,
   },
 ]
+
+/** One line of the landing page's preview, quoted from a real talk. */
+export interface ExcerptLine {
+  startMs: number
+  en: string
+  /** The TED community's Vietnamese translation of the line. */
+  vi: string
+}
+
+/**
+ * Three consecutive lines of Matt Cutts's sample talk, shown in the landing
+ * page's watch-screen preview next to TED's own photo of that talk.
+ *
+ * Quoted verbatim, times included, from TED's transcript and its Vietnamese
+ * translation as fetched on 2026-10-11 (cues 3–5 after `normalizeCues`). A
+ * real speaker's photo must sit next to words that speaker actually said —
+ * which is why these are not paraphrased or invented. CC BY-NC-ND: unaltered,
+ * credited under the preview, on a site that sells nothing.
+ */
+export const PREVIEW_EXCERPT = {
+  // By slug, not position: reordering the samples must never put these words
+  // under somebody else's photo.
+  talk: FEATURED_TALKS.find((talk) => talk.slug === 'matt_cutts_try_something_new_for_30_days')!,
+  /** The line lit when motion is reduced; the player shows its time. */
+  restingIndex: 1,
+  lines: [
+    {
+      startMs: 31_000,
+      en: "There's a few things I learned while doing these 30-day challenges.",
+      vi: 'Tôi đã học được một số điều trong khi thực hiện thử thách 30 ngày đó.',
+    },
+    {
+      startMs: 34_622,
+      en: 'The first was, instead of the months flying by, forgotten, the time was much more memorable.',
+      vi: 'Điều đầu tiên là, thay vì có những tháng trôi qua dần bị lãng quên, thì thời gian trở nên đáng nhớ hơn nhiều.',
+    },
+    {
+      startMs: 42_000,
+      en: 'This was part of a challenge I did to take a picture every day for a month.',
+      vi: 'Đây là một ví dụ trong thử thách chụp mỗi ngày một bức ảnh trong một tháng.',
+    },
+  ] satisfies ExcerptLine[],
+} as const
