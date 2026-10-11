@@ -4,7 +4,7 @@ import Image from 'next/image'
  * The site's avatar, the same artwork as the browser icon (`app/icon.svg`,
  * served by Next at /icon.svg). Decorative: the app name always sits next to it.
  */
-export function BrandMark({ className }: { className?: string }) {
+export function BrandMark({ className, eager = false }: { className?: string; eager?: boolean }) {
   return (
     <Image
       src="/icon.svg"
@@ -13,7 +13,10 @@ export function BrandMark({ className }: { className?: string }) {
       height={32}
       // A vector the browser scales itself; the image optimiser has nothing to add.
       unoptimized
-      className={className ?? 'size-8 shrink-0 rounded-[0.6rem] shadow-sm'}
+      // In the header it is above the fold on every page: load it with the page, not lazily after.
+      loading={eager ? 'eager' : 'lazy'}
+      // Transparent artwork: no tile, no shadow — either would draw a box around it.
+      className={className ?? 'size-8 shrink-0'}
     />
   )
 }

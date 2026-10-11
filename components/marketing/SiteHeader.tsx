@@ -13,7 +13,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 px-3 pt-3 sm:px-4">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-2 rounded-full border border-line/80 bg-surface/80 pr-1.5 pl-2 shadow-[0_8px_30px_-12px_rgb(17_24_39/0.25)] backdrop-blur-md sm:h-16 sm:pr-2 sm:pl-3">
         <Link href="/" className="flex min-h-11 min-w-0 items-center gap-2 rounded-full pr-2 font-semibold tracking-tight">
-          <BrandMark />
+          <BrandMark eager />
           <span className="text-brand-gradient truncate text-base sm:text-lg">{t('common.appName')}</span>
         </Link>
 
